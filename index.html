@@ -2,7 +2,7 @@
 <html lang="en" data-theme="normal">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>CryptoKit - Your Complete Cryptography Toolkit</title>
 
     <!-- Google Fonts -->
@@ -39,32 +39,280 @@
             transform: translateY(0) !important;
         }
 
+        /* ═══════════════════════════════════════════════════
+           MOBILE MENU — HIDDEN ON DESKTOP, SHOWN ON MOBILE
+        ═══════════════════════════════════════════════════ */
+        .mobile-menu-overlay {
+            display: none !important;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            z-index: 9997;
+            opacity: 0;
+            transition: opacity 0.35s ease;
+        }
+
+        .mobile-menu {
+            display: none !important;
+            position: fixed !important;
+            top: 0 !important;
+            right: -100% !important;
+            width: 85% !important;
+            max-width: 360px !important;
+            height: 100vh !important;
+            height: 100dvh !important;
+            background: var(--bg-primary, #0a0a1a) !important;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 9998 !important;
+            overflow-y: auto !important;
+            overflow-x: hidden !important;
+            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            box-shadow: -10px 0 40px rgba(0, 0, 0, 0.5);
+            border-left: 1px solid rgba(255, 255, 255, 0.08);
+            -webkit-overflow-scrolling: touch;
+            flex-direction: column !important;
+        }
+
+        /* ✅ Show mobile menu + overlay ONLY on screens ≤ 1100px */
+        @media (max-width: 1100px) {
+            .mobile-menu {
+                display: flex !important;
+            }
+            .mobile-menu-overlay.active {
+                display: block !important;
+                opacity: 1;
+            }
+        }
+
+        [data-theme="normal"] .mobile-menu {
+            background: #ffffff !important;
+            border-left: 1px solid rgba(0, 0, 0, 0.08);
+            box-shadow: -10px 0 40px rgba(0, 0, 0, 0.15);
+        }
+        [data-theme="hacker"] .mobile-menu {
+            background: #050510 !important;
+            border-left: 1px solid rgba(0, 255, 65, 0.2);
+        }
+        .mobile-menu.active {
+            right: 0 !important;
+        }
+
+        /* Mobile Menu Header */
+        .mobile-menu-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 20px 16px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            flex-shrink: 0;
+            position: sticky;
+            top: 0;
+            background: inherit;
+            z-index: 10;
+        }
+        [data-theme="normal"] .mobile-menu-header { border-bottom-color: rgba(0,0,0,0.08); background: #fff; }
+        .mobile-menu-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: inherit;
+        }
+        .mobile-menu-brand svg { color: var(--accent, #7c3aed); }
+        .mobile-menu-brand-text {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary, #fff);
+        }
+        [data-theme="normal"] .mobile-menu-brand-text { color: #111827; }
+        .mobile-menu-close {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: var(--text-primary, #fff);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            transition: all 0.2s;
+        }
+        [data-theme="normal"] .mobile-menu-close {
+            background: #f3f4f6;
+            border-color: #e5e7eb;
+            color: #111827;
+        }
+        .mobile-menu-close:hover {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: #ef4444;
+            color: #ef4444;
+            transform: rotate(90deg);
+        }
+
+        /* Mobile Menu Links Container */
+        .mobile-menu-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px 0 20px 0;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Reset default links */
+        .mobile-menu > div > a,
+        .mobile-menu > a {
+            display: flex !important;
+            align-items: center !important;
+            gap: 12px !important;
+            padding: 15px 20px !important;
+            color: var(--text-primary, #fff) !important;
+            text-decoration: none !important;
+            font-family: 'Space Grotesk', sans-serif !important;
+            font-size: 15px !important;
+            font-weight: 500 !important;
+            border-bottom: 1px solid rgba(255,255,255,0.04) !important;
+            transition: all 0.2s ease !important;
+            position: relative;
+            background: transparent !important;
+        }
+        [data-theme="normal"] .mobile-menu > div > a,
+        [data-theme="normal"] .mobile-menu > a {
+            color: #111827 !important;
+            border-bottom-color: rgba(0,0,0,0.05) !important;
+        }
+        .mobile-menu > div > a:hover,
+        .mobile-menu > div > a:active,
+        .mobile-menu > a:hover,
+        .mobile-menu > a:active {
+            background: rgba(124, 58, 237, 0.08) !important;
+            padding-left: 26px !important;
+            color: var(--accent, #7c3aed) !important;
+        }
+        [data-theme="normal"] .mobile-menu > div > a:hover,
+        [data-theme="normal"] .mobile-menu > div > a:active,
+        [data-theme="normal"] .mobile-menu > a:hover,
+        [data-theme="normal"] .mobile-menu > a:active {
+            background: rgba(99, 102, 241, 0.06) !important;
+        }
+
+        /* Mobile Menu Section Divider */
+        .mobile-menu-divider {
+            padding: 14px 20px 8px 20px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 700;
+            color: var(--text-secondary, #a0aec0);
+            opacity: 0.6;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        [data-theme="normal"] .mobile-menu-divider { color: #6b7280; }
+
+        /* Premium Link Special Styling */
+        .mobile-menu a#mobilePremiumLink {
+            margin: 8px 16px 12px 16px !important;
+            padding: 14px 18px !important;
+            border-radius: 12px !important;
+            background: linear-gradient(135deg, rgba(251,191,36,0.15), rgba(245,158,11,0.08)) !important;
+            border: 1px solid rgba(251,191,36,0.3) !important;
+            color: #d97706 !important;
+            font-weight: 700 !important;
+        }
+        [data-theme="hacker"] .mobile-menu a#mobilePremiumLink {
+            color: #fbbf24 !important;
+            background: linear-gradient(135deg, rgba(251,191,36,0.1), rgba(245,158,11,0.05)) !important;
+        }
+        .mobile-menu a#mobilePremiumLink:hover {
+            padding-left: 18px !important;
+            background: linear-gradient(135deg, rgba(251,191,36,0.22), rgba(245,158,11,0.12)) !important;
+            transform: scale(1.02);
+        }
+
+        /* Login Button Special Styling */
+        .mobile-menu a#mobileAuthBtn {
+            margin: 12px 16px 8px 16px !important;
+            padding: 14px 18px !important;
+            border-radius: 12px !important;
+            background: linear-gradient(135deg, #6366f1, #7c3aed) !important;
+            color: #fff !important;
+            font-weight: 600 !important;
+            border: none !important;
+            justify-content: center !important;
+            text-align: center;
+            box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
+        }
+        .mobile-menu a#mobileAuthBtn:hover {
+            padding-left: 18px !important;
+            background: linear-gradient(135deg, #4f46e5, #6d28d9) !important;
+            color: #fff !important;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+        }
+        /* Logged-in state = red logout button */
+        .mobile-menu a#mobileAuthBtn.is-logout {
+            background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+            box-shadow: 0 4px 14px rgba(239, 68, 68, 0.35) !important;
+        }
+        .mobile-menu a#mobileAuthBtn.is-logout:hover {
+            background: linear-gradient(135deg, #dc2626, #b91c1c) !important;
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.5) !important;
+        }
+
+        /* Theme Toggle in Mobile */
+        .mobile-menu a#mobileThemeToggleLink {
+            background: rgba(255,255,255,0.02) !important;
+        }
+        [data-theme="normal"] .mobile-menu a#mobileThemeToggleLink {
+            background: rgba(0,0,0,0.02) !important;
+        }
+
         /* ── Mobile Theme Submenu ── */
         .mobile-theme-submenu {
             display: none;
             flex-direction: column;
-            background: rgba(0,0,0,0.08);
+            background: rgba(124, 58, 237, 0.05);
             border-left: 3px solid var(--accent, #7c3aed);
             margin: 0;
             padding: 0;
             overflow: hidden;
             transition: all 0.3s ease;
         }
+        [data-theme="normal"] .mobile-theme-submenu { background: rgba(99,102,241,0.04); }
         .mobile-theme-submenu.open { display: flex; }
         .mobile-theme-submenu a {
-            padding: 12px 24px 12px 32px !important;
+            padding: 14px 20px 14px 32px !important;
             font-size: 14px !important;
-            border-bottom: none !important;
+            border-bottom: 1px solid rgba(255,255,255,0.04) !important;
             opacity: 0.9;
             display: flex !important;
             align-items: center;
+            justify-content: space-between !important;
             gap: 10px;
+            color: var(--text-primary, #fff);
+            text-decoration: none;
+            font-family: 'Space Grotesk', sans-serif;
+            transition: all 0.2s;
+        }
+        [data-theme="normal"] .mobile-theme-submenu a {
+            color: #111827;
+            border-bottom-color: rgba(0,0,0,0.04) !important;
         }
         .mobile-theme-submenu a:last-child { border-bottom: none !important; }
+        .mobile-theme-submenu a:hover {
+            background: rgba(124,58,237,0.1);
+            padding-left: 36px !important;
+        }
         .mobile-theme-toggle-btn {
-            display: flex;
+            display: flex !important;
             align-items: center;
-            justify-content: space-between;
+            justify-content: space-between !important;
             width: 100%;
             background: none;
             border: none;
@@ -74,8 +322,75 @@
         .mobile-theme-toggle-btn .theme-arrow {
             transition: transform 0.3s ease;
             font-size: 12px;
+            margin-left: auto;
         }
         .mobile-theme-toggle-btn.active .theme-arrow { transform: rotate(180deg); }
+        .mobile-theme-submenu a.active-theme {
+            color: var(--accent, #7c3aed) !important;
+            font-weight: 600;
+            background: rgba(124,58,237,0.08);
+        }
+        .mobile-theme-submenu a .theme-active-dot {
+            width: 8px; height: 8px;
+            background: var(--accent, #7c3aed);
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 8px var(--accent, #7c3aed);
+            flex-shrink: 0;
+        }
+
+        /* Hamburger Button Enhanced - HIDDEN ON DESKTOP */
+        .hamburger {
+            display: none !important;
+            width: 44px;
+            height: 44px;
+            cursor: pointer;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 10px 8px;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            box-sizing: border-box;
+            transition: all 0.3s;
+            flex-shrink: 0;
+            z-index: 10000;
+        }
+        [data-theme="normal"] .hamburger {
+            background: #f3f4f6;
+            border-color: #e5e7eb;
+        }
+        .hamburger:hover {
+            background: rgba(124, 58, 237, 0.1);
+            border-color: rgba(124, 58, 237, 0.3);
+        }
+        .hamburger span {
+            display: block;
+            width: 24px;
+            height: 2.5px;
+            background: var(--text-primary, #fff);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+            transform-origin: center;
+        }
+        [data-theme="normal"] .hamburger span { background: #111827; }
+        .hamburger.active span:nth-child(1) {
+            transform: translateY(9px) rotate(45deg);
+        }
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+        .hamburger.active span:nth-child(3) {
+            transform: translateY(-9px) rotate(-45deg);
+        }
+
+        /* Lock body scroll when menu open */
+        body.menu-open {
+            overflow: hidden !important;
+            touch-action: none;
+        }
 
         /* Mobile Developer Mode Popup */
         .mobile-dev-popup {
@@ -101,6 +416,7 @@
             box-shadow: 0 20px 60px rgba(124,58,237,0.4);
             animation: popupIn 0.3s cubic-bezier(0.34,1.56,0.64,1);
         }
+        [data-theme="normal"] .mobile-dev-popup-box { background: #fff; }
         @keyframes popupIn {
             from { opacity: 0; transform: scale(0.7) translateY(30px); }
             to   { opacity: 1; transform: scale(1) translateY(0); }
@@ -118,12 +434,14 @@
             margin-bottom: 12px;
             font-family: 'Space Grotesk', sans-serif;
         }
+        [data-theme="normal"] .mobile-dev-popup-title { color: #111827; }
         .mobile-dev-popup-msg {
             font-size: 14px;
             color: var(--text-secondary, #a0aec0);
             line-height: 1.6;
             margin-bottom: 24px;
         }
+        [data-theme="normal"] .mobile-dev-popup-msg { color: #4b5563; }
         .mobile-dev-popup-msg strong { color: var(--accent, #7c3aed); }
         .mobile-dev-popup-close {
             background: linear-gradient(135deg, #7c3aed, #3b82f6);
@@ -142,20 +460,9 @@
             transform: translateY(-2px);
             box-shadow: 0 8px 24px rgba(124,58,237,0.5);
         }
-        .mobile-theme-submenu a.active-theme {
-            color: var(--accent, #7c3aed) !important;
-            font-weight: 600;
-        }
-        .mobile-theme-submenu a .theme-active-dot {
-            width: 8px; height: 8px;
-            background: var(--accent, #7c3aed);
-            border-radius: 50%;
-            display: inline-block;
-            box-shadow: 0 0 8px var(--accent, #7c3aed);
-        }
 
         /* ═══════════════════════════════════════════════════
-           TOOL CARDS — Equal Height + Button Bottom Aligned
+           TOOL CARDS — Equal Height
         ═══════════════════════════════════════════════════ */
         .tools-grid {
             display: grid !important;
@@ -273,16 +580,155 @@
         }
         .btn-nav-auth { gap: 6px !important; background: rgba(255,255,255,0.05) !important; color: var(--text-primary, #fff) !important; border: 1px solid rgba(255,255,255,0.15) !important; }
         .btn-nav-auth:hover { background: rgba(255,255,255,0.1) !important; transform: translateY(-1px); }
+
+        /* ✅ Logged-in state → red Logout button */
+        .btn-nav-auth.is-logout {
+            background: rgba(239, 68, 68, 0.1) !important;
+            border-color: rgba(239, 68, 68, 0.4) !important;
+            color: #ef4444 !important;
+        }
+        .btn-nav-auth.is-logout:hover {
+            background: rgba(239, 68, 68, 0.2) !important;
+            border-color: #ef4444 !important;
+            color: #ef4444 !important;
+        }
+        [data-theme="normal"] .btn-nav-auth { background: #f3f4f6 !important; border-color: #e5e7eb !important; color: #111827 !important; }
+        [data-theme="normal"] .btn-nav-auth:hover { background: #e5e7eb !important; }
+        [data-theme="normal"] .btn-nav-auth.is-logout { background: #fef2f2 !important; border-color: #fecaca !important; color: #dc2626 !important; }
+        [data-theme="normal"] .btn-nav-auth.is-logout:hover { background: #fee2e2 !important; border-color: #ef4444 !important; }
+
         .mode-selector .mode-btn { height: 38px !important; padding: 0 12px !important; font-size: 13px !important; }
 
-        @media (max-width: 1250px) { .navbar { padding: 15px 16px !important; gap: 12px !important; } .nav-links { gap: 12px !important; } .nav-links li a { font-size: 13px !important; } }
-        @media (max-width: 1100px) { .nav-links { display: none !important; } .nav-actions { display: none !important; } .hamburger { display: block !important; } }
+        /* ═══════════════════════════════════════════════════
+           ✅ CENTERED SECTION HEADERS (Pro Cipher / Quantum)
+        ═══════════════════════════════════════════════════ */
+        .premium-tools-header,
+        .tools-header {
+            text-align: center !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+            max-width: 800px;
+            padding: 0 20px;
+        }
+        .premium-tools-header .section-badge,
+        .tools-header .section-badge {
+            display: inline-flex !important;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px auto !important;
+        }
+        .premium-tools-header .section-title,
+        .tools-header .section-title {
+            text-align: center !important;
+            margin: 0 auto 14px auto !important;
+            width: 100%;
+        }
+        .premium-tools-header .section-subtitle,
+        .tools-header .section-subtitle {
+            text-align: center !important;
+            margin: 0 auto !important;
+            max-width: 620px !important;
+            width: 100%;
+            display: block !important;
+        }
+
+        /* ═══════════════════════════════════════════════════
+           RESPONSIVE BREAKPOINTS
+        ═══════════════════════════════════════════════════ */
+
+        @media (max-width: 1250px) {
+            .navbar { padding: 15px 16px !important; gap: 12px !important; }
+            .nav-links { gap: 12px !important; }
+            .nav-links li a { font-size: 13px !important; }
+        }
+
+        /* ✅ Tablet landscape - Show hamburger, hide desktop nav */
+        @media (max-width: 1100px) {
+            .nav-links { display: none !important; }
+            .nav-actions { display: none !important; }
+            .hamburger { display: flex !important; }
+        }
+
+        @media (max-width: 900px) {
+            .navbar { padding: 14px 18px !important; }
+            .nav-logo-text { font-size: 18px !important; }
+            .tools-grid { gap: 20px !important; padding: 0 16px; }
+            .premium-tools-grid { gap: 20px !important; padding: 0 16px; }
+        }
+
+        @media (max-width: 768px) {
+            .navbar { padding: 12px 16px !important; }
+            .nav-logo-icon svg { width: 24px !important; height: 24px !important; }
+            .nav-logo-text { font-size: 17px !important; }
+            .hamburger { width: 40px; height: 40px; padding: 10px 7px; }
+            .hamburger span { width: 22px; }
+            .tools-grid, .premium-tools-grid {
+                grid-template-columns: 1fr !important;
+                padding: 0 16px;
+                gap: 16px !important;
+            }
+            .tool-card { padding: 22px 20px; }
+            .premium-tool-card { padding: 24px 20px 22px 20px; min-height: auto !important; }
+            .premium-tools-section { padding: 60px 16px 40px; }
+            .section-title { font-size: 28px !important; }
+            .hero-title { font-size: 36px !important; }
+            .hero-subtitle { font-size: 15px !important; }
+            .mobile-menu { width: 90% !important; max-width: 340px !important; }
+        }
+
+        @media (max-width: 480px) {
+            .navbar { padding: 10px 14px !important; gap: 10px !important; }
+            .nav-logo-icon svg { width: 22px !important; height: 22px !important; }
+            .nav-logo-text { font-size: 16px !important; }
+            .hamburger { width: 38px; height: 38px; padding: 9px 6px; }
+            .hamburger span { width: 20px; height: 2px; }
+            .mobile-menu { width: 100% !important; max-width: 100% !important; }
+            .mobile-menu-header { padding: 18px 18px 14px 18px; }
+            .mobile-menu > div > a,
+            .mobile-menu > a {
+                padding: 14px 18px !important;
+                font-size: 14.5px !important;
+            }
+            .section-title { font-size: 24px !important; }
+            .hero-title { font-size: 30px !important; }
+            .hero-subtitle { font-size: 14px !important; }
+            .tool-card { padding: 20px 18px; }
+            .tool-icon { width: 42px !important; height: 42px !important; font-size: 18px !important; }
+            .tool-name { font-size: 17px !important; }
+            .tool-desc { font-size: 13.5px !important; }
+            .premium-tool-card { padding: 22px 18px 20px 18px; }
+            .premium-tool-name { font-size: 18px !important; }
+            .premium-tool-desc { font-size: 13.5px !important; }
+            .premium-tool-icon { width: 44px !important; height: 44px !important; font-size: 18px !important; }
+            .section-badge { font-size: 12px !important; }
+            .mobile-dev-popup-box { padding: 28px 20px; }
+            .mobile-dev-popup-title { font-size: 18px; }
+            .mobile-dev-popup-icon { font-size: 44px; }
+            .premium-tools-header, .tools-header { padding: 0 14px; }
+        }
+
+        @media (max-width: 360px) {
+            .navbar { padding: 10px 12px !important; }
+            .nav-logo-text { font-size: 15px !important; }
+            .hamburger { width: 36px; height: 36px; }
+            .mobile-menu > div > a,
+            .mobile-menu > a { padding: 13px 16px !important; font-size: 14px !important; }
+            .hero-title { font-size: 26px !important; }
+            .section-title { font-size: 22px !important; }
+        }
+
+        @media (max-height: 500px) and (orientation: landscape) {
+            .mobile-menu-header { padding: 12px 20px; }
+            .mobile-menu > div > a,
+            .mobile-menu > a { padding: 10px 20px !important; }
+            .mobile-menu-divider { padding: 8px 20px 4px 20px; }
+        }
 
         /* ═══════════════════════════════════════════════════
            PREMIUM TOOLS & QUANTUM TOOLS SECTIONS
         ═══════════════════════════════════════════════════ */
         .premium-tools-section { display: block; padding: 80px 20px 60px; position: relative; z-index: 10; }
-        .premium-tools-header { text-align: center; margin-bottom: 50px; }
+        .premium-tools-header { margin-bottom: 50px; }
         .premium-tools-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; max-width: 1200px; margin: 0 auto; align-items: stretch !important; }
 
         .premium-tool-card {
@@ -459,6 +905,22 @@
         [data-theme="hacker"].premium-active .mode-option-title { color: #fbbf24 !important; }
         [data-theme="hacker"].enterprise-active .mode-option-title { color: #a78bfa !important; }
 
+        /* Premium mobile menu accent */
+        html.premium-active .mobile-menu > div > a:hover,
+        html.premium-active .mobile-menu > div > a:active,
+        html.premium-active .mobile-menu > a:hover,
+        html.premium-active .mobile-menu > a:active {
+            background: rgba(245, 158, 11, 0.08) !important;
+            color: #d97706 !important;
+        }
+        html.enterprise-active .mobile-menu > div > a:hover,
+        html.enterprise-active .mobile-menu > div > a:active,
+        html.enterprise-active .mobile-menu > a:hover,
+        html.enterprise-active .mobile-menu > a:active {
+            background: rgba(124, 58, 237, 0.08) !important;
+            color: #7c3aed !important;
+        }
+
         /* ── AI Elite Badge ── */
         .ai-elite-badge {
             display: inline-flex; align-items: center; gap: 4px;
@@ -583,24 +1045,57 @@
             <button class="btn-nav-auth" id="navAuthBtn" onclick="handleAuthToggle();"><i class="fas fa-user"></i> Login</button>
             <a href="pricing.html" class="btn-nav-cta" id="navPremiumBtn">👑 Go Premium</a>
         </div>
-        <div class="hamburger" onclick="if(typeof toggleMenu==='function')toggleMenu();"><span></span><span></span><span></span></div>
+        <div class="hamburger" id="hamburgerBtn" onclick="toggleMobileMenu();" aria-label="Toggle menu">
+            <span></span><span></span><span></span>
+        </div>
     </nav>
 
+    <!-- Mobile Menu Overlay (click outside to close) -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay" onclick="closeMobileMenu();"></div>
+
+    <!-- Mobile Menu -->
     <div class="mobile-menu" id="mobileMenu">
-        <a href="pricing.html" id="mobilePremiumLink" onclick="if(typeof toggleMenu==='function')toggleMenu();" style="color: #fbbf24 !important; font-weight: bold; border-bottom: 1px solid rgba(251,191,36,0.2) !important;">👑 Go Premium</a>
-        <a href="#tools" onclick="if(typeof toggleMenu==='function')toggleMenu();">🔧 Tools</a>
-        <a href="#how" onclick="if(typeof toggleMenu==='function')toggleMenu();">📖 How it Works</a>
-        <a href="pricing.html" onclick="if(typeof toggleMenu==='function')toggleMenu();">💳 Pricing</a>
-        <a href="team.html" onclick="if(typeof toggleMenu==='function')toggleMenu();">👥 Team</a>
-        <a href="#about" onclick="if(typeof toggleMenu==='function')toggleMenu();">ℹ️ About</a>
-        <a href="#feedback" onclick="if(typeof toggleMenu==='function')toggleMenu();">💬 Feedback</a>
-        <a href="#" id="mobileAssistantLink" onclick="event.preventDefault();if(typeof toggleMenu==='function')toggleMenu();if(typeof toggleChat==='function')toggleChat();">🤖 Assistant</a>
-        <a href="#" id="mobileAuthBtn" onclick="event.preventDefault();handleAuthToggle();">👤 Login</a>
-        <a href="#" onclick="event.preventDefault();toggleMobileThemeMenu(this);" class="mobile-theme-toggle-btn" id="mobileThemeToggleLink">🎨 Switch Theme <i class="fas fa-chevron-down theme-arrow" id="mobileThemeArrow"></i></a>
-        <div class="mobile-theme-submenu" id="mobileThemeSubmenu">
-            <a href="#" id="mobileNormalOption" onclick="event.preventDefault();mobileSwitchTheme('normal');"><span id="mobNormalLabel">☀️ Normal Mode</span> <span class="theme-active-dot" id="normalDot" style="display:none;"></span></a>
-            <a href="#" id="mobileHackerOption" onclick="event.preventDefault();mobileSwitchTheme('hacker');"><span id="mobHackerLabel">💀 Hacker Mode</span> <span class="theme-active-dot" id="hackerDot" style="display:none;"></span></a>
-            <a href="#" id="mobileDevOption" onclick="event.preventDefault();showMobileDevPopup();">💻 Terminal Mode</a>
+        <div class="mobile-menu-header">
+            <a href="#home" class="mobile-menu-brand" onclick="closeMobileMenu();">
+                <svg viewBox="0 0 40 40" width="26" height="26" fill="none">
+                    <rect x="2" y="2" width="36" height="36" rx="8" stroke="currentColor" stroke-width="2.5"/>
+                    <path d="M20 8L20 14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                    <rect x="12" y="14" width="16" height="18" rx="3" stroke="currentColor" stroke-width="2.5"/>
+                    <circle cx="20" cy="23" r="3" stroke="currentColor" stroke-width="2"/>
+                    <path d="M20 26L20 28" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <span class="mobile-menu-brand-text">CryptoKit</span>
+            </a>
+            <button class="mobile-menu-close" onclick="closeMobileMenu();" aria-label="Close menu">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <div class="mobile-menu-body">
+            <a href="pricing.html" id="mobilePremiumLink" onclick="closeMobileMenu();">👑 Go Premium</a>
+            <a href="#" id="mobileAuthBtn" onclick="event.preventDefault();handleAuthToggle();">👤 Login</a>
+
+            <div class="mobile-menu-divider">Navigation</div>
+            <a href="#tools" onclick="closeMobileMenu();"><i class="fas fa-tools" style="width:20px;"></i> Tools</a>
+            <a href="#how" onclick="closeMobileMenu();"><i class="fas fa-book-open" style="width:20px;"></i> How it Works</a>
+            <a href="pricing.html" onclick="closeMobileMenu();"><i class="fas fa-credit-card" style="width:20px;"></i> Pricing</a>
+            <a href="team.html" onclick="closeMobileMenu();"><i class="fas fa-users" style="width:20px;"></i> Team</a>
+            <a href="#about" onclick="closeMobileMenu();"><i class="fas fa-info-circle" style="width:20px;"></i> About</a>
+            <a href="#feedback" onclick="closeMobileMenu();"><i class="fas fa-comment-dots" style="width:20px;"></i> Feedback</a>
+
+            <div class="mobile-menu-divider">Features</div>
+            <a href="#" id="mobileAssistantLink" onclick="event.preventDefault();closeMobileMenu();if(typeof toggleChat==='function')toggleChat();"><i class="fas fa-robot" style="width:20px;"></i> Assistant</a>
+
+            <div class="mobile-menu-divider">Appearance</div>
+            <a href="#" onclick="event.preventDefault();toggleMobileThemeMenu(this);" class="mobile-theme-toggle-btn" id="mobileThemeToggleLink">
+                <span><i class="fas fa-palette" style="width:20px;"></i> Switch Theme</span>
+                <i class="fas fa-chevron-down theme-arrow" id="mobileThemeArrow"></i>
+            </a>
+            <div class="mobile-theme-submenu" id="mobileThemeSubmenu">
+                <a href="#" id="mobileNormalOption" onclick="event.preventDefault();mobileSwitchTheme('normal');"><span id="mobNormalLabel">☀️ Normal Mode</span> <span class="theme-active-dot" id="normalDot" style="display:none;"></span></a>
+                <a href="#" id="mobileHackerOption" onclick="event.preventDefault();mobileSwitchTheme('hacker');"><span id="mobHackerLabel">💀 Hacker Mode</span> <span class="theme-active-dot" id="hackerDot" style="display:none;"></span></a>
+                <a href="#" id="mobileDevOption" onclick="event.preventDefault();showMobileDevPopup();"><span>💻 Terminal Mode</span></a>
+            </div>
         </div>
     </div>
 
@@ -662,7 +1157,8 @@
             <div class="demo-result" id="demoResult"><span class="demo-result-placeholder">Your result will appear here...</span></div>
         </div>
     </section>
-<!------------------------------------------ Free Tools Section ------------------------------------------------------>
+
+    <!-- Free Tools Section -->
     <section class="tools-section" id="tools">
         <div class="tools-header">
             <div class="section-badge">🔧 Our Tools</div>
@@ -678,8 +1174,8 @@
             <a href="password-generator.html" class="tool-card"><div class="tool-icon pink"><i class="fas fa-unlock-keyhole"></i></div><div class="tool-name">Password Tools</div><div class="tool-desc">Generate secure passwords and analyze strength.</div><div class="tool-tags"><span class="tag">Entropy</span><span class="tag">CSPRNG</span><span class="tag">Strength</span></div><div class="tool-cta use-now-btn"><i class="fas fa-play"></i> Use Now</div></a>
         </div>
     </section>
-<!------------------------------------------- Pro Cipher premium section ----------------------------------------------------->
-  <!------------------------------------------- Pro Cipher premium section ----------------------------------------------------->
+
+    <!-- Pro Cipher Premium Section -->
     <section class="premium-tools-section" id="proToolsSection">
         <div class="premium-tools-header">
             <div class="section-badge" style="background: rgba(251,191,36,0.1); color: #fbbf24;">⚡ Pro Cipher</div>
@@ -753,7 +1249,8 @@
             </a>
         </div>
     </section>
-<!------------------------------------------- Quantum Elite premium section ----------------------------------------------------->
+
+    <!-- Quantum Elite Premium Section -->
     <section class="premium-tools-section" id="quantumToolsSection">
         <div class="premium-tools-header">
             <div class="section-badge" style="background: rgba(139,92,246,0.15); color: #a78bfa; border: 1px solid rgba(139,92,246,0.3);">🌌 Quantum Elite</div>
@@ -903,32 +1400,137 @@
         window.addEventListener('error', function(e) { console.warn('Resource loading error:', e.message || e); }, true);
 
         if (typeof toggleChat !== 'function') { window.toggleChat = function() { var cw = document.getElementById('aiChatWindow'); if (cw) cw.style.display = cw.style.display === 'flex' ? 'none' : 'flex'; }; }
-        if (typeof toggleMenu !== 'function') { window.toggleMenu = function() { var m = document.getElementById('mobileMenu'); var h = document.querySelector('.hamburger'); if (m) m.classList.toggle('active'); if (h) h.classList.toggle('active'); }; }
         if (typeof selectMode !== 'function') { window.selectMode = function(mode) { document.documentElement.setAttribute('data-theme', mode); localStorage.setItem('cryptokit-theme', mode); }; }
         if (typeof toggleModeDropdown !== 'function') { window.toggleModeDropdown = function() { var d = document.getElementById('modeDropdown'); if (d) d.classList.toggle('active'); }; }
 
-        window.handleAuthToggle = function() {
-            var isAuthed = false;
-            try { isAuthed = sessionStorage.getItem('cryptokit_auth') === 'true' || localStorage.getItem('cryptokit_auth') === 'true'; } catch(e) {}
-            if (isAuthed) {
-                if (typeof handleLogout === 'function') handleLogout();
-                else { sessionStorage.removeItem('cryptokit_auth'); localStorage.removeItem('cryptokit_auth'); window.location.reload(); }
+        /* ═══════════════════════════════════════════════════
+           MOBILE MENU FUNCTIONS
+        ═══════════════════════════════════════════════════ */
+        window.toggleMobileMenu = function() {
+            var menu = document.getElementById('mobileMenu');
+            var overlay = document.getElementById('mobileMenuOverlay');
+            var hamburger = document.getElementById('hamburgerBtn');
+            if (!menu) return;
+
+            if (menu.classList.contains('active')) {
+                closeMobileMenu();
             } else {
-                document.getElementById('mainApp').classList.add('main-app-hidden');
-                document.getElementById('authScreen').classList.remove('auth-screen-hidden');
-                if (typeof switchAuthPanel === 'function') switchAuthPanel('login');
+                menu.classList.add('active');
+                if (overlay) overlay.classList.add('active');
+                if (hamburger) hamburger.classList.add('active');
+                document.body.classList.add('menu-open');
             }
         };
 
-        function updateAuthButtons() {
-            var isAuthed = false;
-            try { isAuthed = sessionStorage.getItem('cryptokit_auth') === 'true' || localStorage.getItem('cryptokit_auth') === 'true'; } catch(e) {}
-            var nb = document.getElementById('navAuthBtn');
-            if (nb) nb.innerHTML = isAuthed ? '<i class="fas fa-arrow-right-from-bracket"></i> Logout' : '<i class="fas fa-user"></i> Login';
-            var mb = document.getElementById('mobileAuthBtn');
-            if (mb) mb.innerHTML = isAuthed ? '🚪 Logout' : '👤 Login';
+        window.closeMobileMenu = function() {
+            var menu = document.getElementById('mobileMenu');
+            var overlay = document.getElementById('mobileMenuOverlay');
+            var hamburger = document.getElementById('hamburgerBtn');
+            var submenu = document.getElementById('mobileThemeSubmenu');
+            var arrow = document.getElementById('mobileThemeArrow');
+
+            if (menu) menu.classList.remove('active');
+            if (overlay) overlay.classList.remove('active');
+            if (hamburger) hamburger.classList.remove('active');
+            document.body.classList.remove('menu-open');
+
+            if (submenu) submenu.classList.remove('open');
+            if (arrow) arrow.style.transform = 'rotate(0deg)';
+        };
+
+        // Legacy compat
+        window.toggleMenu = window.toggleMobileMenu;
+
+        /* ═══════════════════════════════════════════════════
+           ✅ AUTH STATE → LOGIN / LOGOUT BUTTON (AUTO SYNC)
+        ═══════════════════════════════════════════════════ */
+        function isUserAuthed() {
+            try {
+                return sessionStorage.getItem('cryptokit_auth') === 'true' ||
+                       localStorage.getItem('cryptokit_auth') === 'true';
+            } catch (e) { return false; }
         }
 
+        var __lastAuthState = null;
+
+        function syncAuthUI(force) {
+            var authed = isUserAuthed();
+            if (!force && authed === __lastAuthState) return;
+            __lastAuthState = authed;
+
+            var nb = document.getElementById('navAuthBtn');
+            if (nb) {
+                nb.innerHTML = authed
+                    ? '<i class="fas fa-arrow-right-from-bracket"></i> Logout'
+                    : '<i class="fas fa-user"></i> Login';
+                nb.classList.toggle('is-logout', authed);
+                nb.setAttribute('title', authed ? 'Log out of CryptoKit' : 'Log in to CryptoKit');
+            }
+
+            var mb = document.getElementById('mobileAuthBtn');
+            if (mb) {
+                mb.innerHTML = authed ? '🚪 Logout' : '👤 Login';
+                mb.classList.toggle('is-logout', authed);
+            }
+        }
+        window.updateAuthButtons = syncAuthUI;
+
+        /* Login / Logout toggle */
+        window.handleAuthToggle = function() {
+            var authed = isUserAuthed();
+            closeMobileMenu();
+
+            if (authed) {
+                /* ---- LOGOUT ---- */
+                if (typeof handleLogout === 'function') {
+                    handleLogout();
+                } else {
+                    try {
+                        sessionStorage.removeItem('cryptokit_auth');
+                        localStorage.removeItem('cryptokit_auth');
+                    } catch(e) {}
+                    document.getElementById('mainApp').classList.add('main-app-hidden');
+                    document.getElementById('authScreen').classList.remove('auth-screen-hidden');
+                    if (typeof switchAuthPanel === 'function') switchAuthPanel('login');
+                }
+                syncAuthUI(true);
+            } else {
+                /* ---- GO TO LOGIN SCREEN ---- */
+                document.getElementById('mainApp').classList.add('main-app-hidden');
+                document.getElementById('authScreen').classList.remove('auth-screen-hidden');
+                if (typeof switchAuthPanel === 'function') switchAuthPanel('login');
+                syncAuthUI(true);
+            }
+        };
+
+        /* Watch for auth changes from auth.js (login/signup success) */
+        (function setupAuthWatchers() {
+            // 1) Poll (cheap, catches everything)
+            setInterval(function(){ syncAuthUI(false); }, 400);
+
+            // 2) Observe #mainApp visibility toggles
+            document.addEventListener('DOMContentLoaded', function() {
+                var mainAppEl = document.getElementById('mainApp');
+                if (mainAppEl && window.MutationObserver) {
+                    new MutationObserver(function() {
+                        syncAuthUI(true);
+                    }).observe(mainAppEl, { attributes: true, attributeFilter: ['class'] });
+                }
+            });
+
+            // 3) Cross-tab storage changes
+            window.addEventListener('storage', function(e) {
+                if (e.key === 'cryptokit_auth') syncAuthUI(true);
+            });
+
+            // 4) Focus / visibility
+            window.addEventListener('focus', function(){ syncAuthUI(true); });
+            document.addEventListener('visibilitychange', function(){ if (!document.hidden) syncAuthUI(true); });
+        })();
+
+        /* ═══════════════════════════════════════════════════
+           THEME SUBMENU (MOBILE)
+        ═══════════════════════════════════════════════════ */
         function toggleMobileThemeMenu() {
             var s = document.getElementById('mobileThemeSubmenu'), a = document.getElementById('mobileThemeArrow');
             if (!s || !a) return;
@@ -939,24 +1541,53 @@
             if (typeof selectMode === 'function') selectMode(mode); else document.documentElement.setAttribute('data-theme', mode);
             setTimeout(applyTierLabels, 50);
             updateMobileThemeDots();
-            setTimeout(function() { var s = document.getElementById('mobileThemeSubmenu'), a = document.getElementById('mobileThemeArrow'); if (s) s.classList.remove('open'); if (a) a.style.transform = 'rotate(0deg)'; if (typeof toggleMenu === 'function') toggleMenu(); }, 400);
+            setTimeout(function() { closeMobileMenu(); }, 350);
         }
         function updateMobileThemeDots() {
             var t = document.documentElement.getAttribute('data-theme') || 'normal';
             var nd = document.getElementById('normalDot'), hd = document.getElementById('hackerDot');
             var nl = document.getElementById('mobileNormalOption'), hl = document.getElementById('mobileHackerOption');
             if (nd) nd.style.display = 'none'; if (hd) hd.style.display = 'none';
-            if (nl) nl.classList.remove('active-theme'); if (hl) hl.classList.add('active-theme');
+            if (nl) nl.classList.remove('active-theme'); if (hl) hl.classList.remove('active-theme');
             if (t === 'hacker') { if (hd) hd.style.display = 'inline-block'; if (hl) hl.classList.add('active-theme'); }
             else { if (nd) nd.style.display = 'inline-block'; if (nl) nl.classList.add('active-theme'); }
         }
         function showMobileDevPopup() {
-            var s = document.getElementById('mobileThemeSubmenu'), a = document.getElementById('mobileThemeArrow');
-            if (s) s.classList.remove('open'); if (a) a.style.transform = 'rotate(0deg)';
-            if (typeof toggleMenu === 'function') toggleMenu();
+            closeMobileMenu();
             var p = document.getElementById('mobileDevPopup');
             if (p) { p.classList.add('show'); document.body.style.overflow = 'hidden'; }
         }
+
+        /* Close menu on window resize if it gets too wide */
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 1100) closeMobileMenu();
+        });
+
+        /* Close menu on ESC key */
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                var menu = document.getElementById('mobileMenu');
+                if (menu && menu.classList.contains('active')) closeMobileMenu();
+                var p = document.getElementById('mobileDevPopup');
+                if (p && p.classList.contains('show')) { p.classList.remove('show'); document.body.style.overflow = ''; }
+            }
+        });
+
+        /* Swipe-to-close support on mobile menu */
+        (function() {
+            var touchStartX = 0, touchEndX = 0;
+            document.addEventListener('DOMContentLoaded', function() {
+                var menu = document.getElementById('mobileMenu');
+                if (!menu) return;
+                menu.addEventListener('touchstart', function(e) {
+                    touchStartX = e.changedTouches[0].screenX;
+                }, { passive: true });
+                menu.addEventListener('touchend', function(e) {
+                    touchEndX = e.changedTouches[0].screenX;
+                    if (touchEndX - touchStartX > 70) closeMobileMenu();
+                }, { passive: true });
+            });
+        })();
 
         /* ═══════════════════════════════════════════════════════
            GET CURRENT TIER
@@ -966,7 +1597,7 @@
         }
 
         /* ═══════════════════════════════════════════════════════
-           1. THEME TOGGLE LABELS (Premium / Elite)
+           1. THEME TOGGLE LABELS
         ═══════════════════════════════════════════════════════ */
         function applyTierLabels() {
             var tier = getCurrentTier();
@@ -1013,7 +1644,6 @@
             if (mobN)      mobN.textContent      = labels.mobN;
             if (mobH)      mobH.textContent      = labels.mobH;
 
-            // Active state in the navbar button
             if (theme === 'hacker') {
                 if (modeIcon)  modeIcon.textContent  = labels.hIcon;
                 if (modeLabel) modeLabel.textContent = labels.hBtn;
@@ -1022,14 +1652,13 @@
                 if (modeLabel) modeLabel.textContent = labels.nBtn;
             }
 
-            // Checkmarks
             var cn = document.getElementById('checkNormal'), ch = document.getElementById('checkHacker');
             if (cn) cn.style.display = (theme === 'hacker') ? 'none' : '';
             if (ch) ch.style.display = (theme === 'hacker') ? '' : 'none';
         }
 
         /* ═══════════════════════════════════════════════════════
-           2. VERSION LABEL (v1.0 / v2.0 Pro / v3.0 Quantum)
+           2. VERSION LABEL
         ═══════════════════════════════════════════════════════ */
         function applyVersionLabel() {
             var tier = getCurrentTier();
@@ -1073,7 +1702,7 @@
                 if (aiStatus) aiStatus.textContent = 'Online · Elite Engine';
                 if (fabIcon) fabIcon.textContent = '🤖';
                 if (aiFab) aiFab.title = 'Ask CryptoBot Elite';
-                if (mobAsst) mobAsst.innerHTML = '🤖 Assistant <span style="font-size:10px;font-weight:700;color:' + (tier === 'enterprise' ? '#a78bfa' : '#f59e0b') + ';margin-left:4px;">ELITE</span>';
+                if (mobAsst) mobAsst.innerHTML = '<i class="fas fa-robot" style="width:20px;"></i> Assistant <span style="font-size:10px;font-weight:700;color:' + (tier === 'enterprise' ? '#a78bfa' : '#f59e0b') + ';margin-left:4px;">ELITE</span>';
                 window.cryptobotName = 'CryptoBot Elite';
             } else {
                 if (aiName) aiName.textContent = 'CryptoBot';
@@ -1081,7 +1710,7 @@
                 if (aiStatus) aiStatus.textContent = 'Online · Ready';
                 if (fabIcon) fabIcon.textContent = '🤖';
                 if (aiFab) aiFab.title = 'Ask CryptoBot';
-                if (mobAsst) mobAsst.innerHTML = '🤖 Assistant';
+                if (mobAsst) mobAsst.innerHTML = '<i class="fas fa-robot" style="width:20px;"></i> Assistant';
                 window.cryptobotName = 'CryptoBot';
             }
         }
@@ -1094,7 +1723,6 @@
 
             document.documentElement.classList.remove('premium-active', 'enterprise-active');
 
-            // RESET all cards to locked
             document.querySelectorAll('#proToolsSection .premium-tool-card:not(.coming-soon)').forEach(function(card) {
                 card.classList.add('locked');
                 card.setAttribute('href', 'pricing.html');
@@ -1108,7 +1736,6 @@
                 if (cta) cta.innerHTML = '<i class="fas fa-lock"></i> Unlock with Quantum';
             });
 
-            // UNLOCK Pro
             if (savedTier === 'pro' || savedTier === 'enterprise') {
                 document.documentElement.classList.add('premium-active');
                 document.querySelectorAll('#proToolsSection .premium-tool-card:not(.coming-soon)').forEach(function(card) {
@@ -1118,13 +1745,11 @@
                     if (card.id === 'ptool-ecc-suite')        card.setAttribute('href', 'premium/advance-ecc-suite.html');
                     if (card.id === 'ptool-batch-integrity')  card.setAttribute('href', 'premium/batch-file-integrity.html');
                     if (card.id === 'ptool-security-report')  card.setAttribute('href', 'premium/security-report-generator.html');
-                    
                     var cta = card.querySelector('.premium-tool-cta');
                     if (cta) cta.innerHTML = '<i class="fas fa-play"></i> Use Now';
                 });
             }
 
-            // UNLOCK Quantum
             if (savedTier === 'enterprise') {
                 document.documentElement.classList.remove('premium-active');
                 document.documentElement.classList.add('enterprise-active');
@@ -1136,7 +1761,6 @@
                 });
             }
 
-            // UPDATE Nav / Hero / Mobile buttons
             var navCta     = document.getElementById('navPremiumBtn');
             var heroBtn    = document.getElementById('heroPremiumBtn');
             var mobileLink = document.getElementById('mobilePremiumLink');
@@ -1161,17 +1785,13 @@
             applyBotIdentity();
         }
 
-        /* Golden / Quantum Matrix Rain Override */
         function applyGoldenMatrix(tier) {
             var canvas = document.getElementById('matrix-canvas');
             if (!canvas) return;
-
             window.cryptokitPremiumTier = tier;
-
             if (tier === 'enterprise')      window.matrixRainColor = '#a78bfa';
             else if (tier === 'pro')        window.matrixRainColor = '#fbbf24';
             else                            window.matrixRainColor = '#00FF41';
-
             if (canvas._matrixColor !== undefined) canvas._matrixColor = window.matrixRainColor;
             if (typeof window.setMatrixColor === 'function') window.setMatrixColor(window.matrixRainColor);
         }
@@ -1187,20 +1807,12 @@
             if (popupOv) popupOv.addEventListener('click', function(e) { if (e.target === popupOv) { popupOv.classList.remove('show'); document.body.style.overflow = ''; } });
 
             updateMobileThemeDots();
-            updateAuthButtons();
+            syncAuthUI(true);     // ✅ set Login/Logout correctly on load
             unlockPremiumTools();
         });
 
-        // Re-check when returning from pricing page
         document.addEventListener('visibilitychange', function() { if (!document.hidden) unlockPremiumTools(); });
         window.addEventListener('focus', function() { unlockPremiumTools(); });
-
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                var p = document.getElementById('mobileDevPopup');
-                if (p && p.classList.contains('show')) { p.classList.remove('show'); document.body.style.overflow = ''; }
-            }
-        });
     </script>
 
 </body>
