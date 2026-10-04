@@ -43,7 +43,7 @@
            MOBILE MENU — HIDDEN ON DESKTOP, SHOWN ON MOBILE
         ═══════════════════════════════════════════════════ */
         .mobile-menu-overlay {
-            display: none !important;
+            display: none;
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(0, 0, 0, 0.6);
@@ -52,40 +52,60 @@
             z-index: 9997;
             opacity: 0;
             transition: opacity 0.35s ease;
+            pointer-events: none;
+        }
+        .mobile-menu-overlay.active {
+            display: block;
+            opacity: 1;
+            pointer-events: auto;
         }
 
         .mobile-menu {
-            display: none !important;
-            position: fixed !important;
-            top: 0 !important;
-            right: -100% !important;
-            width: 85% !important;
-            max-width: 360px !important;
-            height: 100vh !important;
-            height: 100dvh !important;
-            background: var(--bg-primary, #0a0a1a) !important;
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 85%;
+            max-width: 360px;
+            height: 100vh;
+            height: 100dvh;
+            background: var(--bg-primary, #0a0a1a);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            z-index: 9998 !important;
-            overflow-y: auto !important;
-            overflow-x: hidden !important;
-            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
-            padding: 0 !important;
-            margin: 0 !important;
+            z-index: 9998;
+            overflow-y: auto;
+            overflow-x: hidden;
+            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 0;
+            margin: 0;
             box-shadow: -10px 0 40px rgba(0, 0, 0, 0.5);
             border-left: 1px solid rgba(255, 255, 255, 0.08);
             -webkit-overflow-scrolling: touch;
-            flex-direction: column !important;
+            display: none;
+            flex-direction: column;
+            visibility: hidden;
         }
 
-        /* ✅ Show mobile menu + overlay ONLY on screens ≤ 1100px */
+        /* On mobile screens, make the menu structurally present but off-screen */
         @media (max-width: 1100px) {
             .mobile-menu {
-                display: flex !important;
+                display: flex;
+                visibility: hidden;
+                right: -100%;
             }
-            .mobile-menu-overlay.active {
-                display: block !important;
-                opacity: 1;
+            .mobile-menu.active {
+                right: 0;
+                visibility: visible;
+            }
+        }
+
+        /* On desktop, never show */
+        @media (min-width: 1101px) {
+            .mobile-menu {
+                display: none !important;
+                visibility: hidden !important;
+            }
+            .mobile-menu-overlay {
+                display: none !important;
             }
         }
 
@@ -97,9 +117,6 @@
         [data-theme="hacker"] .mobile-menu {
             background: #050510 !important;
             border-left: 1px solid rgba(0, 255, 65, 0.2);
-        }
-        .mobile-menu.active {
-            right: 0 !important;
         }
 
         /* Mobile Menu Header */
@@ -166,8 +183,9 @@
         }
 
         /* Reset default links */
-        .mobile-menu > div > a,
-        .mobile-menu > a {
+        .mobile-menu .mobile-menu-body a,
+        .mobile-menu a#mobilePremiumLink,
+        .mobile-menu a#mobileAuthBtn {
             display: flex !important;
             align-items: center !important;
             gap: 12px !important;
@@ -182,23 +200,20 @@
             position: relative;
             background: transparent !important;
         }
-        [data-theme="normal"] .mobile-menu > div > a,
-        [data-theme="normal"] .mobile-menu > a {
+        [data-theme="normal"] .mobile-menu .mobile-menu-body a,
+        [data-theme="normal"] .mobile-menu a#mobilePremiumLink,
+        [data-theme="normal"] .mobile-menu a#mobileAuthBtn {
             color: #111827 !important;
             border-bottom-color: rgba(0,0,0,0.05) !important;
         }
-        .mobile-menu > div > a:hover,
-        .mobile-menu > div > a:active,
-        .mobile-menu > a:hover,
-        .mobile-menu > a:active {
+        .mobile-menu .mobile-menu-body a:hover,
+        .mobile-menu .mobile-menu-body a:active {
             background: rgba(124, 58, 237, 0.08) !important;
             padding-left: 26px !important;
             color: var(--accent, #7c3aed) !important;
         }
-        [data-theme="normal"] .mobile-menu > div > a:hover,
-        [data-theme="normal"] .mobile-menu > div > a:active,
-        [data-theme="normal"] .mobile-menu > a:hover,
-        [data-theme="normal"] .mobile-menu > a:active {
+        [data-theme="normal"] .mobile-menu .mobile-menu-body a:hover,
+        [data-theme="normal"] .mobile-menu .mobile-menu-body a:active {
             background: rgba(99, 102, 241, 0.06) !important;
         }
 
@@ -341,7 +356,7 @@
 
         /* Hamburger Button Enhanced - HIDDEN ON DESKTOP */
         .hamburger {
-            display: none !important;
+            display: none;
             width: 44px;
             height: 44px;
             cursor: pointer;
@@ -581,7 +596,7 @@
         .btn-nav-auth { gap: 6px !important; background: rgba(255,255,255,0.05) !important; color: var(--text-primary, #fff) !important; border: 1px solid rgba(255,255,255,0.15) !important; }
         .btn-nav-auth:hover { background: rgba(255,255,255,0.1) !important; transform: translateY(-1px); }
 
-        /* ✅ Logged-in state → red Logout button */
+        /* Logged-in state red Logout button */
         .btn-nav-auth.is-logout {
             background: rgba(239, 68, 68, 0.1) !important;
             border-color: rgba(239, 68, 68, 0.4) !important;
@@ -600,7 +615,7 @@
         .mode-selector .mode-btn { height: 38px !important; padding: 0 12px !important; font-size: 13px !important; }
 
         /* ═══════════════════════════════════════════════════
-           ✅ CENTERED SECTION HEADERS (Pro Cipher / Quantum)
+           CENTERED SECTION HEADERS (Pro Cipher / Quantum)
         ═══════════════════════════════════════════════════ */
         .premium-tools-header,
         .tools-header {
@@ -642,7 +657,7 @@
             .nav-links li a { font-size: 13px !important; }
         }
 
-        /* ✅ Tablet landscape - Show hamburger, hide desktop nav */
+        /* Tablet landscape - Show hamburger, hide desktop nav */
         @media (max-width: 1100px) {
             .nav-links { display: none !important; }
             .nav-actions { display: none !important; }
@@ -684,8 +699,7 @@
             .hamburger span { width: 20px; height: 2px; }
             .mobile-menu { width: 100% !important; max-width: 100% !important; }
             .mobile-menu-header { padding: 18px 18px 14px 18px; }
-            .mobile-menu > div > a,
-            .mobile-menu > a {
+            .mobile-menu .mobile-menu-body a {
                 padding: 14px 18px !important;
                 font-size: 14.5px !important;
             }
@@ -711,16 +725,14 @@
             .navbar { padding: 10px 12px !important; }
             .nav-logo-text { font-size: 15px !important; }
             .hamburger { width: 36px; height: 36px; }
-            .mobile-menu > div > a,
-            .mobile-menu > a { padding: 13px 16px !important; font-size: 14px !important; }
+            .mobile-menu .mobile-menu-body a { padding: 13px 16px !important; font-size: 14px !important; }
             .hero-title { font-size: 26px !important; }
             .section-title { font-size: 22px !important; }
         }
 
         @media (max-height: 500px) and (orientation: landscape) {
             .mobile-menu-header { padding: 12px 20px; }
-            .mobile-menu > div > a,
-            .mobile-menu > a { padding: 10px 20px !important; }
+            .mobile-menu .mobile-menu-body a { padding: 10px 20px !important; }
             .mobile-menu-divider { padding: 8px 20px 4px 20px; }
         }
 
@@ -778,7 +790,7 @@
         .quantum-tool-card .premium-tool-cta { background: linear-gradient(180deg, #a855f7, #7c3aed); color: #fff !important; box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4); }
         .quantum-tool-card:hover .premium-tool-cta { background: linear-gradient(180deg, #c084fc, #a855f7); box-shadow: 0 12px 30px rgba(139, 92, 246, 0.55); }
 
-        /* ── Locked Premium Cards Styles ── */
+        /* Locked Premium Cards Styles */
         .premium-tool-card.locked::after {
             content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(15, 23, 42, 0.02); pointer-events: none; transition: all 0.3s ease;
@@ -860,7 +872,7 @@
         html.premium-active[data-theme="normal"] .ai-fab { background: linear-gradient(135deg, #f59e0b, #d97706) !important; box-shadow: 0 4px 20px rgba(245,158,11,0.4) !important; }
         html.premium-active[data-theme="normal"] .ai-chat-header { background: linear-gradient(135deg, #f59e0b, #d97706) !important; }
 
-        /* ── Hacker Mode + Premium Active (Golden Matrix) ── */
+        /* Hacker Mode + Premium Active (Golden Matrix) */
         html.premium-active[data-theme="hacker"] .tool-card { border-color: rgba(251, 191, 36, 0.12) !important; }
         html.premium-active[data-theme="hacker"] .tool-card::before { background: linear-gradient(90deg, #fbbf24, #f59e0b, #d97706) !important; box-shadow: 0 0 10px rgba(251, 191, 36, 0.5) !important; }
         html.premium-active[data-theme="hacker"] .tool-card:hover { border-color: rgba(251, 191, 36, 0.4) !important; box-shadow: 0 0 25px rgba(251, 191, 36, 0.15) !important; }
@@ -870,7 +882,7 @@
         html.premium-active[data-theme="hacker"] .hero-badge .dot { background: #fbbf24 !important; box-shadow: 0 0 8px #fbbf24 !important; }
         html.premium-active[data-theme="hacker"] .ai-fab { box-shadow: 0 4px 20px rgba(251,191,36,0.4) !important; }
 
-        /* ── Enterprise / Quantum Active ── */
+        /* Enterprise / Quantum Active */
         html.enterprise-active[data-theme="normal"] .navbar {
             border-bottom: 1px solid rgba(139, 92, 246, 0.2) !important;
             background: linear-gradient(180deg, rgba(245,243,255,0.95), rgba(255,255,255,0.95)) !important;
@@ -897,7 +909,7 @@
         html.enterprise-active[data-theme="hacker"] .tool-card:hover .tool-cta.use-now-btn { background: #a78bfa !important; color: #000 !important; }
         html.enterprise-active[data-theme="hacker"] .ai-fab { box-shadow: 0 4px 20px rgba(139,92,246,0.4) !important; }
 
-        /* ── Premium Mode Selector Badge ── */
+        /* Premium Mode Selector Badge */
         html.premium-active .mode-selector .mode-btn { border-color: rgba(251,191,36,0.3) !important; }
         html.enterprise-active .mode-selector .mode-btn { border-color: rgba(139,92,246,0.3) !important; }
         html.premium-active .mode-option-title { color: #d97706 !important; }
@@ -906,22 +918,18 @@
         [data-theme="hacker"].enterprise-active .mode-option-title { color: #a78bfa !important; }
 
         /* Premium mobile menu accent */
-        html.premium-active .mobile-menu > div > a:hover,
-        html.premium-active .mobile-menu > div > a:active,
-        html.premium-active .mobile-menu > a:hover,
-        html.premium-active .mobile-menu > a:active {
+        html.premium-active .mobile-menu .mobile-menu-body a:hover,
+        html.premium-active .mobile-menu .mobile-menu-body a:active {
             background: rgba(245, 158, 11, 0.08) !important;
             color: #d97706 !important;
         }
-        html.enterprise-active .mobile-menu > div > a:hover,
-        html.enterprise-active .mobile-menu > div > a:active,
-        html.enterprise-active .mobile-menu > a:hover,
-        html.enterprise-active .mobile-menu > a:active {
+        html.enterprise-active .mobile-menu .mobile-menu-body a:hover,
+        html.enterprise-active .mobile-menu .mobile-menu-body a:active {
             background: rgba(124, 58, 237, 0.08) !important;
             color: #7c3aed !important;
         }
 
-        /* ── AI Elite Badge ── */
+        /* AI Elite Badge */
         .ai-elite-badge {
             display: inline-flex; align-items: center; gap: 4px;
             font-size: 9px; font-weight: 800; padding: 2px 7px;
@@ -1442,7 +1450,7 @@
         window.toggleMenu = window.toggleMobileMenu;
 
         /* ═══════════════════════════════════════════════════
-           ✅ AUTH STATE → LOGIN / LOGOUT BUTTON (AUTO SYNC)
+           AUTH STATE — LOGIN / LOGOUT BUTTON (AUTO SYNC)
         ═══════════════════════════════════════════════════ */
         function isUserAuthed() {
             try {
@@ -1685,7 +1693,7 @@
         }
 
         /* ═══════════════════════════════════════════════════════
-           3. CRYPTOBOT → CRYPTOBOT ELITE
+           3. CRYPTOBOT ELITE
         ═══════════════════════════════════════════════════════ */
         function applyBotIdentity() {
             var tier = getCurrentTier();
@@ -1807,7 +1815,7 @@
             if (popupOv) popupOv.addEventListener('click', function(e) { if (e.target === popupOv) { popupOv.classList.remove('show'); document.body.style.overflow = ''; } });
 
             updateMobileThemeDots();
-            syncAuthUI(true);     // ✅ set Login/Logout correctly on load
+            syncAuthUI(true);
             unlockPremiumTools();
         });
 
