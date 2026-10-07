@@ -1258,21 +1258,62 @@
         </div>
     </section>
 
-    <!-- Quantum Elite Premium Section -->
+<!----------------------------------------- Quantum Elite Premium Section -------------------------->
     <section class="premium-tools-section" id="quantumToolsSection">
-        <div class="premium-tools-header">
-            <div class="section-badge" style="background: rgba(139,92,246,0.15); color: #a78bfa; border: 1px solid rgba(139,92,246,0.3);">🌌 Quantum Elite</div>
-            <h2 class="section-title">Quantum Elite <span style="background: linear-gradient(135deg, #3b82f6, #a855f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Labs</span></h2>
-            <p class="section-subtitle">Next-generation cryptographic simulators and CTF challenges.</p>
+    <div class="premium-tools-header">
+        <div class="section-badge" style="background: rgba(139,92,246,0.15); color: #a78bfa; border: 1px solid rgba(139,92,246,0.3);">
+            🌌 Quantum Elite
         </div>
-        <div class="premium-tools-grid">
-            <a href="pricing.html" class="premium-tool-card quantum-tool-card locked" id="qtool-attack-sim"><span class="premium-crown">🌌</span><div class="premium-tool-icon"><i class="fas fa-crosshairs"></i></div><div class="premium-tool-name">Cryptographic Attack Simulator</div><div class="premium-tool-desc">Simulate Padding Oracles, Brute Force, and Length Extension attacks on custom payloads.</div><div class="premium-tool-tags"><span class="qtag">Red Team</span><span class="qtag">Padding Oracle</span><span class="qtag">Simulation</span></div><div class="premium-tool-cta"><i class="fas fa-lock"></i> Unlock with Quantum</div></a>
-            <div class="premium-tool-card quantum-tool-card coming-soon"><span class="premium-crown" style="opacity:0.4;">🔒</span><div class="premium-tool-icon"><i class="fas fa-flag"></i></div><div class="premium-tool-name">Crypto CTF / Challenge Mode</div><div class="premium-tool-desc">Interactive cryptography challenges in an isolated lab.</div><div class="premium-tool-tags"><span class="qtag">CTF</span><span class="qtag">Challenges</span></div><div class="coming-soon-badge"><i class="fas fa-clock"></i> Coming Soon</div></div>
-            <div class="premium-tool-card quantum-tool-card coming-soon"><span class="premium-crown" style="opacity:0.4;">🔒</span><div class="premium-tool-icon"><i class="fas fa-microscope"></i></div><div class="premium-tool-name">Crypto Forensics Lab</div><div class="premium-tool-desc">Reverse-engineer compromised keys and examine packet captures.</div><div class="premium-tool-tags"><span class="qtag">Forensics</span><span class="qtag">PCAP</span></div><div class="coming-soon-badge"><i class="fas fa-clock"></i> Coming Soon</div></div>
-            <div class="premium-tool-card quantum-tool-card coming-soon"><span class="premium-crown" style="opacity:0.4;">🔒</span><div class="premium-tool-icon"><i class="fab fa-hive"></i></div><div class="premium-tool-name">Blockchain Security Analyzer</div><div class="premium-tool-desc">Audit smart contract cryptographic primitives.</div><div class="premium-tool-tags"><span class="qtag">Web3</span><span class="qtag">Audit</span></div><div class="coming-soon-badge"><i class="fas fa-clock"></i> Coming Soon</div></div>
-        </div>
-    </section>
+        <h2 class="section-title">
+            Quantum Elite <span style="background: linear-gradient(135deg, #3b82f6, #a855f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Labs</span>
+        </h2>
+        <p class="section-subtitle">Next-generation cryptographic simulators and CTF challenges.</p>
+    </div>
 
+    <div class="premium-tools-grid">
+        <!-- Cryptographic Attack Simulator -->
+        <a href="premium/attack-simulator.html" class="premium-tool-card quantum-tool-card locked" id="qtool-attack-sim">
+            <span class="premium-crown">🌌</span>
+            <div class="premium-tool-icon"><i class="fas fa-crosshairs"></i></div>
+            <div class="premium-tool-name">Cryptographic Attack Simulator</div>
+            <div class="premium-tool-desc">Simulate Padding Oracles, Brute Force, and Length Extension attacks on custom payloads.</div>
+            <div class="premium-tool-tags">
+                <span class="qtag">Red Team</span>
+                <span class="qtag">Padding Oracle</span>
+                <span class="qtag">Simulation</span>
+            </div>
+            <div class="premium-tool-cta"><i class="fas fa-lock"></i> Unlock with Quantum</div>
+        </a>
+
+        <!-- Crypto CTF / Challenge Mode -->
+        <div class="premium-tool-card quantum-tool-card coming-soon" id="qtool-ctf">
+            <span class="premium-crown" style="opacity:0.4;">🔒</span>
+            <div class="premium-tool-icon"><i class="fas fa-flag"></i></div>
+            <div class="premium-tool-name">Crypto CTF / Challenge Mode</div>
+            <div class="premium-tool-desc">Interactive cryptography challenges in an isolated lab.</div>
+            <div class="premium-tool-tags">
+                <span class="qtag">CTF</span>
+                <span class="qtag">Challenges</span>
+            </div>
+            <div class="coming-soon-badge"><i class="fas fa-clock"></i> Coming Soon</div>
+        </div>
+
+        <!-- Crypto Forensics Lab -->
+        <div class="premium-tool-card quantum-tool-card coming-soon" id="qtool-forensics">
+            <span class="premium-crown" style="opacity:0.4;">🔒</span>
+            <div class="premium-tool-icon"><i class="fas fa-microscope"></i></div>
+            <div class="premium-tool-name">Crypto Forensics Lab</div>
+            <div class="premium-tool-desc">Reverse-engineer compromised keys and examine packet captures.</div>
+            <div class="premium-tool-tags">
+                <span class="qtag">Forensics</span>
+                <span class="qtag">PCAP</span>
+            </div>
+            <div class="coming-soon-badge"><i class="fas fa-clock"></i> Coming Soon</div>
+        </div>
+
+    </div>
+</section>
+<!----------------------------------------- End Quantum Elite Premium Section -------------------------->
     <section class="why-section" id="about">
         <div class="why-container">
             <div class="why-content">
@@ -1400,7 +1441,7 @@
         })();
     </script>
 
-    <script src="kb.js"></script>
+    
     <script src="script.js"></script>
     <script src="auth.js"></script>
 
