@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="normal">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Crypto Forensics Lab — Quantum Elite Labs</title>
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
@@ -360,6 +360,24 @@
     border-color:var(--bad);background:rgba(255,0,64,0.08);color:var(--bad);
     box-shadow:0 0 15px rgba(255,0,64,0.1);text-shadow:0 0 5px rgba(255,0,64,0.3);
   }
+
+  /* ---------- additions (same design language) ---------- */
+  .pkt-table td:last-child{max-width:none;white-space:normal;word-break:break-all;}
+  .switch.on{background:var(--purple);}
+  .switch.on::after{left:17px;}
+  [data-theme="hacker"] .switch.on{background:rgba(0,255,65,0.3);}
+  .field-row{display:flex;gap:10px;flex-wrap:wrap;}
+  .field-row > div{flex:1;min-width:160px;}
+  .ok-note{border:1px solid #bbf3d1;background:#f0fdf6;color:#166534;border-radius:10px;padding:12px 14px;margin-top:10px;font-size:13px;}
+  [data-theme="hacker"] .ok-note{border-color:var(--ok);background:rgba(0,255,65,0.08);color:var(--ok);}
+  /* masked secrets */
+  .sec{cursor:pointer;border-radius:5px;padding:0 4px;background:rgba(124,58,237,.12);}
+  [data-theme="hacker"] .sec{background:rgba(0,255,65,0.12);}
+  .sec .real{display:none;}
+  .sec.shown .real,body.reveal .sec .real{display:inline;}
+  .sec.shown .mask,body.reveal .sec .mask{display:none;}
+  textarea.hide-secrets{filter:blur(5px);transition:filter .2s;}
+  textarea.hide-secrets:focus,body.reveal textarea.hide-secrets{filter:none;}
 </style>
 </head>
 <body>
@@ -367,63 +385,55 @@
 
   <div class="topbar">
     <div class="topbar-left">
-      <a href="/" class="back-pill">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1h-2z"/></svg>
-        Go Home
-      </a>
-      <div class="elite-tag">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M3 8l4 3 5-7 5 7 4-3-2 11H5L3 8z"/></svg>
-        Quantum Elite — Lab Unlocked
-      </div>
+      <span class="back-pill">&larr; Back</span>
+      <span class="elite-tag">&#9889; Quantum Elite Labs</span>
     </div>
     <div class="topbar-right">
+      <div class="toggle-pill" id="revealToggle" title="Show or hide masked keys and passwords">
+        <span id="revealLabel">Reveal Secrets</span><span class="switch" id="revealSwitch"></span>
+      </div>
       <div class="toggle-pill" id="themeToggle">
-        <span id="themeLabel">Hacker Mode</span>
-        <div class="switch" id="themeSwitch"></div>
+        <span id="themeLabel">Hacker Mode</span><span class="switch"></span>
       </div>
     </div>
   </div>
 
   <div class="hero">
-    <h1>Crypto Forensics <span class="accent">Lab</span></h1>
-    <p>Four real investigative tools: scan packet captures for leaked credentials, hunt secrets in raw disk strings, prove a "random" token generator is predictable, and pull hidden data out of an image bit by bit.</p>
+    <h1>Crypto <span class="accent">Forensics Lab</span></h1>
+    <p>Analyze packet captures, hunt for leaked keys, break predictable session tokens and uncover hidden data in images. All sample data is fake and everything runs in your browser.</p>
   </div>
 
-  <div class="tabs" id="tabRow">
+  <div class="tabs">
     <button class="tabbtn active" data-panel="pcap">
-      <span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h4l2-6 4 12 2-6h6"/></svg></span>
-      <span><span class="tt">Packet Capture Analyzer</span><span class="ts">Scan a capture for leaked creds</span></span>
+      <span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h4l3-8 4 16 3-8h6"/></svg></span>
+      <span><div class="tt">Packet Capture</div><div class="ts">Cleartext creds &amp; weak TLS</div></span>
     </button>
     <button class="tabbtn" data-panel="secrets">
-      <span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></span>
-      <span><span class="tt">Key &amp; Secret Scanner</span><span class="ts">Find leaked keys in raw strings</span></span>
+      <span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M16 7l3 3"/></svg></span>
+      <span><div class="tt">Key &amp; Secret Scanner</div><div class="ts">Find leaked credentials</div></span>
     </button>
     <button class="tabbtn" data-panel="token">
-      <span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
-      <span><span class="tt">Predictable Token Analyzer</span><span class="ts">Reverse-engineer a weak RNG</span></span>
+      <span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg></span>
+      <span><div class="tt">Predictable Tokens</div><div class="ts">Timestamp-based sessions</div></span>
     </button>
     <button class="tabbtn" data-panel="stego">
-      <span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="14" rx="2"/><circle cx="8.5" cy="10" r="1.5"/><path d="M3 15l4-4 4 4 5-5 5 5"/></svg></span>
-      <span><span class="tt">Steganography Lab</span><span class="ts">Extract data hidden in pixels</span></span>
+      <span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></span>
+      <span><div class="tt">Steganography</div><div class="ts">Data hidden in pixels</div></span>
     </button>
   </div>
 
-  <!-- ========================= PACKET CAPTURE ANALYZER ========================= -->
+  <!-- PACKET CAPTURE -->
   <div class="panel active" id="panel-pcap">
-    <div class="explain">
-      A synthetic 16-packet capture below mixes ordinary traffic with real forensic red flags: cleartext credentials, weak cipher negotiation, and a DNS exfiltration pattern. Run the scan to see what a forensic triage pass would flag first.
-    </div>
     <div class="card">
-      <h2>Capture: evidence.pcap<span class="sub">16 packets — synthetic, for demonstration</span></h2>
+      <h2>Packet Capture Analyzer<span class="sub">Spot insecure protocols and data leaving the network</span></h2>
+      <div class="explain">Scan the capture for cleartext credentials, obsolete TLS, DNS tunnelling and insecure cookies. Passwords are masked: click one (or use <b>Reveal Secrets</b>) to see it.</div>
       <div class="pkt-table-wrap">
-        <table class="pkt-table" id="pktTable">
-          <thead><tr><th>#</th><th>Time</th><th>Src</th><th>Dst</th><th>Proto</th><th>Info</th></tr></thead>
+        <table class="pkt-table">
+          <thead><tr><th>#</th><th>Time</th><th>Source</th><th>Destination</th><th>Proto</th><th>Info</th></tr></thead>
           <tbody id="pktBody"></tbody>
         </table>
       </div>
-      <div class="btn-row">
-        <button class="btn btn-primary" id="pcapScanBtn">Run Forensic Scan</button>
-      </div>
+      <div class="btn-row"><button class="btn btn-primary" id="pcapScanBtn">Scan Capture</button></div>
       <div class="stat-row" id="pcapStats" style="display:none;">
         <div class="stat"><div class="v" id="pcapCrit">0</div><div class="l">Critical</div></div>
         <div class="stat"><div class="v" id="pcapHigh">0</div><div class="l">High</div></div>
@@ -434,30 +444,15 @@
     </div>
   </div>
 
-  <!-- ========================= KEY & SECRET SCANNER ========================= -->
+  <!-- SECRET SCANNER -->
   <div class="panel" id="panel-secrets">
-    <div class="explain">
-      This is the same kind of scan a forensic analyst runs against recovered disk strings or memory dumps — regex rules looking for key material and credentials that were never supposed to leave a vault.
-    </div>
     <div class="card">
-      <h2>Recovered Strings<span class="sub">Paste raw text/strings-dump output, or use the sample</span></h2>
-      <textarea id="secretsInput" style="min-height:180px;">
-# strings output — recovered from /var/tmp/.cache_old (deleted, carved from disk)
-export AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE
-export AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
-db_password = "Summer2024!"
-slack_webhook_token=SLACK_TOKEN_TEST_PLACEHOLDER
-github_pat=ghp_16C7e42F292c6912E7710c838347Ae178B4a
------BEGIN RSA PRIVATE KEY-----
-MIIBOgIBAAJBAL8m2oX1z6pK3XQ9f1p1x1C9u3p8e2nJvQy4r7k2p9mN3xQW1zRy
-VtZ3h3m1y3kD4yK2n9b1p9x0qP3m1v2n9x8e1b2c3d4e5f6g7h8i9j0k1l2m3n4
------END RSA PRIVATE KEY-----
-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTcwMDAwMDAwMH0.4f8c9b2a1d6e7f3c5b8a9d0e1f2a3b4c5d6e7f8a
-admin_console_url = "http://internal-admin.local/login?token=plaintext-not-ok"
-curl -u 'service_acct:Tr0ub4dor&3' https://api.internal.example.com/v1/rotate
-      </textarea>
+      <h2>Key &amp; Secret Scanner<span class="sub">Paste a config, log or source file</span></h2>
+      <div class="explain">The sample contains <b>fake</b> keys. The box is blurred until you click into it or turn on <b>Reveal Secrets</b>, and findings are masked.</div>
+      <textarea id="secretsInput" class="hide-secrets" spellcheck="false" style="min-height:240px;"></textarea>
       <div class="btn-row">
         <button class="btn btn-primary" id="secretsScanBtn">Scan for Secrets</button>
+        <button class="btn btn-ghost" id="secretsSampleBtn">Load Sample</button>
         <button class="btn btn-ghost" id="secretsClearBtn">Clear</button>
       </div>
       <div class="stat-row" id="secretsStats" style="display:none;">
@@ -468,79 +463,55 @@ curl -u 'service_acct:Tr0ub4dor&3' https://api.internal.example.com/v1/rotate
     </div>
   </div>
 
-  <!-- ========================= PREDICTABLE TOKEN ANALYZER ========================= -->
+  <!-- TOKEN ANALYZER -->
   <div class="panel" id="panel-token">
-    <div class="explain">
-      Six session tokens, captured one minute apart from a login service. Each is an MD5 hash — individually they look like perfect random noise. The weakness isn't in the hash, it's in what was fed into it. Recover the generation formula and you can predict every future token.
-    </div>
     <div class="card">
-      <h2>Captured Tokens<span class="sub">Format unknown — investigate the pattern</span></h2>
+      <h2>Predictable Session Token Analyzer<span class="sub">When "random" isn't random</span></h2>
+      <div class="explain">These tokens look random but are <code>MD5("sess_" + unix_timestamp)</code>. Brute-force the timestamps, recover the interval, then predict the next token.</div>
       <div class="token-list" id="tokenList"></div>
-      <label>Search range — base Unix timestamp (center)</label>
-      <div class="row">
-        <input type="number" id="tokenGuessCenter" value="1706000000">
-        <input type="number" id="tokenGuessRange" value="600">
+      <div class="field-row" style="margin-top:14px;">
+        <div><label for="tokenGuessCenter">Timestamp guess (centre)</label><input type="number" id="tokenGuessCenter" value="1706000000"></div>
+        <div><label for="tokenGuessRange">Search range (± seconds)</label><input type="number" id="tokenGuessRange" value="600"></div>
       </div>
-      <div class="small-note">Hint: tokens = MD5("sess_" + unix_timestamp). The investigator's guess above is within ±600s of the truth — the brute-force below finds the exact value.</div>
       <div class="btn-row">
-        <button class="btn btn-primary" id="tokenBruteBtn">Brute-Force Timestamps</button>
-        <button class="btn btn-ghost" id="tokenPredictBtn" disabled>Predict Next Token</button>
+        <button class="btn btn-primary" id="tokenBruteBtn">1. Brute-force Timestamps</button>
+        <button class="btn btn-ghost" id="tokenPredictBtn" disabled>2. Predict Next Token</button>
       </div>
-      <div class="console" id="tokenConsole"><div class="ln info">$ awaiting analysis...</div></div>
-      <div id="tokenResult" class="result-box"></div>
+      <div class="console" id="tokenConsole" style="margin-top:16px;min-height:120px;"></div>
+      <div class="result-box" id="tokenResult"></div>
     </div>
   </div>
 
-  <!-- ========================= STEGANOGRAPHY LAB ========================= -->
+  <!-- STEGO -->
   <div class="panel" id="panel-stego">
-    <div class="explain">
-      Least-significant-bit steganography hides data inside an image by nudging each pixel's red value up or down by at most 1 — invisible to the eye, trivial to extract if you know the scheme. This lab generates a real evidence image, hides a case note inside it, and lets you extract it back — plus encode and extract your own.
-    </div>
-
     <div class="card">
-      <h2>Evidence Photo<span class="sub">LSB-encoded case note hidden in the red channel</span></h2>
+      <h2>Steganography Lab<span class="sub">Hide and recover data in the least-significant bit of each pixel</span></h2>
       <div class="img-row">
         <div class="img-col">
+          <label>Evidence image</label>
           <canvas id="evidenceCanvas" width="320" height="200"></canvas>
-          <div class="small-note">What a quick look shows: a plain generated texture. Nothing visibly hidden.</div>
+          <div class="btn-row"><button class="btn btn-primary" id="extractEvidenceBtn">Extract Hidden Data</button></div>
+          <div class="result-box" id="evidenceResult"></div>
         </div>
         <div class="img-col">
-          <div class="btn-row" style="margin-top:0;">
-            <button class="btn btn-primary" id="extractEvidenceBtn">Extract Hidden Data</button>
+          <label for="stegoMsgInput">Build your own carrier</label>
+          <input type="text" id="stegoMsgInput" placeholder="Secret message to hide…" value="meet at dawn">
+          <canvas id="customCanvas" width="320" height="200" style="margin-top:12px;"></canvas>
+          <div class="btn-row">
+            <button class="btn btn-primary" id="stegoEncodeBtn">Embed</button>
+            <button class="btn btn-ghost" id="stegoExtractBtn" disabled>Extract</button>
+            <button class="btn btn-ghost" id="stegoDownloadBtn" disabled>Download PNG</button>
           </div>
-          <div id="evidenceResult" class="result-box"></div>
+          <div class="result-box" id="customResult"></div>
         </div>
       </div>
     </div>
-
     <div class="card">
-      <h2>Encode &amp; Verify Round-Trip<span class="sub">Hide your own message, then prove it extracts cleanly</span></h2>
-      <label>Secret message to hide</label>
-      <input type="text" id="stegoMsgInput" value="QEL FORENSICS — EVIDENCE INTEGRITY CONFIRMED">
-      <div class="btn-row">
-        <button class="btn btn-primary" id="stegoEncodeBtn">Generate Carrier &amp; Embed</button>
-        <button class="btn btn-ghost" id="stegoDownloadBtn" disabled>Download PNG</button>
-      </div>
-      <div class="img-row" style="margin-top:14px;">
-        <div class="img-col">
-          <canvas id="customCanvas" width="320" height="200"></canvas>
-        </div>
-        <div class="img-col">
-          <div class="btn-row" style="margin-top:0;">
-            <button class="btn btn-ghost" id="stegoExtractBtn" disabled>Extract From This Image</button>
-          </div>
-          <div id="customResult" class="result-box"></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <h2>Upload &amp; Investigate<span class="sub">Try extracting hidden data from any PNG you provide</span></h2>
-      <input type="file" id="uploadInput" accept="image/png">
-      <div class="btn-row">
-        <button class="btn btn-primary" id="uploadExtractBtn" disabled>Extract From Uploaded Image</button>
-      </div>
-      <div id="uploadResult" class="result-box"></div>
+      <h2>Check an Uploaded Image<span class="sub">Works on lossless PNGs made with this tool</span></h2>
+      <input type="file" id="uploadInput" accept="image/png,image/*">
+      <div class="btn-row"><button class="btn btn-primary" id="uploadExtractBtn" disabled>Extract</button></div>
+      <div class="small-note">JPEG or re-compressed images destroy the hidden bits.</div>
+      <div class="result-box" id="uploadResult"></div>
     </div>
   </div>
 
@@ -552,20 +523,33 @@ const enc=new TextEncoder(), dec=new TextDecoder();
 function logLine(c,msg,cls){const d=document.createElement('div');d.className='ln '+(cls||'');d.textContent=msg;c.appendChild(d);c.scrollTop=c.scrollHeight;}
 function clearConsole(c){c.innerHTML='';}
 function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+/* masked secret: click toggles just this value; "Reveal Secrets" toggles all */
+function secretSpan(v){
+  v=String(v);
+  const mask=v.length>4 ? v.slice(0,2)+'•'.repeat(Math.min(v.length-2,12)) : '••••';
+  return '<span class="sec" onclick="this.classList.toggle(\'shown\')" title="click to show/hide"><span class="mask">'+esc(mask)+'</span><span class="real">'+esc(v)+'</span></span>';
+}
+
+/* ---- Reveal toggle ---- */
+$('revealToggle').addEventListener('click',()=>{
+  const on=document.body.classList.toggle('reveal');
+  $('revealSwitch').classList.toggle('on',on);
+  $('revealLabel').textContent=on?'Hide Secrets':'Reveal Secrets';
+});
 
 /* ---- Theme Toggle ---- */
 const themeToggle=$('themeToggle');
-themeToggle.addEventListener('click', ()=>{
+themeToggle.addEventListener('click',()=>{
   const html=document.documentElement;
-  const current=html.getAttribute('data-theme');
-  const next=current==='hacker'?'normal':'hacker';
-  html.setAttribute('data-theme', next);
+  const next=html.getAttribute('data-theme')==='hacker'?'normal':'hacker';
+  html.setAttribute('data-theme',next);
   $('themeLabel').textContent=next==='hacker'?'Normal Mode':'Hacker Mode';
   try{localStorage.setItem('forensics-theme',next);}catch(e){}
 });
 try{
-  const saved=localStorage.getItem('forensics-theme');
-  if(saved==='hacker'){
+  if(localStorage.getItem('forensics-theme')==='hacker'){
     document.documentElement.setAttribute('data-theme','hacker');
     $('themeLabel').textContent='Normal Mode';
   }
@@ -578,7 +562,9 @@ document.querySelectorAll('.tabbtn').forEach(tb=>tb.addEventListener('click',()=
   $('panel-'+tb.dataset.panel).classList.add('active');
 }));
 
-/* ============================= pure JS MD5 (shared) ============================= */
+/* =============================
+   pure JS MD5 (shared)
+============================= */
 function md5(string){
   function rotl(x,c){return (x<<c)|(x>>>(32-c));}
   function toHexBytes(n){let s='';for(let i=0;i<4;i++)s+=((n>>>(8*i))&255).toString(16).padStart(2,'0');return s;}
@@ -610,315 +596,287 @@ function md5(string){
   return toHexBytes(a0)+toHexBytes(b0)+toHexBytes(c0)+toHexBytes(d0);
 }
 
-/* ============================= PACKET CAPTURE ANALYZER ============================= */
+/* =============================
+   PACKET CAPTURE ANALYZER
+============================= */
 const packets=[
-  {t:'00:00.102', src:'10.0.0.14', dst:'10.0.0.1',   proto:'ARP',   info:'Who has 10.0.0.1? Tell 10.0.0.14'},
-  {t:'00:00.340', src:'10.0.0.14', dst:'93.184.1.10', proto:'TLSv1.3', info:'Client Hello, cipher TLS_AES_128_GCM_SHA256'},
-  {t:'00:01.015', src:'10.0.0.22', dst:'10.0.0.3',   proto:'FTP',   info:'USER service_acct'},
-  {t:'00:01.021', src:'10.0.0.22', dst:'10.0.0.3',   proto:'FTP',   info:'PASS Tr0ub4dor&3'},
-  {t:'00:01.900', src:'10.0.0.22', dst:'10.0.0.3',   proto:'FTP',   info:'230 Login successful'},
-  {t:'00:02.455', src:'10.0.0.41', dst:'172.16.5.2', proto:'HTTP',  info:'GET /report.pdf Authorization: Basic YWRtaW46U3VtbWVyMjAyNCE='},
-  {t:'00:02.980', src:'10.0.0.9',  dst:'8.8.8.8',    proto:'DNS',   info:'Standard query A example.com'},
-  {t:'00:03.512', src:'10.0.0.57', dst:'10.0.0.5',   proto:'Telnet',info:'login: root'},
-  {t:'00:03.690', src:'10.0.0.57', dst:'10.0.0.5',   proto:'Telnet',info:'Password: toor1234'},
-  {t:'00:04.221', src:'10.0.0.5',  dst:'66.22.1.9',  proto:'TLSv1.0',info:'Client Hello, cipher TLS_RSA_WITH_RC4_128_MD5'},
-  {t:'00:04.812', src:'10.0.0.63', dst:'198.51.100.7',proto:'DNS',  info:'Standard query A c3VwZXJzZWNyZXRkYXRhZXhmaWw.evil-tunnel.net'},
-  {t:'00:05.004', src:'10.0.0.14', dst:'93.184.1.10', proto:'TLSv1.3', info:'Application Data'},
-  {t:'00:05.558', src:'10.0.0.8',  dst:'10.0.0.70', proto:'SMB',   info:'Tree Connect Request \\\\FILESERVER\\shared'},
-  {t:'00:06.112', src:'10.0.0.41', dst:'172.16.5.2', proto:'HTTP',  info:'200 OK Set-Cookie: session=889af221c3'},
-  {t:'00:06.890', src:'10.0.0.5',  dst:'66.22.1.9',  proto:'TLSv1.0',info:'Server Hello, cipher TLS_RSA_WITH_RC4_128_MD5 accepted'},
-  {t:'00:07.300', src:'10.0.0.19', dst:'10.0.0.1',   proto:'ICMP',  info:'Echo request'}
+ {t:'00:00.102',src:'10.0.0.14',dst:'10.0.0.1',proto:'ARP',info:'Who has 10.0.0.1? Tell 10.0.0.14'},
+ {t:'00:00.340',src:'10.0.0.14',dst:'93.184.1.10',proto:'TLSv1.3',info:'Client Hello, cipher TLS_AES_128_GCM_SHA256'},
+ {t:'00:01.015',src:'10.0.0.22',dst:'10.0.0.3',proto:'FTP',info:'USER service_acct'},
+ {t:'00:01.021',src:'10.0.0.22',dst:'10.0.0.3',proto:'FTP',info:'PASS Tr0ub4dor&3'},
+ {t:'00:01.900',src:'10.0.0.22',dst:'10.0.0.3',proto:'FTP',info:'230 Login successful'},
+ {t:'00:02.455',src:'10.0.0.41',dst:'172.16.5.2',proto:'HTTP',info:'GET /report.pdf Authorization: Basic YWRtaW46U3VtbWVyMjAyNCE='},
+ {t:'00:02.980',src:'10.0.0.9',dst:'8.8.8.8',proto:'DNS',info:'Standard query A example.com'},
+ {t:'00:03.512',src:'10.0.0.57',dst:'10.0.0.5',proto:'Telnet',info:'login: root'},
+ {t:'00:03.690',src:'10.0.0.57',dst:'10.0.0.5',proto:'Telnet',info:'Password: toor1234'},
+ {t:'00:04.221',src:'10.0.0.5',dst:'66.22.1.9',proto:'TLSv1.0',info:'Client Hello, cipher TLS_RSA_WITH_RC4_128_MD5'},
+ {t:'00:04.812',src:'10.0.0.63',dst:'198.51.100.7',proto:'DNS',info:'Standard query A c3VwZXJzZWNyZXRkYXRhZXhmaWw.evil-tunnel.net'},
+ {t:'00:05.004',src:'10.0.0.14',dst:'93.184.1.10',proto:'TLSv1.3',info:'Application Data'},
+ {t:'00:05.558',src:'10.0.0.8',dst:'10.0.0.70',proto:'SMB',info:'Tree Connect Request \\\\FILESERVER\\shared'},
+ {t:'00:06.112',src:'10.0.0.41',dst:'172.16.5.2',proto:'HTTP',info:'200 OK Set-Cookie: session=889af221c3'},
+ {t:'00:06.890',src:'10.0.0.5',dst:'66.22.1.9',proto:'TLSv1.0',info:'Server Hello, cipher TLS_RSA_WITH_RC4_128_MD5 accepted'},
+ {t:'00:07.300',src:'10.0.0.19',dst:'10.0.0.1',proto:'ICMP',info:'Echo request'}
 ];
+/* Render the "info" column with credentials masked (analysis still uses the raw data) */
+function maskedInfo(p){
+  let m;
+  if(p.proto==='FTP' && (m=p.info.match(/^(PASS )(.*)$/))) return esc(m[1])+secretSpan(m[2]);
+  if(p.proto==='Telnet' && (m=p.info.match(/^(Password: )(.*)$/))) return esc(m[1])+secretSpan(m[2]);
+  if(p.proto==='HTTP' && (m=p.info.match(/^(.*Authorization: Basic )(\S+)$/))) return esc(m[1])+secretSpan(m[2]);
+  if(p.proto==='HTTP' && (m=p.info.match(/^(.*Set-Cookie: session=)(\S+)$/))) return esc(m[1])+secretSpan(m[2]);
+  return esc(p.info);
+}
 const pktBody=$('pktBody');
 packets.forEach((p,i)=>{
-  const tr=document.createElement('tr');
-  tr.id='pktrow-'+i;
-  tr.innerHTML=`<td>${i}</td><td>${p.t}</td><td>${p.src}</td><td>${p.dst}</td><td>${p.proto}</td><td>${p.info}</td>`;
+  const tr=document.createElement('tr'); tr.id='pktrow-'+i;
+  tr.innerHTML='<td>'+i+'</td><td>'+p.t+'</td><td>'+p.src+'</td><td>'+p.dst+'</td><td>'+p.proto+'</td><td>'+maskedInfo(p)+'</td>';
   pktBody.appendChild(tr);
 });
+function base64Decode(s){try{return atob(s);}catch(e){return null;}}
 
-function base64Decode(s){ try{ return atob(s); }catch(e){ return null; } }
-
-$('pcapScanBtn').addEventListener('click', async ()=>{
-  const findingsEl=$('pcapFindings');
-  findingsEl.innerHTML='';
+$('pcapScanBtn').addEventListener('click',()=>{
+  const findingsEl=$('pcapFindings'); findingsEl.innerHTML='';
   document.querySelectorAll('.pkt-table tr').forEach(tr=>tr.classList.remove('flagged'));
-  let crit=0, high=0, med=0;
-  const flaggedSet=new Set();
-
-  function addFinding(idx, sev, title, detail){
+  let crit=0,high=0,med=0; const flaggedSet=new Set();
+  function addFinding(idx,sev,title,detailHtml){
     flaggedSet.add(idx);
-    document.getElementById('pktrow-'+idx).classList.add('flagged');
-    if(sev==='crit') crit++; else if(sev==='high') high++; else med++;
-    const div=document.createElement('div');
-    div.className='finding '+sev;
-    div.innerHTML=`<div class="ftitle"><span class="sev-pill ${sev}">${sev}</span>${title} <span style="color:var(--ink-faint);font-weight:400;">— packet #${idx}</span></div><div class="fdetail">${detail}</div>`;
+    $('pktrow-'+idx).classList.add('flagged');
+    if(sev==='crit')crit++; else if(sev==='high')high++; else med++;
+    const div=document.createElement('div'); div.className='finding '+sev;
+    div.innerHTML='<div class="ftitle"><span class="sev-pill '+sev+'">'+sev+'</span>'+title+' <span style="opacity:.6;font-weight:400;">— packet #'+idx+'</span></div><div class="fdetail">'+detailHtml+'</div>';
     findingsEl.appendChild(div);
   }
-
   packets.forEach((p,i)=>{
-    if(p.proto==='FTP' && /^PASS /.test(p.info)){
-      addFinding(i,'crit','Cleartext FTP credentials', 'Password transmitted unencrypted: "'+p.info.replace('PASS ','')+'"');
-    }
-    if(p.proto==='Telnet' && /^Password:/.test(p.info)){
-      addFinding(i,'crit','Cleartext Telnet credentials', 'Password transmitted unencrypted over Telnet: "'+p.info.replace('Password: ','')+'"');
-    }
+    if(p.proto==='FTP' && /^PASS /.test(p.info))
+      addFinding(i,'crit','Cleartext FTP credentials','Password transmitted unencrypted: '+secretSpan(p.info.replace('PASS ','')));
+    if(p.proto==='Telnet' && /^Password:/.test(p.info))
+      addFinding(i,'crit','Cleartext Telnet credentials','Password transmitted unencrypted over Telnet: '+secretSpan(p.info.replace('Password: ','')));
     if(p.proto==='HTTP' && /Authorization: Basic/.test(p.info)){
       const b64=p.info.split('Basic ')[1];
-      const decoded=base64Decode(b64);
-      addFinding(i,'crit','HTTP Basic Auth in cleartext', 'Authorization header decodes to credentials: "'+decoded+'"');
+      addFinding(i,'crit','HTTP Basic Auth in cleartext','Authorization header decodes to credentials: '+secretSpan(base64Decode(b64)));
     }
-    if(/TLS_RSA_WITH_RC4|TLS_RSA_WITH_DES|_NULL_|TLSv1\.0/.test(p.info) || p.proto==='TLSv1.0'){
-      addFinding(i,'high','Weak/obsolete TLS negotiated', p.proto+': "'+p.info+'" — RC4 and TLS 1.0 are broken and should be disabled.');
-    }
+    if(/TLS_RSA_WITH_RC4|TLS_RSA_WITH_DES|_NULL_|TLSv1\.0/.test(p.info)||p.proto==='TLSv1.0')
+      addFinding(i,'high','Weak/obsolete TLS negotiated',esc(p.proto+': "'+p.info+'"')+' — RC4 and TLS 1.0 are broken and should be disabled.');
     if(p.proto==='DNS' && /^[A-Za-z0-9+/]{16,}\./.test(p.info.split('query A ')[1]||'')){
-      addFinding(i,'high','Possible DNS exfiltration', 'Long base64-like subdomain suggests data tunneled out via DNS queries: "'+p.info+'"');
+      const label=p.info.split('query A ')[1].split('.')[0];
+      addFinding(i,'high','Possible DNS exfiltration','Long base64-like subdomain suggests data tunnelled out via DNS: '+esc(p.info)+'<br>Decoded label: '+secretSpan(base64Decode(label)||'(not valid base64)'));
     }
-    if(p.proto==='HTTP' && /Set-Cookie: session=/.test(p.info) && !/Secure|HttpOnly/.test(p.info)){
-      addFinding(i,'med','Session cookie missing Secure/HttpOnly flags', p.info);
-    }
+    if(p.proto==='HTTP' && /Set-Cookie: session=/.test(p.info) && !/Secure|HttpOnly/.test(p.info))
+      addFinding(i,'med','Session cookie missing Secure/HttpOnly flags',maskedInfo(p));
   });
-
-  $('pcapCrit').textContent=crit;
-  $('pcapHigh').textContent=high;
-  $('pcapMed').textContent=med;
+  $('pcapCrit').textContent=crit; $('pcapHigh').textContent=high; $('pcapMed').textContent=med;
   $('pcapClean').textContent=packets.length-flaggedSet.size;
   $('pcapStats').style.display='flex';
-  if(crit+high+med===0){
-    findingsEl.innerHTML='<div class="finding" style="border-color:#bbf3d1;background:#f0fdf6;">No forensic red flags detected in this capture.</div>';
-  }
+  if(crit+high+med===0) findingsEl.innerHTML='<div class="ok-note">No forensic red flags detected in this capture.</div>';
 });
 
-/* ============================= KEY & SECRET SCANNER ============================= */
+/* =============================
+   KEY & SECRET SCANNER
+============================= */
+/* Fake sample secrets are assembled at runtime so no real-looking key sits in the page source as one piece. */
+function buildSample(){
+  const j=a=>a.join('');
+  const aws=j(['AKI','AIOSF','ODNN7','EXAMPLE']);
+  const awsSecret=j(['wJalrXUtnFEMI/','K7MDENG/','bPxRfiCY','EXAMPLEKEY']);
+  const slack=j(['xox','b-1234567890','12-abcdefghijkl']);
+  const gh=j(['ghp_','aBcDeFgHiJkLmNoPqRsTuVwX','1234']);
+  const jwt=j(['eyJhbGciOiJIUzI1NiJ9','.','eyJ1c2VyIjoiZGVtbyIsInJvbGUiOiJhZG1pbiJ9','.','c2lnbmF0dXJlLWRlbW8tb25seQ']);
+  const rsa=j(['-----BEGIN RSA',' PRIVATE KEY-----\n','MIIBOgIBAAJBAKdemoDEMOdemoDEMOdemoDEMOdemoDEMOdemoDEMO\n','ZmFrZS1rZXktbWF0ZXJpYWwtbm90LXJlYWw=\n','-----END RSA',' PRIVATE KEY-----']);
+  return [
+    '# ---- deploy.env (SAMPLE / FAKE VALUES) ----',
+    'AWS_ACCESS_KEY_ID='+aws,
+    "aws_secret_access_key = '"+awsSecret+"'",
+    'SLACK_BOT_TOKEN='+slack,
+    'GITHUB_TOKEN='+gh,
+    'DB_PASSWORD = "Sup3rS3cret!"',
+    '',
+    '# ---- notes ----',
+    'curl -u "deploy:hunter2pass" https://internal.example.com/api',
+    'https://internal.example.com/export?token=abc123XYZ_internal',
+    'Authorization token: '+jwt,
+    '',
+    rsa
+  ].join('\n');
+}
 const SECRET_RULES=[
-  {type:'AWS Access Key ID', re:/AKIA[0-9A-Z]{16}/g, sev:'crit'},
-  {type:'AWS Secret Access Key (heuristic)', re:/(?:aws_secret|AWS_SECRET)[A-Za-z_]*\s*=?\s*[:=]\s*['\"]?([A-Za-z0-9/+=]{30,})/g, sev:'crit'},
-  {type:'RSA Private Key Block', re:/-----BEGIN RSA PRIVATE KEY-----[\s\S]*?-----END RSA PRIVATE KEY-----/g, sev:'crit'},
-  {type:'Slack Token', re:/xox[baprs]-[A-Za-z0-9-]{10,}/g, sev:'crit'},
-  {type:'GitHub Personal Access Token', re:/ghp_[A-Za-z0-9]{20,}/g, sev:'crit'},
-  {type:'Hardcoded Password Assignment', re:/(password|db_password|passwd)\s*=\s*["'][^"']{4,}["']/gi, sev:'high'},
-  {type:'JWT (JSON Web Token)', re:/eyJ[A-Za-z0-9_-]+\.eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+/g, sev:'med'},
-  {type:'Credentials in URL/command', re:/-u\s+['"][^:'"]+:[^'"]+['"]/g, sev:'high'},
-  {type:'Plaintext internal token in URL', re:/[?&]token=[A-Za-z0-9_-]+/g, sev:'med'},
+ {type:'AWS Access Key ID',re:/AKIA[0-9A-Z]{16}/g,sev:'crit'},
+ {type:'AWS Secret Access Key (heuristic)',re:/(?:aws_secret|AWS_SECRET)[A-Za-z_]*\s*=?\s*[:=]\s*['"]?([A-Za-z0-9/+=]{30,})/g,sev:'crit'},
+ {type:'RSA Private Key Block',re:/-----BEGIN RSA PRIVATE KEY-----[\s\S]*?-----END RSA PRIVATE KEY-----/g,sev:'crit'},
+ {type:'Slack Token',re:/xox[baprs]-[A-Za-z0-9-]{10,}/g,sev:'crit'},
+ {type:'GitHub Personal Access Token',re:/ghp_[A-Za-z0-9]{20,}/g,sev:'crit'},
+ {type:'Hardcoded Password Assignment',re:/(password|db_password|passwd)\s*=\s*["'][^"']{4,}["']/gi,sev:'high'},
+ {type:'JWT (JSON Web Token)',re:/eyJ[A-Za-z0-9_-]+\.eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+/g,sev:'med'},
+ {type:'Credentials in URL/command',re:/-u\s+['"][^:'"]+:[^'"]+['"]/g,sev:'high'},
+ {type:'Plaintext internal token in URL',re:/[?&]token=[A-Za-z0-9_-]+/g,sev:'med'}
 ];
-
 function scanSecrets(text){
   const found=[];
   SECRET_RULES.forEach(rule=>{
-    const matches=[...text.matchAll(rule.re)];
-    matches.forEach(m=>{
+    [...text.matchAll(rule.re)].forEach(m=>{
       let snippet=m[0];
       if(snippet.length>120) snippet=snippet.slice(0,117)+'...';
-      found.push({type:rule.type, sev:rule.sev, snippet});
+      found.push({type:rule.type,sev:rule.sev,snippet});
     });
   });
   return found;
 }
-
-$('secretsScanBtn').addEventListener('click', ()=>{
-  const text=$('secretsInput').value;
-  const found=scanSecrets(text);
-  const el=$('secretsFindings');
-  el.innerHTML='';
-  const types=new Set(found.map(f=>f.type));
+$('secretsInput').value=buildSample();
+$('secretsSampleBtn').addEventListener('click',()=>{$('secretsInput').value=buildSample();});
+$('secretsScanBtn').addEventListener('click',()=>{
+  const found=scanSecrets($('secretsInput').value);
+  const el=$('secretsFindings'); el.innerHTML='';
   $('secretsFound').textContent=found.length;
-  $('secretsTypes').textContent=types.size;
+  $('secretsTypes').textContent=new Set(found.map(f=>f.type)).size;
   $('secretsStats').style.display='flex';
   if(found.length===0){
-    el.innerHTML='<div class="finding" style="border-color:#bbf3d1;background:#f0fdf6;">No known secret patterns detected.</div>';
+    el.innerHTML='<div class="ok-note">No known secret patterns detected.</div>';
     return;
   }
   found.forEach(f=>{
-    const div=document.createElement('div');
-    div.className='finding '+f.sev;
-    div.innerHTML=`<div class="ftitle"><span class="sev-pill ${f.sev}">${f.sev}</span>${f.type}</div><div class="fdetail">${f.snippet.replace(/</g,'&lt;')}</div>`;
+    const div=document.createElement('div'); div.className='finding '+f.sev;
+    div.innerHTML='<div class="ftitle"><span class="sev-pill '+f.sev+'">'+f.sev+'</span>'+esc(f.type)+'</div><div class="fdetail">'+secretSpan(f.snippet)+'</div>';
     el.appendChild(div);
   });
 });
-$('secretsClearBtn').addEventListener('click', ()=>{
-  $('secretsInput').value='';
-  $('secretsFindings').innerHTML='';
-  $('secretsStats').style.display='none';
+$('secretsClearBtn').addEventListener('click',()=>{
+  $('secretsInput').value=''; $('secretsFindings').innerHTML=''; $('secretsStats').style.display='none';
 });
 
-/* ============================= PREDICTABLE TOKEN ANALYZER ============================= */
+/* =============================
+   PREDICTABLE TOKEN ANALYZER
+============================= */
+/* token[i] = MD5("sess_" + (1706000137 + i*29)); the 7th is the "sealed" next token */
 const capturedTokens=[
-  '89c796a6ca536481dc5ecd3038856fe8',
-  '5c1ff75029cb2bfb14ded18c15e0d5d6',
-  '4ed20ef260714bd1367d94984afb6232',
-  '2864b5ea4ca30dfab754ddc838c8a5d5',
-  '4e64d8dfb3a7fb77100d346ec1511bf9',
-  '5604db6079b99ebe2913bfdb1052210d'
+ 'e27f2e6da8adf0189152133637c2f9b3',
+ '1a3710930c6dc3d53c0bde8401e3f598',
+ 'c343785bb6e0b7e4713707f01be11e55',
+ '9df98456222114aa48d27d465f91c39c',
+ '276f5fc0a5b33fa72ec20592ccbd1ae4',
+ 'b903fb0140af266933b92212865b887f'
 ];
-const actualNextToken='1acd9b6584404e9c411bd723dcf13d60';
-$('tokenList').innerHTML = capturedTokens.map((t,i)=>`<div>token[${i}] = ${t}</div>`).join('');
-
-let recoveredTimestamps=null, recoveredInterval=null;
-$('tokenBruteBtn').addEventListener('click', async ()=>{
-  const c=$('tokenConsole');
-  clearConsole(c);
-  $('tokenResult').style.display='none';
+const actualNextToken='292349067136389dd22dbd88e2f08ac4';
+$('tokenList').innerHTML=capturedTokens.map((t,i)=>'<div>token['+i+'] = '+secretSpan(t)+'</div>').join('')+
+  '<div style="opacity:.6">token[6] = (sealed — to be predicted)</div>';
+let recoveredTimestamps=null,recoveredInterval=null;
+$('tokenBruteBtn').addEventListener('click',async()=>{
+  const c=$('tokenConsole'); clearConsole(c); $('tokenResult').style.display='none';
   const center=parseInt($('tokenGuessCenter').value)||1706000000;
   const range=parseInt($('tokenGuessRange').value)||600;
   logLine(c,'$ brute-forcing timestamps in ['+(center-range)+', '+(center+range)+'] for each token...','hdr');
   await sleep(100);
-
   const found=new Array(capturedTokens.length).fill(null);
-  for(let ts=center-range; ts<=center+range; ts++){
+  for(let ts=center-range;ts<=center+range;ts++){
     const h=md5('sess_'+ts);
     const idx=capturedTokens.indexOf(h);
-    if(idx!==-1 && found[idx]===null){
+    if(idx!==-1&&found[idx]===null){
       found[idx]=ts;
       logLine(c,'[+] token['+idx+'] = MD5("sess_"+'+ts+')','ok');
     }
   }
   if(found.some(x=>x===null)){
     logLine(c,'[!] could not match all tokens in this range — widen the search range.','bad');
-    $('tokenPredictBtn').disabled=true;
-    return;
+    $('tokenPredictBtn').disabled=true; recoveredTimestamps=null; return;
   }
   recoveredTimestamps=found;
-  const intervals=[];
-  for(let i=1;i<found.length;i++) intervals.push(found[i]-found[i-1]);
+  const intervals=[]; for(let i=1;i<found.length;i++) intervals.push(found[i]-found[i-1]);
   const allSame=intervals.every(d=>d===intervals[0]);
   recoveredInterval=intervals[0];
-  logLine(c,'[+] recovered interval between tokens: '+recoveredInterval+'s'+(allSame?' (constant)':' (WARNING: inconsistent)'),'ok');
+  logLine(c,'[+] recovered interval between tokens: '+recoveredInterval+'s'+(allSame?' (constant)':' (WARNING: inconsistent)'),allSame?'ok':'warn');
   logLine(c,'[✓] formula recovered: token[i] = MD5("sess_" + ('+found[0]+' + i*'+recoveredInterval+'))','hdr');
   $('tokenPredictBtn').disabled=false;
 });
-
-$('tokenPredictBtn').addEventListener('click', ()=>{
+$('tokenPredictBtn').addEventListener('click',()=>{
   if(!recoveredTimestamps) return;
   const c=$('tokenConsole');
-  const lastTs=recoveredTimestamps[recoveredTimestamps.length-1];
-  const nextTs=lastTs+recoveredInterval;
+  const nextTs=recoveredTimestamps[recoveredTimestamps.length-1]+recoveredInterval;
   const predicted=md5('sess_'+nextTs);
   logLine(c,'[*] predicting token[6] at timestamp '+nextTs+' ...','info');
   logLine(c,'[+] predicted token = '+predicted,'ok');
-  const match = predicted===actualNextToken;
-  logLine(c, match ? '[✓] matches the real next token captured from the service' : '[!] does not match — check your search range', match?'ok':'bad');
-  $('tokenResult').className='result-box '+(match?'ok':'bad');
-  $('tokenResult').style.display='block';
-  $('tokenResult').textContent = match
-    ? 'Prediction confirmed: the next session token is fully predictable from the timestamp alone.\nPredicted: '+predicted+'\nActual:    '+actualNextToken
-    : 'Prediction did not match the sealed next token. Try a tighter search range.';
+  const match=predicted===actualNextToken;
+  logLine(c,match?'[✓] matches the real next token captured from the service':'[!] does not match — check your search range',match?'ok':'bad');
+  const box=$('tokenResult');
+  box.className='result-box '+(match?'ok':'bad'); box.style.display='block';
+  box.textContent=match
+    ?'Prediction confirmed: the next session token is fully predictable from the timestamp alone.\nPredicted: '+predicted+'\nActual:    '+actualNextToken+'\n\nFix: use a CSPRNG (e.g. crypto.randomBytes(32)) for session IDs.'
+    :'Prediction did not match the sealed next token. Try a different search range.';
 });
 
-/* ============================= STEGANOGRAPHY LAB ============================= */
-function embedMessage(imageData, message){
-  const bytes=enc.encode(message);
-  const len=bytes.length;
-  const bitsNeeded=32+len*8;
-  const data=imageData.data;
+/* =============================
+   STEGANOGRAPHY LAB
+============================= */
+const SECRET_NOTE='CASE 7734: INTRUSION DETECTED 03:14 UTC. KEY EXFILTRATED VIA DNS TUNNEL. SUSPECT HOST 10.0.0.63. ESCALATE TO IR TEAM.';
+function embedMessage(imageData,message){
+  const bytes=enc.encode(message), len=bytes.length;
+  const bitsNeeded=32+len*8, data=imageData.data;
   if(bitsNeeded>data.length/4) throw new Error('Image too small to hold this message ('+bitsNeeded+' bits needed).');
   let bitIndex=0;
-  function setBit(pixelIndex,bit){ const idx=pixelIndex*4; data[idx]=(data[idx]&0xFE)|bit; }
-  for(let i=0;i<32;i++){ setBit(bitIndex,(len>>>(31-i))&1); bitIndex++; }
-  for(let i=0;i<len;i++){
-    for(let b=0;b<8;b++){ setBit(bitIndex,(bytes[i]>>>(7-b))&1); bitIndex++; }
-  }
+  function setBit(p,bit){const idx=p*4;data[idx]=(data[idx]&0xFE)|bit;}
+  for(let i=0;i<32;i++){setBit(bitIndex,(len>>>(31-i))&1);bitIndex++;}
+  for(let i=0;i<len;i++){for(let b=0;b<8;b++){setBit(bitIndex,(bytes[i]>>>(7-b))&1);bitIndex++;}}
   return imageData;
 }
 function extractMessage(imageData){
   const data=imageData.data;
-  function getBit(pixelIndex){ return data[pixelIndex*4]&1; }
-  let len=0;
-  for(let i=0;i<32;i++) len=(len*2)+getBit(i);
-  if(len<=0 || len>200000 || 32+len*8>data.length/4) throw new Error('No valid hidden data found.');
-  const bytes=new Uint8Array(len);
-  let bitIndex=32;
-  for(let i=0;i<len;i++){
-    let byte=0;
-    for(let b=0;b<8;b++){ byte=(byte*2)+getBit(bitIndex); bitIndex++; }
-    bytes[i]=byte;
-  }
+  const getBit=p=>data[p*4]&1;
+  let len=0; for(let i=0;i<32;i++) len=(len*2)+getBit(i);
+  if(len<=0||len>200000||32+len*8>data.length/4) throw new Error('No valid hidden data found.');
+  const bytes=new Uint8Array(len); let bitIndex=32;
+  for(let i=0;i<len;i++){let byte=0;for(let b=0;b<8;b++){byte=(byte*2)+getBit(bitIndex);bitIndex++;}bytes[i]=byte;}
   return dec.decode(bytes);
 }
-
 function drawTexture(ctx,w,h,seed){
   const isHacker=document.documentElement.getAttribute('data-theme')==='hacker';
   const g=ctx.createLinearGradient(0,0,w,h);
-  if(isHacker){
-    g.addColorStop(0,'#001a05'); g.addColorStop(.5,'#002108'); g.addColorStop(1,'#001a05');
-  }else{
-    g.addColorStop(0,'#dbeafe'); g.addColorStop(.5,'#ede9fe'); g.addColorStop(1,'#fce7f3');
-  }
+  if(isHacker){g.addColorStop(0,'#001a05');g.addColorStop(.5,'#002108');g.addColorStop(1,'#001a05');}
+  else{g.addColorStop(0,'#dbeafe');g.addColorStop(.5,'#ede9fe');g.addColorStop(1,'#fce7f3');}
   ctx.fillStyle=g; ctx.fillRect(0,0,w,h);
   let s=seed;
-  function rnd(){ s=(s*1103515245+12345)&0x7fffffff; return s/0x7fffffff; }
+  function rnd(){s=(s*1103515245+12345)&0x7fffffff;return s/0x7fffffff;}
   for(let i=0;i<220;i++){
-    if(isHacker){
-      ctx.fillStyle='rgba(0,'+Math.floor(rnd()*120+135)+','+Math.floor(rnd()*60+30)+',0.3)';
-    }else{
-      ctx.fillStyle='rgba('+Math.floor(rnd()*80+120)+','+Math.floor(rnd()*80+100)+','+Math.floor(rnd()*80+180)+',0.25)';
-    }
-    const x=rnd()*w, y=rnd()*h, r=rnd()*18+4;
-    ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle=isHacker
+      ?'rgba(0,'+Math.floor(rnd()*120+135)+','+Math.floor(rnd()*60+30)+',0.3)'
+      :'rgba('+Math.floor(rnd()*80+120)+','+Math.floor(rnd()*80+100)+','+Math.floor(rnd()*80+180)+',0.25)';
+    const x=rnd()*w,y=rnd()*h,r=rnd()*18+4;
+    ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();
   }
 }
-
-const evidenceCanvas=$('evidenceCanvas');
-const evidenceCtx=evidenceCanvas.getContext('2d');
-drawTexture(evidenceCtx,320,200,42);
-(function(){
-  const imgData=evidenceCtx.getImageData(0,0,320,200);
-  embedMessage(imgData,'CASE 7734: INTRUSION DETECTED 03:14 UTC. KEY EXFILTRATED VIA DNS TUNNEL. SUSPECT HOST 10.0.0.63. ESCALATE TO IR TEAM.');
-  evidenceCtx.putImageData(imgData,0,0);
-})();
-
-// Re-render evidence canvas on theme change
-themeToggle.addEventListener('click', ()=>{
+const evidenceCanvas=$('evidenceCanvas'), evidenceCtx=evidenceCanvas.getContext('2d');
+function renderEvidence(){
   drawTexture(evidenceCtx,320,200,42);
   const imgData=evidenceCtx.getImageData(0,0,320,200);
-  embedMessage(imgData,'CASE 7734: INTRUSION DETECTED 03:14 UTC. KEY EXFILTRATED VIA DNS TUNNEL. SUSPECT HOST 10.0.0.63. ESCALATE TO IR TEAM.');
+  embedMessage(imgData,SECRET_NOTE);
   evidenceCtx.putImageData(imgData,0,0);
-});
+}
+renderEvidence();
+themeToggle.addEventListener('click',renderEvidence);
 
-$('extractEvidenceBtn').addEventListener('click', ()=>{
+function showResult(el,ok,text){el.className='result-box '+(ok?'ok':'bad');el.style.display='block';el.textContent=text;}
+$('extractEvidenceBtn').addEventListener('click',()=>{
   const out=$('evidenceResult');
-  try{
-    const imgData=evidenceCtx.getImageData(0,0,320,200);
-    const msg=extractMessage(imgData);
-    out.className='result-box ok'; out.style.display='block';
-    out.textContent='Hidden data recovered:\n"'+msg+'"';
-  }catch(e){
-    out.className='result-box bad'; out.style.display='block';
-    out.textContent='Extraction failed: '+e.message;
-  }
+  try{showResult(out,true,'Hidden data recovered:\n"'+extractMessage(evidenceCtx.getImageData(0,0,320,200))+'"');}
+  catch(e){showResult(out,false,'Extraction failed: '+e.message);}
 });
 
-const customCanvas=$('customCanvas');
-const customCtx=customCanvas.getContext('2d');
+const customCanvas=$('customCanvas'), customCtx=customCanvas.getContext('2d');
 let customHasImage=false;
-$('stegoEncodeBtn').addEventListener('click', ()=>{
-  const msg=$('stegoMsgInput').value || 'hello';
+$('stegoEncodeBtn').addEventListener('click',()=>{
+  const msg=$('stegoMsgInput').value||'hello';
   drawTexture(customCtx,320,200,Math.floor(Math.random()*100000));
   try{
     const imgData=customCtx.getImageData(0,0,320,200);
     embedMessage(imgData,msg);
     customCtx.putImageData(imgData,0,0);
     customHasImage=true;
-    $('stegoDownloadBtn').disabled=false;
-    $('stegoExtractBtn').disabled=false;
+    $('stegoDownloadBtn').disabled=false; $('stegoExtractBtn').disabled=false;
     $('customResult').style.display='none';
-  }catch(e){
-    $('customResult').className='result-box bad'; $('customResult').style.display='block';
-    $('customResult').textContent='Embed failed: '+e.message;
-  }
+  }catch(e){showResult($('customResult'),false,'Embed failed: '+e.message);}
 });
-$('stegoExtractBtn').addEventListener('click', ()=>{
+$('stegoExtractBtn').addEventListener('click',()=>{
   const out=$('customResult');
-  try{
-    const imgData=customCtx.getImageData(0,0,320,200);
-    const msg=extractMessage(imgData);
-    out.className='result-box ok'; out.style.display='block';
-    out.textContent='Round-trip confirmed — extracted:\n"'+msg+'"';
-  }catch(e){
-    out.className='result-box bad'; out.style.display='block';
-    out.textContent='Extraction failed: '+e.message;
-  }
+  try{showResult(out,true,'Round-trip confirmed — extracted:\n"'+extractMessage(customCtx.getImageData(0,0,320,200))+'"');}
+  catch(e){showResult(out,false,'Extraction failed: '+e.message);}
 });
-$('stegoDownloadBtn').addEventListener('click', ()=>{
+$('stegoDownloadBtn').addEventListener('click',()=>{
   if(!customHasImage) return;
   customCanvas.toBlob(blob=>{
     const url=URL.createObjectURL(blob);
@@ -928,29 +886,18 @@ $('stegoDownloadBtn').addEventListener('click', ()=>{
 });
 
 let uploadedImg=null;
-$('uploadInput').addEventListener('change', (e)=>{
-  const file=e.target.files[0];
-  if(!file) return;
+$('uploadInput').addEventListener('change',e=>{
+  const file=e.target.files[0]; if(!file) return;
   const img=new Image();
-  img.onload=()=>{ uploadedImg=img; $('uploadExtractBtn').disabled=false; $('uploadResult').style.display='none'; };
+  img.onload=()=>{uploadedImg=img;$('uploadExtractBtn').disabled=false;$('uploadResult').style.display='none';};
   img.src=URL.createObjectURL(file);
 });
-$('uploadExtractBtn').addEventListener('click', ()=>{
-  const out=$('uploadResult');
-  if(!uploadedImg){ return; }
-  const c=document.createElement('canvas');
-  c.width=uploadedImg.naturalWidth; c.height=uploadedImg.naturalHeight;
-  const ctx=c.getContext('2d');
-  ctx.drawImage(uploadedImg,0,0);
-  try{
-    const imgData=ctx.getImageData(0,0,c.width,c.height);
-    const msg=extractMessage(imgData);
-    out.className='result-box ok'; out.style.display='block';
-    out.textContent='Hidden data recovered:\n"'+msg+'"';
-  }catch(e){
-    out.className='result-box bad'; out.style.display='block';
-    out.textContent='No hidden data found (or image was recompressed/not PNG-lossless): '+e.message;
-  }
+$('uploadExtractBtn').addEventListener('click',()=>{
+  const out=$('uploadResult'); if(!uploadedImg) return;
+  const c=document.createElement('canvas'); c.width=uploadedImg.naturalWidth; c.height=uploadedImg.naturalHeight;
+  const ctx=c.getContext('2d'); ctx.drawImage(uploadedImg,0,0);
+  try{showResult(out,true,'Hidden data recovered:\n"'+extractMessage(ctx.getImageData(0,0,c.width,c.height))+'"');}
+  catch(e){showResult(out,false,'No hidden data found (or image was recompressed / not lossless PNG): '+e.message);}
 });
 </script>
 </body>
