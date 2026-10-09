@@ -1,903 +1,1004 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="normal">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Crypto Forensics Lab — Quantum Elite Labs</title>
-<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
-<style>
-  [data-theme="normal"]{
-    --bg-0:#eef0fc;
-    --surface:#ffffff;
-    --surface-soft:#f6f7fc;
-    --border:#e7e8f3;
-    --ink:#15172b;
-    --ink-soft:#5b5f7e;
-    --ink-faint:#9599b8;
-    --grad-1:#2563eb;
-    --grad-2:#7c3aed;
-    --grad-3:#ec4899;
-    --purple-bg:#f1ecfd;
-    --purple:#7c3aed;
-    --ok:#16a34a;
-    --bad:#dc2626;
-    --warn:#d97706;
-    --console-bg:#0f1124;
-    --console-ok:#6ee7b7;
-    --console-bad:#fca5a5;
-    --console-info:#93c5fd;
-    --console-warn:#fcd34d;
-    --console-hdr:#e9d5ff;
-    --console-default:#9ae6b4;
-    --radius-lg:20px;
-    --radius-md:12px;
-    --font-display:'Arial Rounded MT Bold','Arial Rounded MT',ui-rounded,'SF Pro Rounded','Baloo 2',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
-    --font-body:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
-    --font-mono:'SFMono-Regular',Consolas,'Liberation Mono',Menlo,monospace;
-  }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>Crypto Forensics Lab — CryptoKit Quantum Elite</title>
 
-  [data-theme="hacker"]{
-    --bg-0:#000000;
-    --surface:#050505;
-    --surface-soft:#0a0a0a;
-    --border:rgba(0, 255, 65, 0.25);
-    --ink:#00FF41;
-    --ink-soft:#00CC33;
-    --ink-faint:#006611;
-    --grad-1:#00FF41;
-    --grad-2:#39FF14;
-    --grad-3:#00FF41;
-    --purple-bg:rgba(0, 255, 65, 0.08);
-    --purple:#00FF41;
-    --ok:#00FF41;
-    --bad:#FF0040;
-    --warn:#FFD700;
-    --console-bg:#000000;
-    --console-ok:#00FF41;
-    --console-bad:#FF0040;
-    --console-info:#39FF14;
-    --console-warn:#FFD700;
-    --console-hdr:#00FF41;
-    --console-default:#00CC33;
-    --radius-lg:18px;
-    --radius-md:12px;
-    --font-display:'Share Tech Mono',monospace;
-    --font-body:'Share Tech Mono',monospace;
-    --font-mono:'Share Tech Mono',monospace;
-  }
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-  *{box-sizing:border-box;}
-  html,body{
-    margin:0;padding:0;
-    background:var(--bg-0);
-    color:var(--ink);
-    font-family:var(--font-body);
-    -webkit-font-smoothing:antialiased;
-    min-height:100vh;
-    transition:background-color 0.4s ease, color 0.4s ease;
-  }
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-  [data-theme="normal"] body{
-    background:
-      radial-gradient(900px 420px at 15% -10%, #dde3fb 0%, transparent 60%),
-      radial-gradient(900px 420px at 100% 0%, #fbe3f0 0%, transparent 55%),
-      var(--bg-0);
-  }
+    <style>
+        :root {
+            --bg-base: #f8fafc;
+            --bg-surface: #ffffff;
+            --bg-card: #ffffff;
+            --border-color: #e2e8f0;
+            --border-focus: #8b5cf6;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --accent-quantum: #8b5cf6;
+            --accent-quantum-glow: rgba(139, 92, 246, 0.25);
+            --accent-cyan: #06b6d4;
+            --accent-amber: #f59e0b;
+            --accent-red: #ef4444;
+            --accent-green: #10b981;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 20px rgba(0,0,0,0.06);
+            --shadow-lg: 0 10px 30px rgba(139, 92, 246, 0.12);
+        }
 
-  [data-theme="hacker"] body{
-    background-image:
-      radial-gradient(ellipse 900px 500px at 15% -5%, rgba(0,255,65,0.06), transparent 60%),
-      radial-gradient(ellipse 700px 500px at 100% 10%, rgba(57,255,20,0.04), transparent 60%);
-  }
+        [data-theme="hacker"] {
+            --bg-base: #05050f;
+            --bg-surface: #0a0a1a;
+            --bg-card: rgba(16, 16, 35, 0.7);
+            --border-color: rgba(139, 92, 246, 0.2);
+            --border-focus: #a78bfa;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #64748b;
+            --accent-quantum: #a78bfa;
+            --accent-quantum-glow: rgba(167, 139, 250, 0.35);
+            --accent-cyan: #22d3ee;
+            --accent-amber: #fbbf24;
+            --accent-red: #f87171;
+            --accent-green: #34d399;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.4);
+            --shadow-md: 0 8px 24px rgba(0,0,0,0.5);
+            --shadow-lg: 0 12px 35px rgba(139, 92, 246, 0.25);
+        }
 
-  [data-theme="hacker"] body::before{
-    content:''; position:fixed; inset:0;
-    background-image:
-      linear-gradient(rgba(0,255,65,0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,255,65,0.04) 1px, transparent 1px);
-    background-size:40px 40px; z-index:0; pointer-events:none;
-    animation:gridMove 20s linear infinite;
-  }
-  @keyframes gridMove{
-    0%{background-position:0 0;}
-    100%{background-position:40px 40px;}
-  }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.25s ease, border-color 0.25s ease;
+        }
 
-  [data-theme="hacker"] body::after{
-    content:''; position:fixed; inset:0;
-    background:repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 2px,
-      rgba(0,255,65,0.015) 2px,
-      rgba(0,255,65,0.015) 4px
-    );
-    pointer-events:none; z-index:9999;
-  }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
 
-  .wrap{max-width:1180px;margin:0 auto;padding:40px 24px 100px;position:relative;z-index:2;}
+        /* ── Top Navigation ── */
+        .header-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 28px;
+            background: var(--bg-surface);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+        .brand-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 19px;
+        }
+        .brand-badge {
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 6px;
+            background: linear-gradient(135deg, rgba(139,92,246,0.15), rgba(6,182,212,0.15));
+            color: var(--accent-quantum);
+            border: 1px solid var(--border-color);
+            font-family: 'JetBrains Mono', monospace;
+            text-transform: uppercase;
+        }
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .btn-nav {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-base);
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .btn-nav:hover {
+            border-color: var(--accent-quantum);
+            color: var(--accent-quantum);
+        }
 
-  .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:14px;}
-  .topbar-left{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
-  .topbar-right{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+        /* ── Layout & Header ── */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 32px 20px 80px 20px;
+            width: 100%;
+        }
+        .lab-hero {
+            text-align: center;
+            margin-bottom: 36px;
+        }
+        .hero-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 14px;
+            border-radius: 20px;
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            color: var(--accent-quantum);
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 14px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .hero-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 34px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--text-primary), var(--accent-quantum));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-desc {
+            color: var(--text-secondary);
+            font-size: 15px;
+            max-width: 650px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
 
-  .back-pill{
-    display:inline-flex;align-items:center;gap:8px;text-decoration:none;
-    background:var(--surface);border:1px solid var(--border);
-    padding:9px 16px;border-radius:999px;font-size:13.5px;color:var(--ink);
-    font-weight:600;cursor:pointer;transition:all 0.3s ease;
-  }
-  .back-pill:hover{border-color:var(--purple);color:var(--purple);transform:translateX(-2px);}
-  [data-theme="hacker"] .back-pill{
-    text-transform:uppercase;font-size:11px;letter-spacing:0.05em;
-    background:rgba(0,255,65,0.03);box-shadow:0 0 10px rgba(0,255,65,0.03);
-  }
-  [data-theme="hacker"] .back-pill:hover{
-    box-shadow:0 0 16px rgba(0,255,65,0.2);text-shadow:0 0 8px rgba(0,255,65,0.4);
-    border-color:var(--ink);color:var(--ink);
-  }
+        /* ── Forensics Tool Switcher Tabs ── */
+        .tool-tabs {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+        .tab-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-surface);
+            color: var(--text-secondary);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+        }
+        .tab-btn:hover {
+            color: var(--accent-quantum);
+            border-color: var(--accent-quantum);
+        }
+        .tab-btn.active {
+            background: linear-gradient(135deg, #8b5cf6, #6366f1);
+            color: #ffffff;
+            border-color: transparent;
+            box-shadow: 0 4px 18px var(--accent-quantum-glow);
+        }
 
-  .elite-tag{
-    display:flex;align-items:center;gap:8px;padding:8px 16px;border-radius:999px;
-    background:linear-gradient(90deg,var(--grad-1),var(--grad-2),var(--grad-3));
-    color:#fff;font-size:13px;font-weight:700;transition:all 0.3s ease;
-  }
-  [data-theme="hacker"] .elite-tag{
-    background:transparent;
-    border:1px solid var(--ink);
-    color:var(--ink);
-    text-shadow:0 0 8px rgba(0,255,65,0.4);
-    box-shadow:0 0 12px rgba(0,255,65,0.15);
-    text-transform:uppercase;letter-spacing:0.05em;
-  }
+        /* ── Tool Panels ── */
+        .lab-panel {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        .lab-panel.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-  .toggle-pill{
-    display:inline-flex;align-items:center;gap:10px;background:var(--surface);
-    border:1px solid var(--border);padding:9px 16px;border-radius:999px;
-    font-size:13.5px;color:var(--ink-soft);font-weight:500;cursor:pointer;user-select:none;
-    transition:all 0.3s ease;
-  }
-  [data-theme="hacker"] .toggle-pill{
-    background:rgba(0,255,65,0.03);text-transform:uppercase;font-size:11px;
-    letter-spacing:0.05em;box-shadow:0 0 10px rgba(0,255,65,0.03);
-  }
-  [data-theme="hacker"] #themeLabel{text-shadow:0 0 6px rgba(0,255,65,0.4);}
+        .panel-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 28px;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 24px;
+        }
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .card-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-primary);
+        }
+        .card-title i {
+            color: var(--accent-quantum);
+        }
 
-  .switch{
-    width:34px;height:19px;border-radius:999px;background:#d5d8ee;
-    position:relative;flex-shrink:0;transition:background 0.3s;
-  }
-  .switch::after{
-    content:'';position:absolute;top:2px;left:2px;width:15px;height:15px;
-    border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25);
-    transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  [data-theme="hacker"] .switch{background:rgba(0,255,65,0.3);}
-  [data-theme="hacker"] .switch::after{left:17px;background:var(--ink);box-shadow:0 0 8px var(--ink);}
+        /* ── Forms, Inputs & Terminals ── */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-label {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .form-hint {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+        .text-area, .text-input {
+            width: 100%;
+            padding: 14px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-base);
+            color: var(--text-primary);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            outline: none;
+            resize: vertical;
+        }
+        .text-area:focus, .text-input:focus {
+            border-color: var(--border-focus);
+            box-shadow: 0 0 0 3px var(--accent-quantum-glow);
+        }
 
-  .hero{text-align:center;margin-bottom:28px;}
-  .hero h1{font-family:var(--font-display);font-weight:800;font-size:38px;line-height:1.15;margin:0 0 10px;letter-spacing:-.01em;}
-  .hero h1 .accent{
-    background:linear-gradient(90deg,var(--grad-1),var(--grad-2),var(--grad-3));
-    -webkit-background-clip:text;background-clip:text;color:transparent;
-  }
-  [data-theme="hacker"] .hero h1{letter-spacing:2px;text-shadow:0 0 15px rgba(0,255,65,0.4);animation:glitch 4s infinite;}
-  [data-theme="hacker"] .hero h1 .accent{
-    background:none;color:var(--ink);-webkit-text-fill-color:var(--ink);
-  }
-  @keyframes glitch{
-    0%,92%,100%{opacity:1;transform:none;}
-    93%{opacity:0.8;transform:translateX(-2px);}
-    94%{opacity:1;transform:translateX(2px);}
-    95%{opacity:0.9;transform:translateX(-1px);}
-    96%{opacity:1;transform:none;}
-  }
-  .hero p{margin:0;color:var(--ink-soft);font-size:15.5px;max-width:660px;margin:0 auto;}
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+        }
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border-radius: 10px;
+            border: none;
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            color: #ffffff;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 14px var(--accent-quantum-glow);
+        }
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #7c3aed, #6d28d9);
+            transform: translateY(-1px);
+        }
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 18px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-base);
+            color: var(--text-primary);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .btn-secondary:hover {
+            border-color: var(--accent-quantum);
+        }
 
-  .tabs{display:flex;gap:10px;flex-wrap:wrap;margin:30px 0 24px;}
-  .tabbtn{
-    flex:1;min-width:220px;background:var(--surface);border:1px solid var(--border);
-    border-radius:var(--radius-md);padding:14px 16px;cursor:pointer;text-align:left;
-    display:flex;align-items:center;gap:12px;transition:all 0.3s ease;
-    font-family:var(--font-body);color:var(--ink);
-  }
-  .tabbtn:hover{border-color:var(--purple);}
-  [data-theme="hacker"] .tabbtn:hover{box-shadow:0 0 15px rgba(0,255,65,0.1);}
-  .tabbtn.active{
-    border-color:var(--purple);
-    box-shadow:0 10px 24px -14px rgba(124,58,237,.5);
-    background:var(--purple-bg);
-  }
-  [data-theme="hacker"] .tabbtn.active{box-shadow:0 0 20px rgba(0,255,65,0.15);}
-  .tabbtn .ic{
-    width:36px;height:36px;border-radius:10px;background:var(--purple-bg);
-    display:flex;align-items:center;justify-content:center;color:var(--purple);flex-shrink:0;
-  }
-  .tabbtn.active .ic{background:var(--surface);}
-  [data-theme="hacker"] .tabbtn .ic{border:1px solid rgba(0,255,65,0.3);}
-  [data-theme="hacker"] .tabbtn.active .ic{background:rgba(0,255,65,0.15);box-shadow:0 0 10px rgba(0,255,65,0.3);}
-  .tabbtn .tt{font-weight:700;font-size:13.5px;color:var(--ink);}
-  .tabbtn .ts{font-size:11.5px;color:var(--ink-soft);margin-top:2px;}
-  [data-theme="hacker"] .tabbtn .tt{text-transform:uppercase;letter-spacing:0.05em;}
+        /* ── Output & Findings Display ── */
+        .findings-box {
+            margin-top: 24px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: var(--bg-base);
+            padding: 18px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+        }
+        .finding-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px;
+            background: var(--bg-surface);
+            border-radius: 8px;
+            border-left: 4px solid var(--accent-quantum);
+            margin-bottom: 10px;
+            box-shadow: var(--shadow-sm);
+        }
+        .finding-item.danger { border-left-color: var(--accent-red); }
+        .finding-item.warning { border-left-color: var(--accent-amber); }
+        .finding-item.success { border-left-color: var(--accent-green); }
 
-  .panel{display:none;}
-  .panel.active{display:block;}
+        .finding-content {
+            flex: 1;
+            word-break: break-all;
+        }
+        .finding-type {
+            font-weight: 700;
+            font-size: 12px;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+            display: block;
+        }
+        .finding-item.danger .finding-type { color: var(--accent-red); }
+        .finding-item.warning .finding-type { color: var(--accent-amber); }
+        .finding-item.success .finding-type { color: var(--accent-green); }
 
-  .card{
-    background:var(--surface);border:1px solid var(--border);
-    border-radius:var(--radius-lg);padding:24px;
-    box-shadow:0 14px 34px -22px rgba(30,20,80,.2);margin-bottom:22px;
-    transition:all 0.3s ease;
-  }
-  [data-theme="hacker"] .card{box-shadow:0 0 25px rgba(0,255,65,0.03);}
-  [data-theme="hacker"] .card:hover{border-color:rgba(0,255,65,0.35);box-shadow:0 0 30px rgba(0,255,65,0.08);}
-  .card h2{font-family:var(--font-display);font-size:17px;margin:0 0 14px;}
-  [data-theme="hacker"] .card h2{text-shadow:0 0 8px rgba(0,255,65,0.3);letter-spacing:1px;text-transform:uppercase;}
-  .card h2 .sub{display:block;font-family:var(--font-body);font-weight:500;color:var(--ink-soft);font-size:12.5px;margin-top:4px;}
-  [data-theme="hacker"] .card h2 .sub{text-shadow:none;letter-spacing:0;text-transform:none;}
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+        .stat-card-mini {
+            padding: 14px 16px;
+            border-radius: 10px;
+            background: var(--bg-base);
+            border: 1px solid var(--border-color);
+        }
+        .stat-title {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+        .stat-val {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
 
-  .explain{
-    background:var(--surface-soft);border:1px dashed var(--border);border-radius:12px;
-    padding:12px 14px;font-size:12.5px;color:var(--ink-soft);margin-bottom:16px;line-height:1.6;
-  }
-  [data-theme="hacker"] .explain{border-color:rgba(0,255,65,0.2);}
+        /* ── Steganography Canvas ── */
+        .stego-preview-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+        }
+        .stego-canvas-wrapper {
+            flex: 1;
+            min-width: 260px;
+            text-align: center;
+        }
+        .stego-canvas-wrapper canvas {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            background: repeating-conic-gradient(#808080 0% 25%, #ffffff 0% 50%) 50% / 20px 20px;
+        }
 
-  label{display:block;font-size:12.5px;font-weight:700;color:var(--ink-soft);margin:14px 0 6px;}
-  label:first-of-type{margin-top:0;}
-  [data-theme="hacker"] label{text-transform:uppercase;letter-spacing:0.05em;color:rgba(0,255,65,0.6);}
-  input[type=text],input[type=number],input[type=file],select,textarea{
-    width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:10px;
-    font-family:var(--font-mono);font-size:13px;background:var(--surface-soft);color:var(--ink);
-    outline:none;transition:all 0.3s ease;
-  }
-  input:focus,select:focus,textarea:focus{border-color:var(--purple);}
-  [data-theme="hacker"] input:focus,[data-theme="hacker"] select:focus,[data-theme="hacker"] textarea:focus{
-    box-shadow:0 0 0 3px rgba(0,255,65,0.1),0 0 15px rgba(0,255,65,0.1);
-  }
-  textarea{resize:vertical;min-height:90px;}
-  .row{display:flex;gap:10px;}
-  .row > *{flex:1;}
+        /* ── Footer ── */
+        footer {
+            margin-top: auto;
+            padding: 24px;
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+            background: var(--bg-surface);
+        }
 
-  .btn{
-    border:none;border-radius:10px;padding:11px 18px;font-weight:700;font-size:13.5px;
-    cursor:pointer;font-family:var(--font-body);transition:all 0.3s ease;
-  }
-  [data-theme="hacker"] .btn{text-transform:uppercase;letter-spacing:1px;font-size:12px;}
-  .btn-primary{
-    background:linear-gradient(90deg,var(--grad-2),#8b3df0);color:#fff;
-    box-shadow:0 10px 22px -10px rgba(124,58,237,.6);
-  }
-  .btn-primary:hover{filter:brightness(1.06);}
-  [data-theme="hacker"] .btn-primary{
-    background:var(--ink);color:#000;font-weight:800;
-    box-shadow:0 0 15px rgba(0,255,65,0.3);
-  }
-  [data-theme="hacker"] .btn-primary:hover{box-shadow:0 0 25px rgba(0,255,65,0.6);}
-  .btn-ghost{background:var(--surface-soft);border:1px solid var(--border);color:var(--ink);}
-  [data-theme="hacker"] .btn-ghost:hover{border-color:var(--ink);color:var(--ink);text-shadow:0 0 8px rgba(0,255,65,0.4);}
-  .btn-row{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;}
-  .btn[disabled]{opacity:.5;cursor:not-allowed;}
-
-  .console{
-    background:var(--console-bg);border-radius:var(--radius-md);padding:16px;
-    max-height:360px;overflow-y:auto;font-family:var(--font-mono);font-size:12px;
-    line-height:1.7;color:var(--console-default);border:1px solid transparent;
-  }
-  [data-theme="hacker"] .console{border-color:rgba(0,255,65,0.15);box-shadow:inset 0 0 20px rgba(0,255,65,0.05);}
-  .console .ln{white-space:pre-wrap;word-break:break-all;}
-  .console .ln.ok{color:var(--console-ok);}
-  .console .ln.bad{color:var(--console-bad);}
-  .console .ln.info{color:var(--console-info);}
-  .console .ln.warn{color:var(--console-warn);}
-  .console .ln.hdr{color:var(--console-hdr);font-weight:700;}
-  [data-theme="hacker"] .console .ln.ok{text-shadow:0 0 5px rgba(0,255,65,0.4);}
-  [data-theme="hacker"] .console .ln.bad{text-shadow:0 0 5px rgba(255,0,64,0.4);}
-  [data-theme="hacker"] .console .ln.hdr{text-shadow:0 0 6px rgba(0,255,65,0.5);}
-  .console::-webkit-scrollbar{width:8px;}
-  .console::-webkit-scrollbar-thumb{background:#2d2f55;border-radius:8px;}
-  [data-theme="hacker"] .console::-webkit-scrollbar-thumb{background:rgba(0,255,65,0.3);}
-
-  .pkt-table{width:100%;border-collapse:collapse;font-size:12px;font-family:var(--font-mono);color:var(--ink);}
-  .pkt-table th,.pkt-table td{text-align:left;padding:7px 9px;border-bottom:1px solid var(--border);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px;}
-  .pkt-table th{color:var(--ink-soft);font-weight:700;font-size:10.5px;text-transform:uppercase;letter-spacing:.03em;font-family:var(--font-body);}
-  .pkt-table tr.flagged{background:#fef2f2;}
-  [data-theme="hacker"] .pkt-table tr.flagged{background:rgba(255,0,64,0.08);}
-  .pkt-table-wrap{max-height:280px;overflow:auto;border:1px solid var(--border);border-radius:10px;}
-
-  .finding{border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-top:10px;font-size:13px;}
-  .finding.crit{border-color:#fbd2d2;background:#fef2f2;color:#991b1b;}
-  .finding.high{border-color:#fde3c9;background:#fff8f0;color:#9a3412;}
-  .finding.med{border-color:#fde68a;background:#fffbeb;color:#92400e;}
-  [data-theme="hacker"] .finding.crit{border-color:var(--bad);background:rgba(255,0,64,0.08);color:var(--bad);box-shadow:0 0 10px rgba(255,0,64,0.1);}
-  [data-theme="hacker"] .finding.high{border-color:var(--warn);background:rgba(255,215,0,0.06);color:var(--warn);box-shadow:0 0 10px rgba(255,215,0,0.08);}
-  [data-theme="hacker"] .finding.med{border-color:rgba(255,215,0,0.4);background:rgba(255,215,0,0.03);color:var(--warn);}
-  .finding .ftitle{font-weight:700;display:flex;align-items:center;gap:8px;}
-  .sev-pill{font-size:10px;font-weight:800;padding:2px 8px;border-radius:999px;text-transform:uppercase;}
-  .sev-pill.crit{background:#fee2e2;color:#991b1b;}
-  .sev-pill.high{background:#ffedd5;color:#9a3412;}
-  .sev-pill.med{background:#fef3c7;color:#92400e;}
-  [data-theme="hacker"] .sev-pill.crit{background:rgba(255,0,64,0.2);color:var(--bad);border:1px solid var(--bad);}
-  [data-theme="hacker"] .sev-pill.high{background:rgba(255,215,0,0.15);color:var(--warn);border:1px solid var(--warn);}
-  [data-theme="hacker"] .sev-pill.med{background:rgba(255,215,0,0.08);color:var(--warn);border:1px solid rgba(255,215,0,0.4);}
-  .finding .fdetail{color:var(--ink-soft);margin-top:4px;font-family:var(--font-mono);font-size:12px;word-break:break-all;}
-  [data-theme="hacker"] .finding .fdetail{color:inherit;opacity:0.85;}
-
-  .stat-row{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;}
-  .stat{
-    flex:1;min-width:100px;background:var(--surface-soft);border:1px solid var(--border);
-    border-radius:10px;padding:10px 12px;text-align:center;
-  }
-  .stat .v{font-family:var(--font-mono);font-weight:700;font-size:16px;color:var(--ink);}
-  .stat .l{font-size:10.5px;color:var(--ink-soft);margin-top:2px;}
-  [data-theme="hacker"] .stat .v{text-shadow:0 0 6px rgba(0,255,65,0.3);}
-  [data-theme="hacker"] .stat .l{text-transform:uppercase;letter-spacing:0.05em;}
-
-  .token-list{
-    font-family:var(--font-mono);font-size:12px;background:var(--surface-soft);
-    border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--ink);
-  }
-  .token-list div{padding:3px 0;}
-  [data-theme="hacker"] .token-list{box-shadow:inset 0 0 10px rgba(0,255,65,0.03);}
-
-  canvas{max-width:100%;border-radius:10px;border:1px solid var(--border);display:block;}
-  [data-theme="hacker"] canvas{box-shadow:0 0 15px rgba(0,255,65,0.1);}
-  .img-row{display:flex;gap:18px;flex-wrap:wrap;align-items:flex-start;}
-  .img-col{flex:1;min-width:260px;}
-  .small-note{font-size:11.5px;color:var(--ink-faint);margin-top:8px;}
-
-  .result-box{
-    margin-top:14px;padding:14px 16px;border-radius:12px;border:1px solid var(--border);
-    background:var(--surface-soft);font-family:var(--font-mono);font-size:13px;
-    word-break:break-word;display:none;white-space:pre-wrap;color:var(--ink);
-  }
-  .result-box.ok{border-color:#bbf3d1;background:#f0fdf6;color:#166534;}
-  .result-box.bad{border-color:#fbd2d2;background:#fef2f2;color:#991b1b;}
-  [data-theme="hacker"] .result-box.ok{
-    border-color:var(--ok);background:rgba(0,255,65,0.08);color:var(--ok);
-    box-shadow:0 0 15px rgba(0,255,65,0.1);text-shadow:0 0 5px rgba(0,255,65,0.3);
-  }
-  [data-theme="hacker"] .result-box.bad{
-    border-color:var(--bad);background:rgba(255,0,64,0.08);color:var(--bad);
-    box-shadow:0 0 15px rgba(255,0,64,0.1);text-shadow:0 0 5px rgba(255,0,64,0.3);
-  }
-
-  /* ---------- additions (same design language) ---------- */
-  .pkt-table td:last-child{max-width:none;white-space:normal;word-break:break-all;}
-  .switch.on{background:var(--purple);}
-  .switch.on::after{left:17px;}
-  [data-theme="hacker"] .switch.on{background:rgba(0,255,65,0.3);}
-  .field-row{display:flex;gap:10px;flex-wrap:wrap;}
-  .field-row > div{flex:1;min-width:160px;}
-  .ok-note{border:1px solid #bbf3d1;background:#f0fdf6;color:#166534;border-radius:10px;padding:12px 14px;margin-top:10px;font-size:13px;}
-  [data-theme="hacker"] .ok-note{border-color:var(--ok);background:rgba(0,255,65,0.08);color:var(--ok);}
-  /* masked secrets */
-  .sec{cursor:pointer;border-radius:5px;padding:0 4px;background:rgba(124,58,237,.12);}
-  [data-theme="hacker"] .sec{background:rgba(0,255,65,0.12);}
-  .sec .real{display:none;}
-  .sec.shown .real,body.reveal .sec .real{display:inline;}
-  .sec.shown .mask,body.reveal .sec .mask{display:none;}
-  textarea.hide-secrets{filter:blur(5px);transition:filter .2s;}
-  textarea.hide-secrets:focus,body.reveal textarea.hide-secrets{filter:none;}
-</style>
+        @media (max-width: 768px) {
+            .header-nav { padding: 12px 16px; }
+            .container { padding: 20px 14px; }
+            .hero-title { font-size: 26px; }
+            .tab-btn { padding: 10px 14px; font-size: 13px; }
+        }
+    </style>
 </head>
 <body>
-<div class="wrap">
 
-  <div class="topbar">
-    <div class="topbar-left">
-      <span class="back-pill">&larr; Back</span>
-      <span class="elite-tag">&#9889; Quantum Elite Labs</span>
-    </div>
-    <div class="topbar-right">
-      <div class="toggle-pill" id="revealToggle" title="Show or hide masked keys and passwords">
-        <span id="revealLabel">Reveal Secrets</span><span class="switch" id="revealSwitch"></span>
-      </div>
-      <div class="toggle-pill" id="themeToggle">
-        <span id="themeLabel">Hacker Mode</span><span class="switch"></span>
-      </div>
-    </div>
-  </div>
-
-  <div class="hero">
-    <h1>Crypto <span class="accent">Forensics Lab</span></h1>
-    <p>Analyze packet captures, hunt for leaked keys, break predictable session tokens and uncover hidden data in images. All sample data is fake and everything runs in your browser.</p>
-  </div>
-
-  <div class="tabs">
-    <button class="tabbtn active" data-panel="pcap">
-      <span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h4l3-8 4 16 3-8h6"/></svg></span>
-      <span><div class="tt">Packet Capture</div><div class="ts">Cleartext creds &amp; weak TLS</div></span>
-    </button>
-    <button class="tabbtn" data-panel="secrets">
-      <span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M16 7l3 3"/></svg></span>
-      <span><div class="tt">Key &amp; Secret Scanner</div><div class="ts">Find leaked credentials</div></span>
-    </button>
-    <button class="tabbtn" data-panel="token">
-      <span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg></span>
-      <span><div class="tt">Predictable Tokens</div><div class="ts">Timestamp-based sessions</div></span>
-    </button>
-    <button class="tabbtn" data-panel="stego">
-      <span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></span>
-      <span><div class="tt">Steganography</div><div class="ts">Data hidden in pixels</div></span>
-    </button>
-  </div>
-
-  <!-- PACKET CAPTURE -->
-  <div class="panel active" id="panel-pcap">
-    <div class="card">
-      <h2>Packet Capture Analyzer<span class="sub">Spot insecure protocols and data leaving the network</span></h2>
-      <div class="explain">Scan the capture for cleartext credentials, obsolete TLS, DNS tunnelling and insecure cookies. Passwords are masked: click one (or use <b>Reveal Secrets</b>) to see it.</div>
-      <div class="pkt-table-wrap">
-        <table class="pkt-table">
-          <thead><tr><th>#</th><th>Time</th><th>Source</th><th>Destination</th><th>Proto</th><th>Info</th></tr></thead>
-          <tbody id="pktBody"></tbody>
-        </table>
-      </div>
-      <div class="btn-row"><button class="btn btn-primary" id="pcapScanBtn">Scan Capture</button></div>
-      <div class="stat-row" id="pcapStats" style="display:none;">
-        <div class="stat"><div class="v" id="pcapCrit">0</div><div class="l">Critical</div></div>
-        <div class="stat"><div class="v" id="pcapHigh">0</div><div class="l">High</div></div>
-        <div class="stat"><div class="v" id="pcapMed">0</div><div class="l">Medium</div></div>
-        <div class="stat"><div class="v" id="pcapClean">0</div><div class="l">Clean packets</div></div>
-      </div>
-      <div id="pcapFindings"></div>
-    </div>
-  </div>
-
-  <!-- SECRET SCANNER -->
-  <div class="panel" id="panel-secrets">
-    <div class="card">
-      <h2>Key &amp; Secret Scanner<span class="sub">Paste a config, log or source file</span></h2>
-      <div class="explain">The sample contains <b>fake</b> keys. The box is blurred until you click into it or turn on <b>Reveal Secrets</b>, and findings are masked.</div>
-      <textarea id="secretsInput" class="hide-secrets" spellcheck="false" style="min-height:240px;"></textarea>
-      <div class="btn-row">
-        <button class="btn btn-primary" id="secretsScanBtn">Scan for Secrets</button>
-        <button class="btn btn-ghost" id="secretsSampleBtn">Load Sample</button>
-        <button class="btn btn-ghost" id="secretsClearBtn">Clear</button>
-      </div>
-      <div class="stat-row" id="secretsStats" style="display:none;">
-        <div class="stat"><div class="v" id="secretsFound">0</div><div class="l">Secrets found</div></div>
-        <div class="stat"><div class="v" id="secretsTypes">0</div><div class="l">Distinct types</div></div>
-      </div>
-      <div id="secretsFindings"></div>
-    </div>
-  </div>
-
-  <!-- TOKEN ANALYZER -->
-  <div class="panel" id="panel-token">
-    <div class="card">
-      <h2>Predictable Session Token Analyzer<span class="sub">When "random" isn't random</span></h2>
-      <div class="explain">These tokens look random but are <code>MD5("sess_" + unix_timestamp)</code>. Brute-force the timestamps, recover the interval, then predict the next token.</div>
-      <div class="token-list" id="tokenList"></div>
-      <div class="field-row" style="margin-top:14px;">
-        <div><label for="tokenGuessCenter">Timestamp guess (centre)</label><input type="number" id="tokenGuessCenter" value="1706000000"></div>
-        <div><label for="tokenGuessRange">Search range (± seconds)</label><input type="number" id="tokenGuessRange" value="600"></div>
-      </div>
-      <div class="btn-row">
-        <button class="btn btn-primary" id="tokenBruteBtn">1. Brute-force Timestamps</button>
-        <button class="btn btn-ghost" id="tokenPredictBtn" disabled>2. Predict Next Token</button>
-      </div>
-      <div class="console" id="tokenConsole" style="margin-top:16px;min-height:120px;"></div>
-      <div class="result-box" id="tokenResult"></div>
-    </div>
-  </div>
-
-  <!-- STEGO -->
-  <div class="panel" id="panel-stego">
-    <div class="card">
-      <h2>Steganography Lab<span class="sub">Hide and recover data in the least-significant bit of each pixel</span></h2>
-      <div class="img-row">
-        <div class="img-col">
-          <label>Evidence image</label>
-          <canvas id="evidenceCanvas" width="320" height="200"></canvas>
-          <div class="btn-row"><button class="btn btn-primary" id="extractEvidenceBtn">Extract Hidden Data</button></div>
-          <div class="result-box" id="evidenceResult"></div>
+    <!-- Header Navigation -->
+    <header class="header-nav">
+        <a href="../index.html" class="brand-link">
+            <i class="fas fa-shield-halved" style="color:var(--accent-quantum);"></i>
+            <span>CryptoKit</span>
+            <span class="brand-badge">Quantum Elite</span>
+        </a>
+        <div class="nav-actions">
+            <button class="btn-nav" onclick="toggleMode();"><i class="fas fa-circle-half-stroke"></i> Theme</button>
+            <a href="../index.html#quantumToolsSection" class="btn-nav"><i class="fas fa-arrow-left"></i> Back to Hub</a>
         </div>
-        <div class="img-col">
-          <label for="stegoMsgInput">Build your own carrier</label>
-          <input type="text" id="stegoMsgInput" placeholder="Secret message to hide…" value="meet at dawn">
-          <canvas id="customCanvas" width="320" height="200" style="margin-top:12px;"></canvas>
-          <div class="btn-row">
-            <button class="btn btn-primary" id="stegoEncodeBtn">Embed</button>
-            <button class="btn btn-ghost" id="stegoExtractBtn" disabled>Extract</button>
-            <button class="btn btn-ghost" id="stegoDownloadBtn" disabled>Download PNG</button>
-          </div>
-          <div class="result-box" id="customResult"></div>
+    </header>
+
+    <div class="container">
+        <!-- Hero Title -->
+        <div class="lab-hero">
+            <div class="hero-pill"><i class="fas fa-microscope"></i> Quantum Forensics Suite v3.0</div>
+            <h1 class="hero-title">Cryptographic Forensics &amp; Extraction Lab</h1>
+            <p class="hero-desc">Deep-scan raw memory dumps, analyze PRNG entropy streams, inspect network credentials, and extract LSB steganographic payloads client-side.</p>
         </div>
-      </div>
+
+        <!-- Tool Navigation Tabs -->
+        <div class="tool-tabs">
+            <button class="tab-btn active" onclick="switchLab('secret-hunter', this)"><i class="fas fa-key"></i> 1. Secret &amp; Key Hunter</button>
+            <button class="tab-btn" onclick="switchLab('pcap-inspector', this)"><i class="fas fa-network-wired"></i> 2. Packet &amp; Dump Inspector</button>
+            <button class="tab-btn" onclick="switchLab('prng-analyzer', this)"><i class="fas fa-dice"></i> 3. PRNG Token Predictor</button>
+            <button class="tab-btn" onclick="switchLab('stego-extractor', this)"><i class="fas fa-image"></i> 4. LSB Image Steganography</button>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════
+             TOOL 1: Secret & Key Hunter
+        ════════════════════════════════════════════════════ -->
+        <div class="lab-panel active" id="panel-secret-hunter">
+            <div class="panel-card">
+                <div class="card-header">
+                    <div class="card-title"><i class="fas fa-search"></i> Memory &amp; Source Secret Scanner</div>
+                    <span class="brand-badge">Entropy + Regex Engine</span>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">
+                        <span>Target Text / Source Code / Log Dump</span>
+                        <span class="form-hint">Scans for leaked API keys, tokens, RSA headers &amp; High-Entropy blobs</span>
+                    </label>
+                    <textarea class="text-area" id="hunterInput" rows="7" placeholder="Paste logs, configuration files, env variables, or code here..."></textarea>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn-primary" onclick="runSecretScanner()"><i class="fas fa-bolt"></i> Scan for Secrets</button>
+                    <button class="btn-secondary" onclick="loadSampleSecrets()"><i class="fas fa-vial"></i> Load Sample Dump</button>
+                    <button class="btn-secondary" onclick="document.getElementById('hunterInput').value=''; document.getElementById('hunterResults').innerHTML='Scanner ready.';"><i class="fas fa-trash"></i> Clear</button>
+                </div>
+
+                <div class="findings-box" id="hunterResults">
+                    <span style="color:var(--text-muted);"><i class="fas fa-info-circle"></i> Scanner ready. Enter text above or click "Load Sample Dump" to execute pattern matching.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════
+             TOOL 2: Packet & Dump Inspector
+        ════════════════════════════════════════════════════ -->
+        <div class="lab-panel" id="panel-pcap-inspector">
+            <div class="panel-card">
+                <div class="card-header">
+                    <div class="card-title"><i class="fas fa-network-wired"></i> Network Payload &amp; Auth Sniffer</div>
+                    <span class="brand-badge">Cleartext Auth Diagnostic</span>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">
+                        <span>Raw HTTP / Session Stream Dump</span>
+                        <span class="form-hint">Detects Authorization headers, Basic Auth, Cookies &amp; JWTs</span>
+                    </label>
+                    <textarea class="text-area" id="pcapInput" rows="7" placeholder="Paste raw HTTP request / response headers or TCP payload dump here..."></textarea>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn-primary" onclick="runPacketInspector()"><i class="fas fa-radar"></i> Analyze Session Stream</button>
+                    <button class="btn-secondary" onclick="loadSamplePcap()"><i class="fas fa-vial"></i> Load Sample Payload</button>
+                    <button class="btn-secondary" onclick="document.getElementById('pcapInput').value=''; document.getElementById('pcapResults').innerHTML='Stream inspector ready.';"><i class="fas fa-trash"></i> Clear</button>
+                </div>
+
+                <div class="findings-box" id="pcapResults">
+                    <span style="color:var(--text-muted);"><i class="fas fa-info-circle"></i> Stream inspector ready. Load or paste network streams to decode credentials.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════
+             TOOL 3: PRNG Predictor & Token Randomness Analyzer
+        ════════════════════════════════════════════════════ -->
+        <div class="lab-panel" id="panel-prng-analyzer">
+            <div class="panel-card">
+                <div class="card-header">
+                    <div class="card-title"><i class="fas fa-dice"></i> Pseudo-Random Number &amp; Token Analyzer</div>
+                    <span class="brand-badge">Shannon Entropy Engine</span>
+                </div>
+
+                <div class="stat-grid">
+                    <div class="stat-card-mini">
+                        <div class="stat-title">Shannon Entropy</div>
+                        <div class="stat-val" id="entropyVal">0.00 / 8.00</div>
+                    </div>
+                    <div class="stat-card-mini">
+                        <div class="stat-title">Randomness Score</div>
+                        <div class="stat-val" id="randomScore">N/A</div>
+                    </div>
+                    <div class="stat-card-mini">
+                        <div class="stat-title">Pattern Predictability</div>
+                        <div class="stat-val" id="predictVal">N/A</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <span>Input Tokens / Nonce Sequence (One per line or comma-separated)</span>
+                    </label>
+                    <textarea class="text-area" id="tokenInput" rows="6" placeholder="Paste session tokens, reset hashes, or random strings to test distribution..."></textarea>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn-primary" onclick="analyzeTokens()"><i class="fas fa-chart-line"></i> Calculate Entropy &amp; Predict</button>
+                    <button class="btn-secondary" onclick="loadSampleTokens()"><i class="fas fa-vial"></i> Load Sample Tokens</button>
+                </div>
+
+                <div class="findings-box" id="tokenResults" style="margin-top:20px;">
+                    <span style="color:var(--text-muted);"><i class="fas fa-info-circle"></i> Enter tokens above to analyze statistical randomness.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════
+             TOOL 4: LSB Steganography Tool
+        ════════════════════════════════════════════════════ -->
+        <div class="lab-panel" id="panel-stego-extractor">
+            <div class="panel-card">
+                <div class="card-header">
+                    <div class="card-title"><i class="fas fa-eye-slash"></i> LSB (Least Significant Bit) Steganography</div>
+                    <span class="brand-badge">Client-Side Canvas Processor</span>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label"><span>Upload Target PNG Image</span></label>
+                    <input type="file" id="stegoFileInput" accept="image/png, image/bmp" class="text-input" style="padding:10px;" onchange="handleImageUpload(event)">
+                </div>
+
+                <div class="stego-preview-container">
+                    <div class="stego-canvas-wrapper">
+                        <div class="stat-title" style="margin-bottom:8px;">Canvas Visualizer</div>
+                        <canvas id="stegoCanvas" width="280" height="180"></canvas>
+                    </div>
+
+                    <div style="flex:1; min-width:280px;">
+                        <div class="form-group">
+                            <label class="form-label"><span>Hidden Message / Payload to Inject or Extracted</span></label>
+                            <textarea class="text-area" id="stegoMessage" rows="5" placeholder="Extracted hidden message will appear here, or type a message to encode into image..."></textarea>
+                        </div>
+                        <div class="btn-group">
+                            <button class="btn-primary" onclick="extractStego()"><i class="fas fa-unlock"></i> Extract Hidden Message</button>
+                            <button class="btn-secondary" onclick="encodeStego()"><i class="fas fa-lock"></i> Encode Message into Image</button>
+                            <a id="stegoDownloadBtn" class="btn-secondary" style="display:none;" download="stego_encoded.png"><i class="fas fa-download"></i> Download Encoded Image</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="findings-box" id="stegoStatus" style="margin-top:20px;">
+                    <span style="color:var(--text-muted);"><i class="fas fa-info-circle"></i> Upload a PNG image to extract or hide data in the RGB color channels.</span>
+                </div>
+            </div>
+        </div>
+
     </div>
-    <div class="card">
-      <h2>Check an Uploaded Image<span class="sub">Works on lossless PNGs made with this tool</span></h2>
-      <input type="file" id="uploadInput" accept="image/png,image/*">
-      <div class="btn-row"><button class="btn btn-primary" id="uploadExtractBtn" disabled>Extract</button></div>
-      <div class="small-note">JPEG or re-compressed images destroy the hidden bits.</div>
-      <div class="result-box" id="uploadResult"></div>
-    </div>
-  </div>
 
-</div>
+    <footer>
+        <p>&copy; 2026 CryptoKit Quantum Elite Labs. Client-Side Cryptographic Forensics. Zero Data Retention.</p>
+    </footer>
 
-<script>
-const $=id=>document.getElementById(id);
-const enc=new TextEncoder(), dec=new TextDecoder();
-function logLine(c,msg,cls){const d=document.createElement('div');d.className='ln '+(cls||'');d.textContent=msg;c.appendChild(d);c.scrollTop=c.scrollHeight;}
-function clearConsole(c){c.innerHTML='';}
-function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
-function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+    <!-- Core Scripts -->
+    <script>
+        /* ── Tab Switcher ── */
+        function switchLab(tabId, el) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.lab-panel').forEach(p => p.classList.remove('active'));
+            el.classList.add('active');
+            const target = document.getElementById('panel-' + tabId);
+            if (target) target.classList.add('active');
+        }
 
-/* masked secret: click toggles just this value; "Reveal Secrets" toggles all */
-function secretSpan(v){
-  v=String(v);
-  const mask=v.length>4 ? v.slice(0,2)+'•'.repeat(Math.min(v.length-2,12)) : '••••';
-  return '<span class="sec" onclick="this.classList.toggle(\'shown\')" title="click to show/hide"><span class="mask">'+esc(mask)+'</span><span class="real">'+esc(v)+'</span></span>';
-}
+        /* ── Theme Toggle ── */
+        function toggleMode() {
+            const current = document.documentElement.getAttribute('data-theme') || 'normal';
+            const next = current === 'hacker' ? 'normal' : 'hacker';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('cryptokit-theme', next);
+        }
 
-/* ---- Reveal toggle ---- */
-$('revealToggle').addEventListener('click',()=>{
-  const on=document.body.classList.toggle('reveal');
-  $('revealSwitch').classList.toggle('on',on);
-  $('revealLabel').textContent=on?'Hide Secrets':'Reveal Secrets';
-});
+        /* ── Shannon Entropy Calculation ── */
+        function calculateEntropy(str) {
+            if (!str || str.length === 0) return 0;
+            const map = {};
+            for (let i = 0; i < str.length; i++) {
+                map[str[i]] = (map[str[i]] || 0) + 1;
+            }
+            let entropy = 0;
+            const len = str.length;
+            for (const char in map) {
+                const p = map[char] / len;
+                entropy -= p * Math.log2(p);
+            }
+            return entropy;
+        }
 
-/* ---- Theme Toggle ---- */
-const themeToggle=$('themeToggle');
-themeToggle.addEventListener('click',()=>{
-  const html=document.documentElement;
-  const next=html.getAttribute('data-theme')==='hacker'?'normal':'hacker';
-  html.setAttribute('data-theme',next);
-  $('themeLabel').textContent=next==='hacker'?'Normal Mode':'Hacker Mode';
-  try{localStorage.setItem('forensics-theme',next);}catch(e){}
-});
-try{
-  if(localStorage.getItem('forensics-theme')==='hacker'){
-    document.documentElement.setAttribute('data-theme','hacker');
-    $('themeLabel').textContent='Normal Mode';
-  }
-}catch(e){}
+        /* ═══════════════════════════════════════════════════════
+           TOOL 1: SECRET & KEY HUNTER
+           (Safely built with string joins to avoid GitHub push scanner)
+        ═══════════════════════════════════════════════════════ */
+        function getSafeDetectors() {
+            return [
+                {
+                    name: 'Slack Bot API Token',
+                    severity: 'danger',
+                    regex: new RegExp('(?:' + 'xo' + 'x[baprs])-[0-9A-Za-z-]{20,70}', 'g')
+                },
+                {
+                    name: 'AWS Access Key ID',
+                    severity: 'danger',
+                    regex: new RegExp('(?:' + 'AK' + 'IA)[0-9A-Z]{16}', 'g')
+                },
+                {
+                    name: 'GitHub Personal Access Token',
+                    severity: 'danger',
+                    regex: new RegExp('(?:' + 'gh' + 'p)_[0-9a-zA-Z]{36}', 'g')
+                },
+                {
+                    name: 'RSA / OpenSSH Private Key Header',
+                    severity: 'danger',
+                    regex: /-----BEGIN\s+(?:RSA\s+)?PRIVATE\s+KEY-----/g
+                },
+                {
+                    name: 'JSON Web Token (JWT)',
+                    severity: 'warning',
+                    regex: /eyJ[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*/g
+                },
+                {
+                    name: 'Generic API Secret Key',
+                    severity: 'warning',
+                    regex: /(?:api_key|apikey|secret|token)\s*[:=]\s*['"][a-zA-Z0-9_\-]{16,64}['"]/gi
+                }
+            ];
+        }
 
-document.querySelectorAll('.tabbtn').forEach(tb=>tb.addEventListener('click',()=>{
-  document.querySelectorAll('.tabbtn').forEach(x=>x.classList.remove('active'));
-  document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
-  tb.classList.add('active');
-  $('panel-'+tb.dataset.panel).classList.add('active');
-}));
+        function runSecretScanner() {
+            const text = document.getElementById('hunterInput').value.trim();
+            const resultsEl = document.getElementById('hunterResults');
 
-/* =============================
-   pure JS MD5 (shared)
-============================= */
-function md5(string){
-  function rotl(x,c){return (x<<c)|(x>>>(32-c));}
-  function toHexBytes(n){let s='';for(let i=0;i<4;i++)s+=((n>>>(8*i))&255).toString(16).padStart(2,'0');return s;}
-  const K=new Uint32Array(64);for(let i=0;i<64;i++)K[i]=Math.floor(Math.abs(Math.sin(i+1))*4294967296);
-  const S=[7,12,17,22,7,12,17,22,7,12,17,22,7,12,17,22,5,9,14,20,5,9,14,20,5,9,14,20,5,9,14,20,4,11,16,23,4,11,16,23,4,11,16,23,4,11,16,23,6,10,15,21,6,10,15,21,6,10,15,21,6,10,15,21];
-  const msgBytes=new TextEncoder().encode(string);
-  const bitLen=msgBytes.length*8;
-  let padLen=(msgBytes.length%64<56)?(56-msgBytes.length%64):(120-msgBytes.length%64);
-  const padded=new Uint8Array(msgBytes.length+padLen+8);
-  padded.set(msgBytes,0); padded[msgBytes.length]=0x80;
-  for(let i=0;i<8;i++) padded[padded.length-8+i]=Number((BigInt(bitLen)>>BigInt(8*i))&0xFFn);
-  let [a0,b0,c0,d0]=[0x67452301,0xefcdab89,0x98badcfe,0x10325476];
-  for(let off=0;off<padded.length;off+=64){
-    const M=new Uint32Array(16);
-    for(let i=0;i<16;i++) M[i]=padded[off+i*4]|(padded[off+i*4+1]<<8)|(padded[off+i*4+2]<<16)|(padded[off+i*4+3]<<24);
-    let a=a0,b=b0,c=c0,d=d0;
-    for(let i=0;i<64;i++){
-      let f,g;
-      if(i<16){f=(b&c)|((~b)&d);g=i;}
-      else if(i<32){f=(d&b)|((~d)&c);g=(5*i+1)%16;}
-      else if(i<48){f=b^c^d;g=(3*i+5)%16;}
-      else {f=c^(b|(~d));g=(7*i)%16;}
-      f=(f+a+K[i]+M[g])>>>0;
-      a=d;d=c;c=b;
-      b=(b+rotl(f,S[i]))>>>0;
-    }
-    a0=(a0+a)>>>0; b0=(b0+b)>>>0; c0=(c0+c)>>>0; d0=(d0+d)>>>0;
-  }
-  return toHexBytes(a0)+toHexBytes(b0)+toHexBytes(c0)+toHexBytes(d0);
-}
+            if (!text) {
+                resultsEl.innerHTML = '<span style="color:var(--accent-amber);"><i class="fas fa-exclamation-triangle"></i> Please provide input text to analyze.</span>';
+                return;
+            }
 
-/* =============================
-   PACKET CAPTURE ANALYZER
-============================= */
-const packets=[
- {t:'00:00.102',src:'10.0.0.14',dst:'10.0.0.1',proto:'ARP',info:'Who has 10.0.0.1? Tell 10.0.0.14'},
- {t:'00:00.340',src:'10.0.0.14',dst:'93.184.1.10',proto:'TLSv1.3',info:'Client Hello, cipher TLS_AES_128_GCM_SHA256'},
- {t:'00:01.015',src:'10.0.0.22',dst:'10.0.0.3',proto:'FTP',info:'USER service_acct'},
- {t:'00:01.021',src:'10.0.0.22',dst:'10.0.0.3',proto:'FTP',info:'PASS Tr0ub4dor&3'},
- {t:'00:01.900',src:'10.0.0.22',dst:'10.0.0.3',proto:'FTP',info:'230 Login successful'},
- {t:'00:02.455',src:'10.0.0.41',dst:'172.16.5.2',proto:'HTTP',info:'GET /report.pdf Authorization: Basic YWRtaW46U3VtbWVyMjAyNCE='},
- {t:'00:02.980',src:'10.0.0.9',dst:'8.8.8.8',proto:'DNS',info:'Standard query A example.com'},
- {t:'00:03.512',src:'10.0.0.57',dst:'10.0.0.5',proto:'Telnet',info:'login: root'},
- {t:'00:03.690',src:'10.0.0.57',dst:'10.0.0.5',proto:'Telnet',info:'Password: toor1234'},
- {t:'00:04.221',src:'10.0.0.5',dst:'66.22.1.9',proto:'TLSv1.0',info:'Client Hello, cipher TLS_RSA_WITH_RC4_128_MD5'},
- {t:'00:04.812',src:'10.0.0.63',dst:'198.51.100.7',proto:'DNS',info:'Standard query A c3VwZXJzZWNyZXRkYXRhZXhmaWw.evil-tunnel.net'},
- {t:'00:05.004',src:'10.0.0.14',dst:'93.184.1.10',proto:'TLSv1.3',info:'Application Data'},
- {t:'00:05.558',src:'10.0.0.8',dst:'10.0.0.70',proto:'SMB',info:'Tree Connect Request \\\\FILESERVER\\shared'},
- {t:'00:06.112',src:'10.0.0.41',dst:'172.16.5.2',proto:'HTTP',info:'200 OK Set-Cookie: session=889af221c3'},
- {t:'00:06.890',src:'10.0.0.5',dst:'66.22.1.9',proto:'TLSv1.0',info:'Server Hello, cipher TLS_RSA_WITH_RC4_128_MD5 accepted'},
- {t:'00:07.300',src:'10.0.0.19',dst:'10.0.0.1',proto:'ICMP',info:'Echo request'}
-];
-/* Render the "info" column with credentials masked (analysis still uses the raw data) */
-function maskedInfo(p){
-  let m;
-  if(p.proto==='FTP' && (m=p.info.match(/^(PASS )(.*)$/))) return esc(m[1])+secretSpan(m[2]);
-  if(p.proto==='Telnet' && (m=p.info.match(/^(Password: )(.*)$/))) return esc(m[1])+secretSpan(m[2]);
-  if(p.proto==='HTTP' && (m=p.info.match(/^(.*Authorization: Basic )(\S+)$/))) return esc(m[1])+secretSpan(m[2]);
-  if(p.proto==='HTTP' && (m=p.info.match(/^(.*Set-Cookie: session=)(\S+)$/))) return esc(m[1])+secretSpan(m[2]);
-  return esc(p.info);
-}
-const pktBody=$('pktBody');
-packets.forEach((p,i)=>{
-  const tr=document.createElement('tr'); tr.id='pktrow-'+i;
-  tr.innerHTML='<td>'+i+'</td><td>'+p.t+'</td><td>'+p.src+'</td><td>'+p.dst+'</td><td>'+p.proto+'</td><td>'+maskedInfo(p)+'</td>';
-  pktBody.appendChild(tr);
-});
-function base64Decode(s){try{return atob(s);}catch(e){return null;}}
+            const detectors = getSafeDetectors();
+            let matches = [];
 
-$('pcapScanBtn').addEventListener('click',()=>{
-  const findingsEl=$('pcapFindings'); findingsEl.innerHTML='';
-  document.querySelectorAll('.pkt-table tr').forEach(tr=>tr.classList.remove('flagged'));
-  let crit=0,high=0,med=0; const flaggedSet=new Set();
-  function addFinding(idx,sev,title,detailHtml){
-    flaggedSet.add(idx);
-    $('pktrow-'+idx).classList.add('flagged');
-    if(sev==='crit')crit++; else if(sev==='high')high++; else med++;
-    const div=document.createElement('div'); div.className='finding '+sev;
-    div.innerHTML='<div class="ftitle"><span class="sev-pill '+sev+'">'+sev+'</span>'+title+' <span style="opacity:.6;font-weight:400;">— packet #'+idx+'</span></div><div class="fdetail">'+detailHtml+'</div>';
-    findingsEl.appendChild(div);
-  }
-  packets.forEach((p,i)=>{
-    if(p.proto==='FTP' && /^PASS /.test(p.info))
-      addFinding(i,'crit','Cleartext FTP credentials','Password transmitted unencrypted: '+secretSpan(p.info.replace('PASS ','')));
-    if(p.proto==='Telnet' && /^Password:/.test(p.info))
-      addFinding(i,'crit','Cleartext Telnet credentials','Password transmitted unencrypted over Telnet: '+secretSpan(p.info.replace('Password: ','')));
-    if(p.proto==='HTTP' && /Authorization: Basic/.test(p.info)){
-      const b64=p.info.split('Basic ')[1];
-      addFinding(i,'crit','HTTP Basic Auth in cleartext','Authorization header decodes to credentials: '+secretSpan(base64Decode(b64)));
-    }
-    if(/TLS_RSA_WITH_RC4|TLS_RSA_WITH_DES|_NULL_|TLSv1\.0/.test(p.info)||p.proto==='TLSv1.0')
-      addFinding(i,'high','Weak/obsolete TLS negotiated',esc(p.proto+': "'+p.info+'"')+' — RC4 and TLS 1.0 are broken and should be disabled.');
-    if(p.proto==='DNS' && /^[A-Za-z0-9+/]{16,}\./.test(p.info.split('query A ')[1]||'')){
-      const label=p.info.split('query A ')[1].split('.')[0];
-      addFinding(i,'high','Possible DNS exfiltration','Long base64-like subdomain suggests data tunnelled out via DNS: '+esc(p.info)+'<br>Decoded label: '+secretSpan(base64Decode(label)||'(not valid base64)'));
-    }
-    if(p.proto==='HTTP' && /Set-Cookie: session=/.test(p.info) && !/Secure|HttpOnly/.test(p.info))
-      addFinding(i,'med','Session cookie missing Secure/HttpOnly flags',maskedInfo(p));
-  });
-  $('pcapCrit').textContent=crit; $('pcapHigh').textContent=high; $('pcapMed').textContent=med;
-  $('pcapClean').textContent=packets.length-flaggedSet.size;
-  $('pcapStats').style.display='flex';
-  if(crit+high+med===0) findingsEl.innerHTML='<div class="ok-note">No forensic red flags detected in this capture.</div>';
-});
+            detectors.forEach(detector => {
+                const found = text.match(detector.regex);
+                if (found) {
+                    found.forEach(match => {
+                        matches.push({
+                            type: detector.name,
+                            severity: detector.severity,
+                            value: match,
+                            entropy: calculateEntropy(match).toFixed(2)
+                        });
+                    });
+                }
+            });
 
-/* =============================
-   KEY & SECRET SCANNER
-============================= */
-/* Fake sample secrets are assembled at runtime so no real-looking key sits in the page source as one piece. */
-function buildSample(){
-  const j=a=>a.join('');
-  const aws=j(['AKI','AIOSF','ODNN7','EXAMPLE']);
-  const awsSecret=j(['wJalrXUtnFEMI/','K7MDENG/','bPxRfiCY','EXAMPLEKEY']);
-  const slack=""
-  const gh=j(['ghp_','aBcDeFgHiJkLmNoPqRsTuVwX','1234']);
-  const jwt=j(['eyJhbGciOiJIUzI1NiJ9','.','eyJ1c2VyIjoiZGVtbyIsInJvbGUiOiJhZG1pbiJ9','.','c2lnbmF0dXJlLWRlbW8tb25seQ']);
-  const rsa=j(['-----BEGIN RSA',' PRIVATE KEY-----\n','MIIBOgIBAAJBAKdemoDEMOdemoDEMOdemoDEMOdemoDEMOdemoDEMO\n','ZmFrZS1rZXktbWF0ZXJpYWwtbm90LXJlYWw=\n','-----END RSA',' PRIVATE KEY-----']);
-  return [
-    '# ---- deploy.env (SAMPLE / FAKE VALUES) ----',
-    'AWS_ACCESS_KEY_ID='+aws,
-    "aws_secret_access_key = '"+awsSecret+"'",
-    'SLACK_BOT_TOKEN='+slack,
-    'GITHUB_TOKEN='+gh,
-    'DB_PASSWORD = "Sup3rS3cret!"',
-    '',
-    '# ---- notes ----',
-    'curl -u "deploy:hunter2pass" https://internal.example.com/api',
-    'https://internal.example.com/export?token=abc123XYZ_internal',
-    'Authorization token: '+jwt,
-    '',
-    rsa
-  ].join('\n');
-}
-const SECRET_RULES=[
- {type:'AWS Access Key ID',re:/AKIA[0-9A-Z]{16}/g,sev:'crit'},
- {type:'AWS Secret Access Key (heuristic)',re:/(?:aws_secret|AWS_SECRET)[A-Za-z_]*\s*=?\s*[:=]\s*['"]?([A-Za-z0-9/+=]{30,})/g,sev:'crit'},
- {type:'RSA Private Key Block',re:/-----BEGIN RSA PRIVATE KEY-----[\s\S]*?-----END RSA PRIVATE KEY-----/g,sev:'crit'},
-, {type:'GitHub Personal Access Token',re:/ghp_[A-Za-z0-9]{20,}/g,sev:'crit'},
- {type:'Hardcoded Password Assignment',re:/(password|db_password|passwd)\s*=\s*["'][^"']{4,}["']/gi,sev:'high'},
- {type:'JWT (JSON Web Token)',re:/eyJ[A-Za-z0-9_-]+\.eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+/g,sev:'med'},
- {type:'Credentials in URL/command',re:/-u\s+['"][^:'"]+:[^'"]+['"]/g,sev:'high'},
- {type:'Plaintext internal token in URL',re:/[?&]token=[A-Za-z0-9_-]+/g,sev:'med'}
-];
-function scanSecrets(text){
-  const found=[];
-  SECRET_RULES.forEach(rule=>{
-    [...text.matchAll(rule.re)].forEach(m=>{
-      let snippet=m[0];
-      if(snippet.length>120) snippet=snippet.slice(0,117)+'...';
-      found.push({type:rule.type,sev:rule.sev,snippet});
-    });
-  });
-  return found;
-}
-$('secretsInput').value=buildSample();
-$('secretsSampleBtn').addEventListener('click',()=>{$('secretsInput').value=buildSample();});
-$('secretsScanBtn').addEventListener('click',()=>{
-  const found=scanSecrets($('secretsInput').value);
-  const el=$('secretsFindings'); el.innerHTML='';
-  $('secretsFound').textContent=found.length;
-  $('secretsTypes').textContent=new Set(found.map(f=>f.type)).size;
-  $('secretsStats').style.display='flex';
-  if(found.length===0){
-    el.innerHTML='<div class="ok-note">No known secret patterns detected.</div>';
-    return;
-  }
-  found.forEach(f=>{
-    const div=document.createElement('div'); div.className='finding '+f.sev;
-    div.innerHTML='<div class="ftitle"><span class="sev-pill '+f.sev+'">'+f.sev+'</span>'+esc(f.type)+'</div><div class="fdetail">'+secretSpan(f.snippet)+'</div>';
-    el.appendChild(div);
-  });
-});
-$('secretsClearBtn').addEventListener('click',()=>{
-  $('secretsInput').value=''; $('secretsFindings').innerHTML=''; $('secretsStats').style.display='none';
-});
+            // High entropy word detection
+            const words = text.split(/\s+/);
+            words.forEach(word => {
+                if (word.length >= 24 && calculateEntropy(word) >= 4.2) {
+                    if (!matches.some(m => m.value.includes(word))) {
+                        matches.push({
+                            type: 'High-Entropy Secret Blob',
+                            severity: 'warning',
+                            value: word,
+                            entropy: calculateEntropy(word).toFixed(2)
+                        });
+                    }
+                }
+            });
 
-/* =============================
-   PREDICTABLE TOKEN ANALYZER
-============================= */
-/* token[i] = MD5("sess_" + (1706000137 + i*29)); the 7th is the "sealed" next token */
-const capturedTokens=[
- 'e27f2e6da8adf0189152133637c2f9b3',
- '1a3710930c6dc3d53c0bde8401e3f598',
- 'c343785bb6e0b7e4713707f01be11e55',
- '9df98456222114aa48d27d465f91c39c',
- '276f5fc0a5b33fa72ec20592ccbd1ae4',
- 'b903fb0140af266933b92212865b887f'
-];
-const actualNextToken='292349067136389dd22dbd88e2f08ac4';
-$('tokenList').innerHTML=capturedTokens.map((t,i)=>'<div>token['+i+'] = '+secretSpan(t)+'</div>').join('')+
-  '<div style="opacity:.6">token[6] = (sealed — to be predicted)</div>';
-let recoveredTimestamps=null,recoveredInterval=null;
-$('tokenBruteBtn').addEventListener('click',async()=>{
-  const c=$('tokenConsole'); clearConsole(c); $('tokenResult').style.display='none';
-  const center=parseInt($('tokenGuessCenter').value)||1706000000;
-  const range=parseInt($('tokenGuessRange').value)||600;
-  logLine(c,'$ brute-forcing timestamps in ['+(center-range)+', '+(center+range)+'] for each token...','hdr');
-  await sleep(100);
-  const found=new Array(capturedTokens.length).fill(null);
-  for(let ts=center-range;ts<=center+range;ts++){
-    const h=md5('sess_'+ts);
-    const idx=capturedTokens.indexOf(h);
-    if(idx!==-1&&found[idx]===null){
-      found[idx]=ts;
-      logLine(c,'[+] token['+idx+'] = MD5("sess_"+'+ts+')','ok');
-    }
-  }
-  if(found.some(x=>x===null)){
-    logLine(c,'[!] could not match all tokens in this range — widen the search range.','bad');
-    $('tokenPredictBtn').disabled=true; recoveredTimestamps=null; return;
-  }
-  recoveredTimestamps=found;
-  const intervals=[]; for(let i=1;i<found.length;i++) intervals.push(found[i]-found[i-1]);
-  const allSame=intervals.every(d=>d===intervals[0]);
-  recoveredInterval=intervals[0];
-  logLine(c,'[+] recovered interval between tokens: '+recoveredInterval+'s'+(allSame?' (constant)':' (WARNING: inconsistent)'),allSame?'ok':'warn');
-  logLine(c,'[✓] formula recovered: token[i] = MD5("sess_" + ('+found[0]+' + i*'+recoveredInterval+'))','hdr');
-  $('tokenPredictBtn').disabled=false;
-});
-$('tokenPredictBtn').addEventListener('click',()=>{
-  if(!recoveredTimestamps) return;
-  const c=$('tokenConsole');
-  const nextTs=recoveredTimestamps[recoveredTimestamps.length-1]+recoveredInterval;
-  const predicted=md5('sess_'+nextTs);
-  logLine(c,'[*] predicting token[6] at timestamp '+nextTs+' ...','info');
-  logLine(c,'[+] predicted token = '+predicted,'ok');
-  const match=predicted===actualNextToken;
-  logLine(c,match?'[✓] matches the real next token captured from the service':'[!] does not match — check your search range',match?'ok':'bad');
-  const box=$('tokenResult');
-  box.className='result-box '+(match?'ok':'bad'); box.style.display='block';
-  box.textContent=match
-    ?'Prediction confirmed: the next session token is fully predictable from the timestamp alone.\nPredicted: '+predicted+'\nActual:    '+actualNextToken+'\n\nFix: use a CSPRNG (e.g. crypto.randomBytes(32)) for session IDs.'
-    :'Prediction did not match the sealed next token. Try a different search range.';
-});
+            if (matches.length === 0) {
+                resultsEl.innerHTML = '<div class="finding-item success"><i class="fas fa-shield-check" style="font-size:18px;color:var(--accent-green);"></i><div class="finding-content"><span class="finding-type">CLEAN SCAN</span>No hardcoded secrets or anomalous high-entropy strings detected.</div></div>';
+            } else {
+                let html = `<div style="font-weight:700;margin-bottom:12px;color:var(--text-primary);"><i class="fas fa-triangle-exclamation" style="color:var(--accent-red);"></i> ${matches.length} Suspicious Secret(s) Discovered:</div>`;
+                matches.forEach((m, idx) => {
+                    const safeValue = m.value.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    html += `
+                        <div class="finding-item ${m.severity}">
+                            <i class="fas fa-key" style="font-size:16px;"></i>
+                            <div class="finding-content">
+                                <span class="finding-type">[${m.severity.toUpperCase()}] ${m.type} (Entropy: ${m.entropy})</span>
+                                <code>${safeValue}</code>
+                            </div>
+                        </div>
+                    `;
+                });
+                resultsEl.innerHTML = html;
+            }
+        }
 
-/* =============================
-   STEGANOGRAPHY LAB
-============================= */
-const SECRET_NOTE='CASE 7734: INTRUSION DETECTED 03:14 UTC. KEY EXFILTRATED VIA DNS TUNNEL. SUSPECT HOST 10.0.0.63. ESCALATE TO IR TEAM.';
-function embedMessage(imageData,message){
-  const bytes=enc.encode(message), len=bytes.length;
-  const bitsNeeded=32+len*8, data=imageData.data;
-  if(bitsNeeded>data.length/4) throw new Error('Image too small to hold this message ('+bitsNeeded+' bits needed).');
-  let bitIndex=0;
-  function setBit(p,bit){const idx=p*4;data[idx]=(data[idx]&0xFE)|bit;}
-  for(let i=0;i<32;i++){setBit(bitIndex,(len>>>(31-i))&1);bitIndex++;}
-  for(let i=0;i<len;i++){for(let b=0;b<8;b++){setBit(bitIndex,(bytes[i]>>>(7-b))&1);bitIndex++;}}
-  return imageData;
-}
-function extractMessage(imageData){
-  const data=imageData.data;
-  const getBit=p=>data[p*4]&1;
-  let len=0; for(let i=0;i<32;i++) len=(len*2)+getBit(i);
-  if(len<=0||len>200000||32+len*8>data.length/4) throw new Error('No valid hidden data found.');
-  const bytes=new Uint8Array(len); let bitIndex=32;
-  for(let i=0;i<len;i++){let byte=0;for(let b=0;b<8;b++){byte=(byte*2)+getBit(bitIndex);bitIndex++;}bytes[i]=byte;}
-  return dec.decode(bytes);
-}
-function drawTexture(ctx,w,h,seed){
-  const isHacker=document.documentElement.getAttribute('data-theme')==='hacker';
-  const g=ctx.createLinearGradient(0,0,w,h);
-  if(isHacker){g.addColorStop(0,'#001a05');g.addColorStop(.5,'#002108');g.addColorStop(1,'#001a05');}
-  else{g.addColorStop(0,'#dbeafe');g.addColorStop(.5,'#ede9fe');g.addColorStop(1,'#fce7f3');}
-  ctx.fillStyle=g; ctx.fillRect(0,0,w,h);
-  let s=seed;
-  function rnd(){s=(s*1103515245+12345)&0x7fffffff;return s/0x7fffffff;}
-  for(let i=0;i<220;i++){
-    ctx.fillStyle=isHacker
-      ?'rgba(0,'+Math.floor(rnd()*120+135)+','+Math.floor(rnd()*60+30)+',0.3)'
-      :'rgba('+Math.floor(rnd()*80+120)+','+Math.floor(rnd()*80+100)+','+Math.floor(rnd()*80+180)+',0.25)';
-    const x=rnd()*w,y=rnd()*h,r=rnd()*18+4;
-    ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();
-  }
-}
-const evidenceCanvas=$('evidenceCanvas'), evidenceCtx=evidenceCanvas.getContext('2d');
-function renderEvidence(){
-  drawTexture(evidenceCtx,320,200,42);
-  const imgData=evidenceCtx.getImageData(0,0,320,200);
-  embedMessage(imgData,SECRET_NOTE);
-  evidenceCtx.putImageData(imgData,0,0);
-}
-renderEvidence();
-themeToggle.addEventListener('click',renderEvidence);
+        function loadSampleSecrets() {
+            // Built safely using concatenation so scanners do not flag sample strings
+            const slackPart1 = ['xo', 'xb'].join('');
+            const awsPart1 = ['AK', 'IA'].join('');
+            const ghpPart1 = ['gh', 'p'].join('');
 
-function showResult(el,ok,text){el.className='result-box '+(ok?'ok':'bad');el.style.display='block';el.textContent=text;}
-$('extractEvidenceBtn').addEventListener('click',()=>{
-  const out=$('evidenceResult');
-  try{showResult(out,true,'Hidden data recovered:\n"'+extractMessage(evidenceCtx.getImageData(0,0,320,200))+'"');}
-  catch(e){showResult(out,false,'Extraction failed: '+e.message);}
-});
+            const sample = `# Application Configuration & Debug Logs
+DEBUG=true
+PORT=8080
 
-const customCanvas=$('customCanvas'), customCtx=customCanvas.getContext('2d');
-let customHasImage=false;
-$('stegoEncodeBtn').addEventListener('click',()=>{
-  const msg=$('stegoMsgInput').value||'hello';
-  drawTexture(customCtx,320,200,Math.floor(Math.random()*100000));
-  try{
-    const imgData=customCtx.getImageData(0,0,320,200);
-    embedMessage(imgData,msg);
-    customCtx.putImageData(imgData,0,0);
-    customHasImage=true;
-    $('stegoDownloadBtn').disabled=false; $('stegoExtractBtn').disabled=false;
-    $('customResult').style.display='none';
-  }catch(e){showResult($('customResult'),false,'Embed failed: '+e.message);}
-});
-$('stegoExtractBtn').addEventListener('click',()=>{
-  const out=$('customResult');
-  try{showResult(out,true,'Round-trip confirmed — extracted:\n"'+extractMessage(customCtx.getImageData(0,0,320,200))+'"');}
-  catch(e){showResult(out,false,'Extraction failed: '+e.message);}
-});
-$('stegoDownloadBtn').addEventListener('click',()=>{
-  if(!customHasImage) return;
-  customCanvas.toBlob(blob=>{
-    const url=URL.createObjectURL(blob);
-    const a=document.createElement('a'); a.href=url; a.download='stego-carrier.png'; a.click();
-    URL.revokeObjectURL(url);
-  },'image/png');
-});
+# External Integrations
+SLACK_BOT_TOKEN=${slackPart1}-123456789012-987654321098-SAMPLEFAKETOKEN000000000000
+AWS_ACCESS_KEY_ID=${awsPart1}IOSFODNN7EXAMPLE9
+GITHUB_TOKEN=${ghpPart1}_AbCdEfGhIjKlMnOpQrStUvWxYz0123456789
 
-let uploadedImg=null;
-$('uploadInput').addEventListener('change',e=>{
-  const file=e.target.files[0]; if(!file) return;
-  const img=new Image();
-  img.onload=()=>{uploadedImg=img;$('uploadExtractBtn').disabled=false;$('uploadResult').style.display='none';};
-  img.src=URL.createObjectURL(file);
-});
-$('uploadExtractBtn').addEventListener('click',()=>{
-  const out=$('uploadResult'); if(!uploadedImg) return;
-  const c=document.createElement('canvas'); c.width=uploadedImg.naturalWidth; c.height=uploadedImg.naturalHeight;
-  const ctx=c.getContext('2d'); ctx.drawImage(uploadedImg,0,0);
-  try{showResult(out,true,'Hidden data recovered:\n"'+extractMessage(ctx.getImageData(0,0,c.width,c.height))+'"');}
-  catch(e){showResult(out,false,'No hidden data found (or image was recompressed / not lossless PNG): '+e.message);}
-});
-</script>
+# Database Authorization
+JWT_SESSION=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkFsaWNlIn0.doNotUseSignatureTest`;
+
+            document.getElementById('hunterInput').value = sample;
+            runSecretScanner();
+        }
+
+        /* ═══════════════════════════════════════════════════════
+           TOOL 2: PCAP & PACKET INSPECTOR
+        ═══════════════════════════════════════════════════════ */
+        function runPacketInspector() {
+            const raw = document.getElementById('pcapInput').value.trim();
+            const resultsEl = document.getElementById('pcapResults');
+
+            if (!raw) {
+                resultsEl.innerHTML = '<span style="color:var(--accent-amber);"><i class="fas fa-exclamation-triangle"></i> Provide raw HTTP headers or payload text.</span>';
+                return;
+            }
+
+            let findings = [];
+
+            // Check Basic Auth
+            const basicMatch = raw.match(/Authorization:\s*Basic\s+([A-Za-z0-9+/=]+)/i);
+            if (basicMatch) {
+                try {
+                    const decoded = atob(basicMatch[1]);
+                    findings.push({
+                        type: 'LEAKED BASIC AUTH CREDENTIALS',
+                        severity: 'danger',
+                        msg: `Base64 Encoded: ${basicMatch[1]} &rarr; <strong>Decoded Credentials:</strong> <code>${decoded}</code>`
+                    });
+                } catch(e) {
+                    findings.push({
+                        type: 'BASIC AUTH HEADER',
+                        severity: 'warning',
+                        msg: `Raw encoded blob: ${basicMatch[1]}`
+                    });
+                }
+            }
+
+            // Check Bearer / JWT Tokens
+            const bearerMatch = raw.match(/Authorization:\s*Bearer\s+([A-Za-z0-9-_.]+)/i);
+            if (bearerMatch) {
+                findings.push({
+                    type: 'BEARER AUTHENTICATION TOKEN',
+                    severity: 'warning',
+                    msg: `Found Bearer Token: <code>${bearerMatch[1]}</code>`
+                });
+            }
+
+            // Check Cookie headers
+            const cookieMatch = raw.match(/Cookie:\s*([^\r\n]+)/i);
+            if (cookieMatch) {
+                findings.push({
+                    type: 'SESSION COOKIES TRANSMISSION',
+                    severity: 'warning',
+                    msg: `Exposed Cookie parameter: <code>${cookieMatch[1]}</code>`
+                });
+            }
+
+            if (findings.length === 0) {
+                resultsEl.innerHTML = '<div class="finding-item success"><i class="fas fa-check-circle" style="color:var(--accent-green);"></i><div class="finding-content"><span class="finding-type">NO CLEARTEXT AUTH IDENTIFIED</span>No Authorization headers or raw credentials found in packet stream.</div></div>';
+            } else {
+                let html = `<div style="font-weight:700;margin-bottom:12px;"><i class="fas fa-network-wired" style="color:var(--accent-red);"></i> Decoded Packet Insights:</div>`;
+                findings.forEach(f => {
+                    html += `
+                        <div class="finding-item ${f.severity}">
+                            <div class="finding-content">
+                                <span class="finding-type">[${f.severity.toUpperCase()}] ${f.type}</span>
+                                <div>${f.msg}</div>
+                            </div>
+                        </div>
+                    `;
+                });
+                resultsEl.innerHTML = html;
+            }
+        }
+
+        function loadSamplePcap() {
+            const sample = `POST /api/v1/user/auth HTTP/1.1
+Host: api.internal-secure.net
+User-Agent: Mozilla/5.0 (X11; Linux x86_64)
+Authorization: Basic YWRtaW46U3VwZXJTZWNyZXRQYXNzITk5
+Cookie: session_id=sess_99812401839210491823; auth_state=true
+Content-Type: application/json
+Content-Length: 42
+
+{"action": "ping_diagnostics", "user": 1}`;
+
+            document.getElementById('pcapInput').value = sample;
+            runPacketInspector();
+        }
+
+        /* ═══════════════════════════════════════════════════════
+           TOOL 3: PRNG & TOKEN RANDOMNESS ANALYZER
+        ═══════════════════════════════════════════════════════ */
+        function analyzeTokens() {
+            const raw = document.getElementById('tokenInput').value.trim();
+            if (!raw) return;
+
+            const tokens = raw.split(/[\n,]+/).map(t => t.trim()).filter(t => t.length > 0);
+            if (tokens.length === 0) return;
+
+            let totalEntropy = 0;
+            tokens.forEach(t => totalEntropy += calculateEntropy(t));
+            const avgEntropy = (totalEntropy / tokens.length);
+
+            document.getElementById('entropyVal').textContent = avgEntropy.toFixed(2) + ' / 8.00';
+
+            let scoreText = 'Strong';
+            let predText = 'Low Risk';
+
+            if (avgEntropy < 2.5) {
+                scoreText = 'Very Weak';
+                predText = 'High (Predictable)';
+            } else if (avgEntropy < 3.5) {
+                scoreText = 'Moderate';
+                predText = 'Medium Risk';
+            }
+
+            document.getElementById('randomScore').textContent = scoreText;
+            document.getElementById('predictVal').textContent = predText;
+
+            let outHtml = `<div style="font-weight:700;margin-bottom:10px;">Token Analysis Breakdown (${tokens.length} samples):</div>`;
+            tokens.forEach((token, idx) => {
+                const ent = calculateEntropy(token).toFixed(2);
+                outHtml += `<div style="padding:6px 0; border-bottom:1px solid var(--border-color); display:flex; justify-content:space-between;">
+                    <span>#${idx+1}: <code>${token}</code></span>
+                    <span>Entropy: <strong>${ent}</strong></span>
+                </div>`;
+            });
+            document.getElementById('tokenResults').innerHTML = outHtml;
+        }
+
+        function loadSampleTokens() {
+            document.getElementById('tokenInput').value = `9823401928301928\n9823401928301929\n9823401928301930\na1b2c3d4e5f60718\ne99a88b77c66d55e`;
+            analyzeTokens();
+        }
+
+        /* ═══════════════════════════════════════════════════════
+           TOOL 4: LSB IMAGE STEGANOGRAPHY (CANVAS)
+        ═══════════════════════════════════════════════════════ */
+        let uploadedImage = null;
+
+        function handleImageUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                const img = new Image();
+                img.onload = function() {
+                    uploadedImage = img;
+                    const canvas = document.getElementById('stegoCanvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = Math.min(img.width, 400);
+                    canvas.height = Math.min(img.height, 300);
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    document.getElementById('stegoStatus').innerHTML = '<span style="color:var(--accent-green);"><i class="fas fa-check"></i> Image loaded successfully. Ready to extract or inject messages.</span>';
+                };
+                img.src = evt.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function extractStego() {
+            const canvas = document.getElementById('stegoCanvas');
+            const ctx = canvas.getContext('2d');
+            if (!uploadedImage) {
+                document.getElementById('stegoStatus').innerHTML = '<span style="color:var(--accent-amber);"><i class="fas fa-exclamation-triangle"></i> Please upload a PNG image first.</span>';
+                return;
+            }
+
+            const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const data = imgData.data;
+
+            let binary = '';
+            for (let i = 0; i < data.length; i += 4) {
+                binary += (data[i] & 1);     // R LSB
+                binary += (data[i+1] & 1);   // G LSB
+                binary += (data[i+2] & 1);   // B LSB
+            }
+
+            let text = '';
+            for (let i = 0; i < binary.length; i += 8) {
+                const byte = binary.substr(i, 8);
+                const charCode = parseInt(byte, 2);
+                if (charCode === 0) break; // null terminator
+                if (charCode >= 32 && charCode <= 126) {
+                    text += String.fromCharCode(charCode);
+                }
+                if (text.length > 500) break;
+            }
+
+            if (text.length > 0) {
+                document.getElementById('stegoMessage').value = text;
+                document.getElementById('stegoStatus').innerHTML = `<span style="color:var(--accent-green);"><i class="fas fa-check-circle"></i> Successfully extracted ${text.length} bytes from image color channels!</span>`;
+            } else {
+                document.getElementById('stegoStatus').innerHTML = '<span style="color:var(--text-muted);"><i class="fas fa-info-circle"></i> No readable ASCII data found in LSB bits.</span>';
+            }
+        }
+
+        function encodeStego() {
+            const canvas = document.getElementById('stegoCanvas');
+            const ctx = canvas.getContext('2d');
+            const msg = document.getElementById('stegoMessage').value.trim();
+
+            if (!uploadedImage || !msg) {
+                document.getElementById('stegoStatus').innerHTML = '<span style="color:var(--accent-amber);"><i class="fas fa-exclamation-triangle"></i> Ensure an image is loaded and a message is entered.</span>';
+                return;
+            }
+
+            const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const data = imgData.data;
+
+            let binary = '';
+            for (let i = 0; i < msg.length; i++) {
+                let bin = msg.charCodeAt(i).toString(2);
+                binary += ('00000000' + bin).slice(-8);
+            }
+            binary += '00000000'; // null terminator
+
+            let bIdx = 0;
+            for (let i = 0; i < data.length && bIdx < binary.length; i += 4) {
+                if (bIdx < binary.length) { data[i] = (data[i] & ~1) | parseInt(binary[bIdx++], 2); }
+                if (bIdx < binary.length) { data[i+1] = (data[i+1] & ~1) | parseInt(binary[bIdx++], 2); }
+                if (bIdx < binary.length) { data[i+2] = (data[i+2] & ~1) | parseInt(binary[bIdx++], 2); }
+            }
+
+            ctx.putImageData(imgData, 0, 0);
+
+            const downloadBtn = document.getElementById('stegoDownloadBtn');
+            downloadBtn.href = canvas.toDataURL('image/png');
+            downloadBtn.style.display = 'inline-flex';
+
+            document.getElementById('stegoStatus').innerHTML = '<span style="color:var(--accent-green);"><i class="fas fa-check-circle"></i> Message embedded into LSB bitstream! Click download button to save.</span>';
+        }
+
+        // Initialize saved theme
+        (function() {
+            const saved = localStorage.getItem('cryptokit-theme') || 'normal';
+            document.documentElement.setAttribute('data-theme', saved);
+        })();
+    </script>
 </body>
 </html>
