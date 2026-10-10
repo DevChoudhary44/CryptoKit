@@ -4,7 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cryptographic Attack Simulator — Quantum Elite Labs</title>
-<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
   /* ---------------- NORMAL THEME ---------------- */
   [data-theme="normal"]{
@@ -32,40 +34,40 @@
     --console-default:#9ae6b4;
     --radius-lg:20px;
     --radius-md:12px;
-    --font-display:'Arial Rounded MT Bold','Arial Rounded MT',ui-rounded,'SF Pro Rounded','Baloo 2',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
-    --font-body:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
-    --font-mono:'SFMono-Regular',Consolas,'Liberation Mono',Menlo,monospace;
+    --font-display:'Space Grotesk','Arial Rounded MT Bold',ui-rounded,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    --font-body:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+    --font-mono:'JetBrains Mono','SFMono-Regular',Consolas,'Liberation Mono',Menlo,monospace;
   }
 
   /* ---------------- HACKER THEME ---------------- */
   [data-theme="hacker"]{
-    --bg-0:#000000;
-    --surface:#050505;
-    --surface-soft:#0a0a0a;
-    --border:rgba(0, 255, 65, 0.25);
-    --ink:#00FF41;
-    --ink-soft:#00CC33;
-    --ink-faint:#006611;
-    --grad-1:#00FF41;
-    --grad-2:#39FF14;
-    --grad-3:#00FF41;
-    --purple-bg:rgba(0, 255, 65, 0.08);
-    --purple:#00FF41;
-    --ok:#00FF41;
-    --bad:#FF0040;
-    --warn:#FFD700;
+    --bg-0:#07070f;
+    --surface:#0e0e1c;
+    --surface-soft:#131326;
+    --border:#242442;
+    --ink:#f1f1fb;
+    --ink-soft:#b4b6d6;
+    --ink-faint:#6b6e95;
+    --grad-1:#2563eb;
+    --grad-2:#7c3aed;
+    --grad-3:#ec4899;
+    --purple-bg:#1d1a3a;
+    --purple:#7c3aed;
+    --ok:#34d399;
+    --bad:#f87171;
+    --warn:#fbbf24;
     --console-bg:#000000;
-    --console-ok:#00FF41;
-    --console-bad:#FF0040;
-    --console-info:#39FF14;
-    --console-warn:#FFD700;
-    --console-hdr:#00FF41;
-    --console-default:#00CC33;
-    --radius-lg:18px;
+    --console-ok:#34d399;
+    --console-bad:#f87171;
+    --console-info:#93c5fd;
+    --console-warn:#fbbf24;
+    --console-hdr:#c4b5fd;
+    --console-default:#9ae6b4;
+    --radius-lg:20px;
     --radius-md:12px;
-    --font-display:'Share Tech Mono',monospace;
-    --font-body:'Share Tech Mono',monospace;
-    --font-mono:'Share Tech Mono',monospace;
+    --font-display:'Space Grotesk','Arial Rounded MT Bold',ui-rounded,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    --font-body:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+    --font-mono:'JetBrains Mono','SFMono-Regular',Consolas,'Liberation Mono',Menlo,monospace;
   }
 
   *{box-sizing:border-box;}
@@ -87,24 +89,14 @@
   }
 
   [data-theme="hacker"] body{
-    background-image:
-      radial-gradient(ellipse 900px 500px at 15% -5%, rgba(0,255,65,0.06), transparent 60%),
-      radial-gradient(ellipse 700px 500px at 100% 10%, rgba(57,255,20,0.04), transparent 60%);
+    background:
+      radial-gradient(900px 420px at 15% -10%, rgba(37,99,235,.18) 0%, transparent 60%),
+      radial-gradient(900px 420px at 100% 0%, rgba(236,72,153,.14) 0%, transparent 55%),
+      var(--bg-0);
   }
 
-  /* Hacker CRT grid */
-  [data-theme="hacker"] body::before{
-    content:''; position:fixed; inset:0;
-    background-image:
-      linear-gradient(rgba(0,255,65,0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,255,65,0.04) 1px, transparent 1px);
-    background-size:40px 40px; z-index:-1; pointer-events:none;
-    animation:gridMove 20s linear infinite;
-  }
-  @keyframes gridMove{
-    0%{background-position:0 0;}
-    100%{background-position:40px 40px;}
-  }
+  [data-theme="hacker"] .console,
+  [data-theme="hacker"] .result-box{background:#000;}
 
   .wrap{max-width:1180px;margin:0 auto;padding:40px 24px 100px;position:relative;z-index:2;}
 
@@ -117,14 +109,6 @@
     font-weight:600;cursor:pointer;transition:all 0.3s ease;
   }
   .back-pill:hover{border-color:var(--purple);color:var(--purple);transform:translateX(-2px);}
-  [data-theme="hacker"] .back-pill{
-    text-transform:uppercase;font-size:11px;letter-spacing:0.05em;
-    background:rgba(0,255,65,0.03);box-shadow:0 0 10px rgba(0,255,65,0.03);
-  }
-  [data-theme="hacker"] .back-pill:hover{
-    box-shadow:0 0 16px rgba(0,255,65,0.2);text-shadow:0 0 8px rgba(0,255,65,0.4);
-    border-color:var(--ink);color:var(--ink);
-  }
 
   .topbar-right{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
 
@@ -135,24 +119,11 @@
     font-weight:600;transition:all 0.3s ease;
   }
   .lock-pill svg{color:var(--purple);}
-  [data-theme="hacker"] .lock-pill{
-    text-transform:uppercase;font-size:11px;letter-spacing:0.05em;
-    background:rgba(0,255,65,0.03);box-shadow:0 0 10px rgba(0,255,65,0.03);
-    text-shadow:0 0 6px rgba(0,255,65,0.3);
-  }
 
   .elite-tag{
     display:flex;align-items:center;gap:8px;padding:8px 16px;border-radius:999px;
     background:linear-gradient(90deg,var(--grad-1),var(--grad-2),var(--grad-3));
     color:#fff;font-size:13px;font-weight:700;transition:all 0.3s ease;
-  }
-  [data-theme="hacker"] .elite-tag{
-    background:transparent;
-    border:1px solid var(--ink);
-    color:var(--ink);
-    text-shadow:0 0 8px rgba(0,255,65,0.4);
-    box-shadow:0 0 12px rgba(0,255,65,0.15);
-    text-transform:uppercase;letter-spacing:0.05em;
   }
 
   .toggle-pill{
@@ -161,8 +132,6 @@
     font-size:13.5px;color:var(--ink-soft);font-weight:500;cursor:pointer;user-select:none;
     transition:all 0.3s ease;
   }
-  [data-theme="hacker"] .toggle-pill{background:rgba(0,255,65,0.03);text-transform:uppercase;font-size:11px;letter-spacing:0.05em;box-shadow:0 0 10px rgba(0,255,65,0.03);}
-  [data-theme="hacker"] #themeLabel{text-shadow:0 0 6px rgba(0,255,65,0.4);}
 
   .switch{width:34px;height:19px;border-radius:999px;background:#d5d8ee;position:relative;flex-shrink:0;transition:background 0.3s;}
   .switch::after{
@@ -170,18 +139,14 @@
     border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25);
     transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
-  [data-theme="hacker"] .switch{background:rgba(0,255,65,0.3);}
-  [data-theme="hacker"] .switch::after{left:17px;background:var(--ink);box-shadow:0 0 8px var(--ink);}
+  [data-theme="hacker"] .switch{background:linear-gradient(90deg,var(--grad-1),var(--grad-2));}
+  [data-theme="hacker"] .switch::after{left:17px;}
 
   .hero{text-align:center;margin-bottom:28px;}
   .hero h1{font-family:var(--font-display);font-weight:800;font-size:38px;line-height:1.15;margin:0 0 10px;letter-spacing:-.01em;}
   .hero h1 .accent{
     background:linear-gradient(90deg,var(--grad-1),var(--grad-2),var(--grad-3));
     -webkit-background-clip:text;background-clip:text;color:transparent;
-  }
-  [data-theme="hacker"] .hero h1{letter-spacing:2px;text-shadow:0 0 15px rgba(0,255,65,0.4);}
-  [data-theme="hacker"] .hero h1 .accent{
-    background:none;color:var(--ink);-webkit-text-fill-color:var(--ink);
   }
   .hero p{margin:0;color:var(--ink-soft);font-size:15.5px;max-width:620px;margin:0 auto;}
 
@@ -196,11 +161,6 @@
     background:linear-gradient(90deg,var(--grad-2),#8b3df0);color:#fff;
     box-shadow:0 8px 18px -8px rgba(124,58,237,.6);
   }
-  [data-theme="hacker"] .seg button{text-transform:uppercase;letter-spacing:0.05em;}
-  [data-theme="hacker"] .seg button.active{
-    background:var(--ink);color:#000;
-    box-shadow:0 0 15px rgba(0,255,65,0.4);
-  }
 
   .tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px;}
   .tabbtn{
@@ -210,25 +170,20 @@
     font-family:var(--font-body);
   }
   .tabbtn:hover{border-color:var(--purple);}
-  [data-theme="hacker"] .tabbtn:hover{box-shadow:0 0 15px rgba(0,255,65,0.1);}
   .tabbtn.active{
     border-color:var(--purple);
     box-shadow:0 10px 24px -14px rgba(124,58,237,.5);
     background:var(--purple-bg);
   }
-  [data-theme="hacker"] .tabbtn.active{box-shadow:0 0 20px rgba(0,255,65,0.15);}
 
   .tabbtn .ic{
     width:36px;height:36px;border-radius:10px;background:var(--purple-bg);
     display:flex;align-items:center;justify-content:center;color:var(--purple);flex-shrink:0;
   }
   .tabbtn.active .ic{background:var(--surface);}
-  [data-theme="hacker"] .tabbtn .ic{border:1px solid rgba(0,255,65,0.3);}
-  [data-theme="hacker"] .tabbtn.active .ic{background:rgba(0,255,65,0.15);box-shadow:0 0 10px rgba(0,255,65,0.3);}
 
   .tabbtn .tt{font-weight:700;font-size:13.5px;color:var(--ink);}
   .tabbtn .ts{font-size:11.5px;color:var(--ink-soft);margin-top:2px;}
-  [data-theme="hacker"] .tabbtn .tt{text-transform:uppercase;letter-spacing:0.05em;}
 
   .panel{display:none;}
   .panel.active{display:block;}
@@ -242,17 +197,12 @@
     box-shadow:0 14px 34px -22px rgba(30,20,80,.2);
     transition:all 0.4s ease;
   }
-  [data-theme="hacker"] .card{box-shadow:0 0 25px rgba(0,255,65,0.03);}
-  [data-theme="hacker"] .card:hover{border-color:rgba(0,255,65,0.35);box-shadow:0 0 30px rgba(0,255,65,0.08);}
 
   .card h2{font-family:var(--font-display);font-size:17px;margin:0 0 14px;}
-  [data-theme="hacker"] .card h2{text-shadow:0 0 8px rgba(0,255,65,0.3);letter-spacing:1px;}
   .card h2 .sub{display:block;font-family:var(--font-body);font-weight:500;color:var(--ink-soft);font-size:12.5px;margin-top:4px;}
-  [data-theme="hacker"] .card h2 .sub{text-shadow:none;letter-spacing:0;}
 
   label{display:block;font-size:12.5px;font-weight:700;color:var(--ink-soft);margin:14px 0 6px;}
   label:first-of-type{margin-top:0;}
-  [data-theme="hacker"] label{text-transform:uppercase;letter-spacing:0.05em;color:rgba(0,255,65,0.6);}
 
   input[type=text],input[type=number],select,textarea{
     width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:10px;
@@ -260,9 +210,6 @@
     outline:none;transition:all 0.3s ease;
   }
   input:focus,select:focus,textarea:focus{border-color:var(--purple);}
-  [data-theme="hacker"] input:focus,[data-theme="hacker"] select:focus,[data-theme="hacker"] textarea:focus{
-    box-shadow:0 0 0 3px rgba(0,255,65,0.1),0 0 15px rgba(0,255,65,0.1);
-  }
 
   textarea{resize:vertical;min-height:60px;}
   .row{display:flex;gap:10px;}
@@ -273,21 +220,15 @@
     cursor:pointer;font-family:var(--font-body);display:inline-flex;align-items:center;gap:8px;
     transition:all 0.3s ease;
   }
-  [data-theme="hacker"] .btn{text-transform:uppercase;letter-spacing:1px;font-size:12px;}
 
   .btn-primary{
     background:linear-gradient(90deg,var(--grad-2),#8b3df0);color:#fff;
     box-shadow:0 10px 22px -10px rgba(124,58,237,.6);
   }
   .btn-primary:hover{filter:brightness(1.06);}
-  [data-theme="hacker"] .btn-primary{
-    background:var(--ink);color:#000;font-weight:800;
-    box-shadow:0 0 15px rgba(0,255,65,0.3);
-  }
-  [data-theme="hacker"] .btn-primary:hover{box-shadow:0 0 25px rgba(0,255,65,0.6);}
 
   .btn-ghost{background:var(--surface-soft);border:1px solid var(--border);color:var(--ink);}
-  [data-theme="hacker"] .btn-ghost:hover{border-color:var(--ink);color:var(--ink);text-shadow:0 0 8px rgba(0,255,65,0.4);}
+  .btn-ghost:hover{border-color:var(--purple);}
 
   .btn-row{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;}
   .btn[disabled]{opacity:.5;cursor:not-allowed;}
@@ -298,19 +239,14 @@
     line-height:1.7;color:var(--console-default);
     border:1px solid var(--border);
   }
-  [data-theme="hacker"] .console{box-shadow:inset 0 0 20px rgba(0,255,65,0.05);}
   .console .ln{white-space:pre-wrap;word-break:break-all;}
   .console .ln.ok{color:var(--console-ok);}
   .console .ln.bad{color:var(--console-bad);}
   .console .ln.info{color:var(--console-info);}
   .console .ln.warn{color:var(--console-warn);}
   .console .ln.hdr{color:var(--console-hdr);font-weight:700;}
-  [data-theme="hacker"] .console .ln.ok{text-shadow:0 0 5px rgba(0,255,65,0.4);}
-  [data-theme="hacker"] .console .ln.bad{text-shadow:0 0 5px rgba(255,0,64,0.4);}
-  [data-theme="hacker"] .console .ln.hdr{text-shadow:0 0 6px rgba(0,255,65,0.5);}
   .console::-webkit-scrollbar{width:8px;}
   .console::-webkit-scrollbar-thumb{background:#2d2f55;border-radius:8px;}
-  [data-theme="hacker"] .console::-webkit-scrollbar-thumb{background:rgba(0,255,65,0.3);}
 
   .progress-wrap{margin-top:12px;}
   .progress-bar{height:8px;background:var(--surface-soft);border:1px solid var(--border);border-radius:999px;overflow:hidden;}
@@ -319,7 +255,6 @@
     background:linear-gradient(90deg,var(--grad-1),var(--grad-2),var(--grad-3));
     transition:width .15s;
   }
-  [data-theme="hacker"] .progress-fill{background:var(--ink);box-shadow:0 0 10px rgba(0,255,65,0.5);}
   .progress-label{font-size:11.5px;color:var(--ink-soft);margin-top:6px;display:flex;justify-content:space-between;font-family:var(--font-mono);}
 
   .result-box{
@@ -329,14 +264,8 @@
   }
   .result-box.ok{border-color:#bbf3d1;background:#f0fdf6;color:#166534;}
   .result-box.bad{border-color:#fbd2d2;background:#fef2f2;color:#991b1b;}
-  [data-theme="hacker"] .result-box.ok{
-    border-color:var(--ok);background:rgba(0,255,65,0.08);color:var(--ok);
-    box-shadow:0 0 15px rgba(0,255,65,0.1);text-shadow:0 0 5px rgba(0,255,65,0.3);
-  }
-  [data-theme="hacker"] .result-box.bad{
-    border-color:var(--bad);background:rgba(255,0,64,0.08);color:var(--bad);
-    box-shadow:0 0 15px rgba(255,0,64,0.1);text-shadow:0 0 5px rgba(255,0,64,0.3);
-  }
+  [data-theme="hacker"] .result-box.ok{border-color:var(--ok);background:rgba(52,211,153,0.1);color:var(--ok);}
+  [data-theme="hacker"] .result-box.bad{border-color:var(--bad);background:rgba(248,113,113,0.1);color:var(--bad);}
 
   .remediation{
     margin-top:16px;padding:14px 16px;border-radius:12px;
@@ -344,16 +273,13 @@
     font-size:13px;color:#4c1d95;display:none;
   }
   .remediation b{display:block;margin-bottom:4px;}
-  [data-theme="hacker"] .remediation{
-    background:rgba(0,255,65,0.05);border-color:rgba(0,255,65,0.3);color:var(--ink);
-    box-shadow:0 0 15px rgba(0,255,65,0.05);
-  }
+  [data-theme="hacker"] .remediation{background:var(--purple-bg);border-color:#342f5e;color:var(--ink);}
 
   .explain{
     background:var(--surface-soft);border:1px dashed var(--border);border-radius:12px;
     padding:12px 14px;font-size:12.5px;color:var(--ink-soft);margin-bottom:16px;line-height:1.6;
   }
-  [data-theme="hacker"] .explain code{color:var(--ink);text-shadow:0 0 5px rgba(0,255,65,0.3);}
+  [data-theme="hacker"] .explain code{color:var(--ink);}
 
   .stat-row{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;}
   .stat{
@@ -362,8 +288,6 @@
   }
   .stat .v{font-family:var(--font-mono);font-weight:700;font-size:15px;}
   .stat .l{font-size:10.5px;color:var(--ink-soft);margin-top:2px;}
-  [data-theme="hacker"] .stat .v{text-shadow:0 0 6px rgba(0,255,65,0.3);}
-  [data-theme="hacker"] .stat .l{text-transform:uppercase;letter-spacing:0.05em;}
 
   .bytegrid{display:flex;flex-wrap:wrap;gap:4px;margin:10px 0;}
   .byte{
@@ -373,7 +297,6 @@
   }
   .byte:hover{border-color:var(--purple);}
   .byte.sel{background:var(--purple);color:#fff;border-color:var(--purple);}
-  [data-theme="hacker"] .byte.sel{background:var(--ink);color:#000;box-shadow:0 0 8px rgba(0,255,65,0.4);}
 
   .log-table{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:10px;}
   .log-table th,.log-table td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--border);}
@@ -381,8 +304,8 @@
   .pill{display:inline-block;padding:2px 9px;border-radius:999px;font-size:11px;font-weight:700;}
   .pill.ok{background:#dcfce7;color:#166534;}
   .pill.bad{background:#fee2e2;color:#991b1b;}
-  [data-theme="hacker"] .pill.ok{background:rgba(0,255,65,0.15);color:var(--ok);border:1px solid var(--ok);box-shadow:0 0 8px rgba(0,255,65,0.2);}
-  [data-theme="hacker"] .pill.bad{background:rgba(255,0,64,0.15);color:var(--bad);border:1px solid var(--bad);box-shadow:0 0 8px rgba(255,0,64,0.2);}
+  [data-theme="hacker"] .pill.ok{background:rgba(52,211,153,0.15);color:var(--ok);}
+  [data-theme="hacker"] .pill.bad{background:rgba(248,113,113,0.15);color:var(--bad);}
 
   .section-gap{margin-top:40px;}
   .small-note{font-size:11.5px;color:var(--ink-faint);margin-top:10px;}
@@ -391,7 +314,6 @@
     text-align:center;color:var(--ink-faint);font-size:12.5px;margin-top:26px;
     display:flex;align-items:center;justify-content:center;gap:6px;
   }
-  [data-theme="hacker"] .footnote{letter-spacing:1px;text-shadow:0 0 5px rgba(0,255,65,0.2);}
 </style>
 </head>
 <body>
@@ -400,7 +322,7 @@
   <div class="topbar">
     <a href="../index.html" class="back-pill" id="homeBtn" title="Go back to Home">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-      Back to CryptoKit
+      Quantum Elite Labs
     </a>
     <div class="topbar-right">
       <div class="lock-pill">
@@ -637,8 +559,9 @@
 </div>
 
 <script>
+(function(){
 /* ============================= THEME SYNC ============================= */
-const THEME_KEY = 'cryptokit-theme';
+const THEME_KEY = 'qel-theme';
 const themeToggle = document.getElementById('themeToggle');
 const themeLabel  = document.getElementById('themeLabel');
 
@@ -698,7 +621,7 @@ document.getElementById('homeBtn').addEventListener('click', function(e){
 });
 
 /* ============================= helpers ============================= */
-const $=id=>document.getElementById(id);
+const qelGet=id=>document.getElementById(id);
 const enc=new TextEncoder(), dec=new TextDecoder();
 function bytesToHex(b){return [...b].map(x=>x.toString(16).padStart(2,'0')).join('');}
 function hexToBytes(h){const a=new Uint8Array(h.length/2);for(let i=0;i<a.length;i++)a[i]=parseInt(h.substr(i*2,2),16);return a;}
@@ -719,7 +642,7 @@ document.querySelectorAll('.tabbtn').forEach(tb=>tb.addEventListener('click',()=
   document.querySelectorAll('.tabbtn').forEach(x=>x.classList.remove('active'));
   document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
   tb.classList.add('active');
-  $('panel-'+tb.dataset.panel).classList.add('active');
+  qelGet('panel-'+tb.dataset.panel).classList.add('active');
 }));
 
 /* attack log */
@@ -729,7 +652,7 @@ function addLog(module,mode,outcome,detail){
   renderLog();
 }
 function renderLog(){
-  const tb=$('logBody');
+  const tb=qelGet('logBody');
   if(!attackLog.length){tb.innerHTML='<tr><td colspan="5" style="color:var(--ink-faint);">No attacks run yet.</td></tr>';return;}
   tb.innerHTML=attackLog.slice().reverse().map(r=>`<tr>
     <td style="font-family:var(--font-mono);font-size:11.5px;">${new Date(r.time).toLocaleTimeString()}</td>
@@ -737,14 +660,14 @@ function renderLog(){
     <td><span class="pill ${r.outcome==='Success'?'ok':'bad'}">${r.outcome}</span></td>
     <td style="color:var(--ink-soft);">${r.detail}</td></tr>`).join('');
 }
-$('logClearBtn').addEventListener('click',()=>{attackLog.length=0;renderLog();});
-$('logCsvBtn').addEventListener('click',()=>{
+qelGet('logClearBtn').addEventListener('click',()=>{attackLog.length=0;renderLog();});
+qelGet('logCsvBtn').addEventListener('click',()=>{
   if(!attackLog.length)return;
   const rows=[['time','module','mode','outcome','detail'],...attackLog.map(r=>[r.time,r.module,r.mode,r.outcome,r.detail])];
   const csv=rows.map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\n');
   downloadBlob(csv,'attack-log.csv','text/csv');
 });
-$('logJsonBtn').addEventListener('click',()=>{
+qelGet('logJsonBtn').addEventListener('click',()=>{
   if(!attackLog.length)return;
   downloadBlob(JSON.stringify(attackLog,null,2),'attack-log.json','application/json');
 });
@@ -757,33 +680,33 @@ function downloadBlob(content,filename,type){
 
 /* ============================= PADDING ORACLE ============================= */
 let poState=null;
-$('poEncryptBtn').addEventListener('click', async ()=>{
-  const secretText=$('poSecret').value || 'secret';
-  const mode=$('poMode').value;
+qelGet('poEncryptBtn').addEventListener('click', async ()=>{
+  const secretText=qelGet('poSecret').value || 'secret';
+  const mode=qelGet('poMode').value;
   const data=enc.encode(secretText);
   if(mode==='vuln'){
     const key=await crypto.subtle.generateKey({name:'AES-CBC',length:128},true,['encrypt','decrypt']);
     const iv=randBytes(16);
     const ctBuf=await crypto.subtle.encrypt({name:'AES-CBC',iv},key,data);
     poState={mode,key,iv,cipherBytes:new Uint8Array(ctBuf)};
-    $('poCipherOut').className='result-box ok';
-    $('poCipherOut').style.display='block';
-    $('poCipherOut').textContent='IV: '+bytesToHex(iv)+'\nCiphertext: '+bytesToHex(poState.cipherBytes);
+    qelGet('poCipherOut').className='result-box ok';
+    qelGet('poCipherOut').style.display='block';
+    qelGet('poCipherOut').textContent='IV: '+bytesToHex(iv)+'\nCiphertext: '+bytesToHex(poState.cipherBytes);
   } else {
     const key=await crypto.subtle.generateKey({name:'AES-GCM',length:128},true,['encrypt','decrypt']);
     const iv=randBytes(12);
     const ctBuf=await crypto.subtle.encrypt({name:'AES-GCM',iv},key,data);
     poState={mode,key,iv,cipherBytes:new Uint8Array(ctBuf)};
-    $('poCipherOut').className='result-box ok';
-    $('poCipherOut').style.display='block';
-    $('poCipherOut').textContent='Nonce: '+bytesToHex(iv)+'\nCiphertext+Tag: '+bytesToHex(poState.cipherBytes);
+    qelGet('poCipherOut').className='result-box ok';
+    qelGet('poCipherOut').style.display='block';
+    qelGet('poCipherOut').textContent='Nonce: '+bytesToHex(iv)+'\nCiphertext+Tag: '+bytesToHex(poState.cipherBytes);
   }
-  $('poAttackBtn').disabled=false;
-  $('poResult').style.display='none';
-  $('poRemediation').style.display='none';
-  clearConsole($('poConsole'));
-  logLine($('poConsole'),'$ target deployed ('+(mode==='vuln'?'vulnerable CBC':'patched GCM')+')','hdr');
-  $('poProgFill').style.width='0%'; $('poProgPct').textContent='0%'; $('poProgText').textContent='Idle';
+  qelGet('poAttackBtn').disabled=false;
+  qelGet('poResult').style.display='none';
+  qelGet('poRemediation').style.display='none';
+  clearConsole(qelGet('poConsole'));
+  logLine(qelGet('poConsole'),'$ target deployed ('+(mode==='vuln'?'vulnerable CBC':'patched GCM')+')','hdr');
+  qelGet('poProgFill').style.width='0%'; qelGet('poProgPct').textContent='0%'; qelGet('poProgText').textContent='Idle';
 });
 
 async function cbcOracle(ivBytes, cipherBlock, key){
@@ -793,13 +716,13 @@ async function cbcOracle(ivBytes, cipherBlock, key){
   }catch(e){ return false; }
 }
 
-$('poAttackBtn').addEventListener('click', async ()=>{
+qelGet('poAttackBtn').addEventListener('click', async ()=>{
   if(!poState) return;
-  const c=$('poConsole');
+  const c=qelGet('poConsole');
   clearConsole(c);
-  $('poResult').style.display='none';
-  $('poRemediation').style.display='none';
-  $('poAttackBtn').disabled=true;
+  qelGet('poResult').style.display='none';
+  qelGet('poRemediation').style.display='none';
+  qelGet('poAttackBtn').disabled=true;
 
   if(poState.mode==='patched'){
     logLine(c,'$ attempting padding-oracle probes against AES-GCM target...','hdr');
@@ -807,13 +730,13 @@ $('poAttackBtn').addEventListener('click', async ()=>{
     logLine(c,'[-] tampering with any byte invalidates the auth tag','warn');
     logLine(c,'[-] decrypt() throws OperationError identically every time','warn');
     logLine(c,'[-] no distinguishable padding-valid vs padding-invalid signal','bad');
-    $('poProgFill').style.width='100%'; $('poProgPct').textContent='0 bytes';$('poProgText').textContent='Attack defeated';
-    $('poResult').className='result-box bad';
-    $('poResult').style.display='block';
-    $('poResult').textContent='Attack failed: authenticated encryption gives the attacker zero usable information.';
-    $('poRemediation').style.display='block';
+    qelGet('poProgFill').style.width='100%'; qelGet('poProgPct').textContent='0 bytes';qelGet('poProgText').textContent='Attack defeated';
+    qelGet('poResult').className='result-box bad';
+    qelGet('poResult').style.display='block';
+    qelGet('poResult').textContent='Attack failed: authenticated encryption gives the attacker zero usable information.';
+    qelGet('poRemediation').style.display='block';
     addLog('Padding Oracle','Patched','Failed','0 bytes recovered — AES-GCM rejected all tampering identically');
-    $('poAttackBtn').disabled=false;
+    qelGet('poAttackBtn').disabled=false;
     return;
   }
 
@@ -843,8 +766,8 @@ $('poAttackBtn').addEventListener('click', async ()=>{
         }
         if(guess%48===0){
           const pct=Math.round(((bi-1)+(padVal-1)/blockLen)/totalBlocks*100);
-          $('poProgFill').style.width=pct+'%'; $('poProgPct').textContent=pct+'%';
-          $('poProgText').textContent='Block '+bi+'/'+totalBlocks+' · byte '+(padVal)+'/16';
+          qelGet('poProgFill').style.width=pct+'%'; qelGet('poProgPct').textContent=pct+'%';
+          qelGet('poProgText').textContent='Block '+bi+'/'+totalBlocks+' · byte '+(padVal)+'/16';
           await sleep(0);
         }
       }
@@ -861,14 +784,14 @@ $('poAttackBtn').addEventListener('click', async ()=>{
   if(padN>=1 && padN<=16) full=full.slice(0, full.length-padN);
   const finalText=dec.decode(full);
 
-  $('poProgFill').style.width='100%'; $('poProgPct').textContent='100%'; $('poProgText').textContent='Complete';
+  qelGet('poProgFill').style.width='100%'; qelGet('poProgPct').textContent='100%'; qelGet('poProgText').textContent='Complete';
   logLine(c,'[✓] full plaintext recovered without the key','ok');
-  $('poResult').className='result-box ok';
-  $('poResult').style.display='block';
-  $('poResult').textContent='Recovered plaintext: "'+finalText+'"';
-  $('poRemediation').style.display='block';
+  qelGet('poResult').className='result-box ok';
+  qelGet('poResult').style.display='block';
+  qelGet('poResult').textContent='Recovered plaintext: "'+finalText+'"';
+  qelGet('poRemediation').style.display='block';
   addLog('Padding Oracle','Vulnerable','Success','Recovered: "'+finalText.slice(0,60)+'"');
-  $('poAttackBtn').disabled=false;
+  qelGet('poAttackBtn').disabled=false;
 });
 function chunk(bytes,size){const out=[];for(let i=0;i<bytes.length;i+=size)out.push(bytes.slice(i,i+size));return out;}
 
@@ -884,11 +807,11 @@ async function pbkdf2hex(str,saltBytes,iterations){
   return bytesToHex(new Uint8Array(bits));
 }
 
-$('bfSetupBtn').addEventListener('click', async ()=>{
-  const secret=$('bfSecret').value;
-  const scheme=$('bfScheme').value;
-  const charsetSel=$('bfCharset').value;
-  const out=$('bfTargetOut');
+qelGet('bfSetupBtn').addEventListener('click', async ()=>{
+  const secret=qelGet('bfSecret').value;
+  const scheme=qelGet('bfScheme').value;
+  const charsetSel=qelGet('bfCharset').value;
+  const out=qelGet('bfTargetOut');
   out.style.display='block'; out.className='result-box ok';
   if(scheme==='fast'){
     const h=await sha256hex(secret);
@@ -901,13 +824,13 @@ $('bfSetupBtn').addEventListener('click', async ()=>{
     bfState={scheme,hash:h,salt,charsetSel};
     out.textContent='PBKDF2-SHA256(250k, salt='+bytesToHex(salt)+') = '+h;
   }
-  $('bfAttackBtn').disabled=false;
-  $('bfResult').style.display='none';
-  $('bfRemediation').style.display='none';
-  clearConsole($('bfConsole'));
-  logLine($('bfConsole'),'$ target stored ('+(scheme==='fast'?'vulnerable fast hash':'patched PBKDF2')+')','hdr');
-  $('bfAttempts').textContent='0'; $('bfRate').textContent='0/s'; $('bfEta').textContent='—';
-  $('bfProgFill').style.width='0%'; $('bfProgPct').textContent='0%'; $('bfProgText').textContent='Idle';
+  qelGet('bfAttackBtn').disabled=false;
+  qelGet('bfResult').style.display='none';
+  qelGet('bfRemediation').style.display='none';
+  clearConsole(qelGet('bfConsole'));
+  logLine(qelGet('bfConsole'),'$ target stored ('+(scheme==='fast'?'vulnerable fast hash':'patched PBKDF2')+')','hdr');
+  qelGet('bfAttempts').textContent='0'; qelGet('bfRate').textContent='0/s'; qelGet('bfEta').textContent='—';
+  qelGet('bfProgFill').style.width='0%'; qelGet('bfProgPct').textContent='0%'; qelGet('bfProgText').textContent='Idle';
 });
 
 function charsetGen(charsetSel){
@@ -925,13 +848,13 @@ function charsetGen(charsetSel){
   return {total, idxToStr};
 }
 
-$('bfAttackBtn').addEventListener('click', async ()=>{
+qelGet('bfAttackBtn').addEventListener('click', async ()=>{
   if(!bfState) return;
-  const c=$('bfConsole');
+  const c=qelGet('bfConsole');
   clearConsole(c);
-  $('bfResult').style.display='none';
-  $('bfRemediation').style.display='none';
-  $('bfAttackBtn').disabled=true;
+  qelGet('bfResult').style.display='none';
+  qelGet('bfRemediation').style.display='none';
+  qelGet('bfAttackBtn').disabled=true;
 
   const {total, idxToStr} = charsetGen(bfState.charsetSel);
   logLine(c,'$ keyspace size: '+total.toLocaleString()+' combinations','hdr');
@@ -948,17 +871,17 @@ $('bfAttackBtn').addEventListener('click', async ()=>{
     logLine(c,'[-] measured rate: '+rate.toFixed(2)+' guesses/sec','warn');
     const etaSec=total/rate;
     const etaStr=formatDuration(etaSec);
-    $('bfAttempts').textContent='24 (sampled)';
-    $('bfRate').textContent=rate.toFixed(1)+'/s';
-    $('bfEta').textContent=etaStr;
-    $('bfProgFill').style.width='100%'; $('bfProgPct').textContent='sampled';$('bfProgText').textContent='Extrapolated';
+    qelGet('bfAttempts').textContent='24 (sampled)';
+    qelGet('bfRate').textContent=rate.toFixed(1)+'/s';
+    qelGet('bfEta').textContent=etaStr;
+    qelGet('bfProgFill').style.width='100%'; qelGet('bfProgPct').textContent='sampled';qelGet('bfProgText').textContent='Extrapolated';
     logLine(c,'[✓] estimated time to exhaust full keyspace: '+etaStr,'ok');
-    $('bfResult').className='result-box bad';
-    $('bfResult').style.display='block';
-    $('bfResult').textContent='Attack impractical: full brute force would take approximately '+etaStr+' at this hash cost.';
-    $('bfRemediation').style.display='block';
+    qelGet('bfResult').className='result-box bad';
+    qelGet('bfResult').style.display='block';
+    qelGet('bfResult').textContent='Attack impractical: full brute force would take approximately '+etaStr+' at this hash cost.';
+    qelGet('bfRemediation').style.display='block';
     addLog('Brute Force','Patched','Failed','Estimated crack time: '+etaStr+' ('+rate.toFixed(1)+' guesses/s)');
-    $('bfAttackBtn').disabled=false;
+    qelGet('bfAttackBtn').disabled=false;
     return;
   }
 
@@ -976,31 +899,31 @@ $('bfAttackBtn').addEventListener('click', async ()=>{
     }
     const elapsed=(performance.now()-t0)/1000 || 0.001;
     const rate=attempts/elapsed;
-    $('bfAttempts').textContent=attempts.toLocaleString();
-    $('bfRate').textContent=Math.round(rate).toLocaleString()+'/s';
+    qelGet('bfAttempts').textContent=attempts.toLocaleString();
+    qelGet('bfRate').textContent=Math.round(rate).toLocaleString()+'/s';
     const pct=Math.round(attempts/total*100);
-    $('bfProgFill').style.width=pct+'%'; $('bfProgPct').textContent=pct+'%';
-    $('bfProgText').textContent=found?'Found':'Searching...';
+    qelGet('bfProgFill').style.width=pct+'%'; qelGet('bfProgPct').textContent=pct+'%';
+    qelGet('bfProgText').textContent=found?'Found':'Searching...';
     if(attempts%1000<batch) logLine(c,'[.] '+attempts.toLocaleString()+' tried — last guess "'+idxToStr(end-1)+'"','info');
     await sleep(0);
   }
   const totalElapsed=(performance.now()-t0)/1000;
-  $('bfEta').textContent=formatDuration(totalElapsed)+' (actual)';
+  qelGet('bfEta').textContent=formatDuration(totalElapsed)+' (actual)';
   if(found){
     logLine(c,'[✓] match found: "'+found+'" after '+attempts.toLocaleString()+' attempts','ok');
-    $('bfResult').className='result-box ok';
-    $('bfResult').style.display='block';
-    $('bfResult').textContent='Cracked secret: "'+found+'" in '+attempts.toLocaleString()+' attempts ('+totalElapsed.toFixed(2)+'s).';
+    qelGet('bfResult').className='result-box ok';
+    qelGet('bfResult').style.display='block';
+    qelGet('bfResult').textContent='Cracked secret: "'+found+'" in '+attempts.toLocaleString()+' attempts ('+totalElapsed.toFixed(2)+'s).';
     addLog('Brute Force','Vulnerable','Success','Cracked "'+found+'" in '+attempts.toLocaleString()+' attempts, '+totalElapsed.toFixed(2)+'s');
   } else {
     logLine(c,'[!] exhausted keyspace without a match','bad');
-    $('bfResult').className='result-box bad';
-    $('bfResult').style.display='block';
-    $('bfResult').textContent='No match found in keyspace.';
+    qelGet('bfResult').className='result-box bad';
+    qelGet('bfResult').style.display='block';
+    qelGet('bfResult').textContent='No match found in keyspace.';
     addLog('Brute Force','Vulnerable','Failed','Exhausted keyspace, no match');
   }
-  $('bfRemediation').style.display='block';
-  $('bfAttackBtn').disabled=false;
+  qelGet('bfRemediation').style.display='block';
+  qelGet('bfAttackBtn').disabled=false;
 });
 function formatDuration(sec){
   if(sec<1) return (sec*1000).toFixed(0)+'ms';
@@ -1078,9 +1001,9 @@ function md5Resume(state, processedLenBytes, extraBytes){
 }
 
 let leState=null;
-$('leSetupBtn').addEventListener('click', ()=>{
-  const secretLen=parseInt($('leSecretLen').value)||8;
-  const message=$('leMessage').value;
+qelGet('leSetupBtn').addEventListener('click', ()=>{
+  const secretLen=parseInt(qelGet('leSecretLen').value)||8;
+  const message=qelGet('leMessage').value;
   const secret=randBytes(secretLen);
   const msgBytes=enc.encode(message);
   const combined=new Uint8Array(secret.length+msgBytes.length);
@@ -1088,25 +1011,25 @@ $('leSetupBtn').addEventListener('click', ()=>{
   const macState=md5(combined);
   const mac=stateToHex(macState);
   leState={secretLen, message, mac, secret};
-  const out=$('leTargetOut');
+  const out=qelGet('leTargetOut');
   out.className='result-box ok'; out.style.display='block';
   out.textContent='Message: "'+message+'"\nMAC = MD5(secret‖message) = '+mac;
-  $('leAttackBtn').disabled=false;
-  $('leResult').style.display='none';
-  $('leRemediation').style.display='none';
-  clearConsole($('leConsole'));
-  logLine($('leConsole'),'$ server published message + MAC','hdr');
+  qelGet('leAttackBtn').disabled=false;
+  qelGet('leResult').style.display='none';
+  qelGet('leRemediation').style.display='none';
+  clearConsole(qelGet('leConsole'));
+  logLine(qelGet('leConsole'),'$ server published message + MAC','hdr');
 });
 
-$('leAttackBtn').addEventListener('click', async ()=>{
+qelGet('leAttackBtn').addEventListener('click', async ()=>{
   if(!leState) return;
-  const c=$('leConsole');
+  const c=qelGet('leConsole');
   clearConsole(c);
-  $('leResult').style.display='none';
-  $('leRemediation').style.display='none';
+  qelGet('leResult').style.display='none';
+  qelGet('leRemediation').style.display='none';
 
   const {secretLen, message, mac} = leState;
-  const appendStr=$('leAppend').value;
+  const appendStr=qelGet('leAppend').value;
   logLine(c,'$ known: message="'+message+'", MAC='+mac+', assumed secret length='+secretLen,'hdr');
   await sleep(150);
 
@@ -1131,18 +1054,18 @@ $('leAttackBtn').addEventListener('click', async ()=>{
   const verifyOk = verifyForgedMac(leState.secret, message, glue, extraBytes, forgedMac);
   if(verifyOk){
     logLine(c,'[✓] server accepts forged message as validly signed','ok');
-    $('leResult').className='result-box ok';
-    $('leResult').style.display='block';
-    $('leResult').textContent='Forged message accepted!\n\nForged payload: "'+forgedMessageDisplay+'"\nForged MAC: '+forgedMac;
+    qelGet('leResult').className='result-box ok';
+    qelGet('leResult').style.display='block';
+    qelGet('leResult').textContent='Forged message accepted!\n\nForged payload: "'+forgedMessageDisplay+'"\nForged MAC: '+forgedMac;
     addLog('Length Extension','Vulnerable','Success','Forged valid MAC for appended data "'+appendStr+'"');
   } else {
     logLine(c,'[!] verification mismatch','bad');
-    $('leResult').className='result-box bad';
-    $('leResult').style.display='block';
-    $('leResult').textContent='Forgery failed verification (unexpected — check secret length assumption).';
+    qelGet('leResult').className='result-box bad';
+    qelGet('leResult').style.display='block';
+    qelGet('leResult').textContent='Forgery failed verification (unexpected — check secret length assumption).';
     addLog('Length Extension','Vulnerable','Failed','MAC mismatch — secret length assumption likely wrong');
   }
-  $('leRemediation').style.display='block';
+  qelGet('leRemediation').style.display='block';
 });
 function verifyForgedMac(secret, message, glue, extraBytes, forgedMac){
   const msgBytes=enc.encode(message);
@@ -1158,41 +1081,41 @@ function verifyForgedMac(secret, message, glue, extraBytes, forgedMac){
 
 /* ============================= BIT-FLIPPING (CTR vs GCM) ============================= */
 let bfpState=null;
-$('bfpEncryptBtn').addEventListener('click', async ()=>{
-  const plainText=$('bfpPlain').value || 'secret';
-  const mode=$('bfpMode').value;
+qelGet('bfpEncryptBtn').addEventListener('click', async ()=>{
+  const plainText=qelGet('bfpPlain').value || 'secret';
+  const mode=qelGet('bfpMode').value;
   const data=enc.encode(plainText);
-  const c=$('bfpConsole');
+  const c=qelGet('bfpConsole');
   clearConsole(c);
-  $('bfpResult').style.display='none';
-  $('bfpRemediation').style.display='none';
+  qelGet('bfpResult').style.display='none';
+  qelGet('bfpRemediation').style.display='none';
 
   if(mode==='ctr'){
     const key=await crypto.subtle.generateKey({name:'AES-CTR',length:128},true,['encrypt','decrypt']);
     const counter=randBytes(16);
     const ctBuf=await crypto.subtle.encrypt({name:'AES-CTR',counter,length:64}, key, data);
     bfpState={mode,key,counter,cipherBytes:new Uint8Array(ctBuf),flips:{}};
-    $('bfpCipherOut').className='result-box ok'; $('bfpCipherOut').style.display='block';
-    $('bfpCipherOut').textContent='Counter: '+bytesToHex(counter)+'\nCiphertext: '+bytesToHex(bfpState.cipherBytes);
+    qelGet('bfpCipherOut').className='result-box ok'; qelGet('bfpCipherOut').style.display='block';
+    qelGet('bfpCipherOut').textContent='Counter: '+bytesToHex(counter)+'\nCiphertext: '+bytesToHex(bfpState.cipherBytes);
     logLine(c,'$ target deployed (vulnerable AES-CTR, no integrity check)','hdr');
   } else {
     const key=await crypto.subtle.generateKey({name:'AES-GCM',length:128},true,['encrypt','decrypt']);
     const iv=randBytes(12);
     const ctBuf=await crypto.subtle.encrypt({name:'AES-GCM',iv}, key, data);
     bfpState={mode,key,iv,cipherBytes:new Uint8Array(ctBuf),flips:{}};
-    $('bfpCipherOut').className='result-box ok'; $('bfpCipherOut').style.display='block';
-    $('bfpCipherOut').textContent='Nonce: '+bytesToHex(iv)+'\nCiphertext+Tag: '+bytesToHex(bfpState.cipherBytes);
+    qelGet('bfpCipherOut').className='result-box ok'; qelGet('bfpCipherOut').style.display='block';
+    qelGet('bfpCipherOut').textContent='Nonce: '+bytesToHex(iv)+'\nCiphertext+Tag: '+bytesToHex(bfpState.cipherBytes);
     logLine(c,'$ target deployed (patched AES-GCM, authenticated)','hdr');
   }
 
   renderByteGrid();
-  $('bfpByteGridWrap').style.display='block';
-  $('bfpDecryptBtn').disabled=false;
-  $('bfpResetBtn').disabled=false;
+  qelGet('bfpByteGridWrap').style.display='block';
+  qelGet('bfpDecryptBtn').disabled=false;
+  qelGet('bfpResetBtn').disabled=false;
 });
 
 function renderByteGrid(){
-  const wrap=$('bfpByteGrid');
+  const wrap=qelGet('bfpByteGrid');
   wrap.innerHTML='';
   bfpState.cipherBytes.forEach((b,i)=>{
     const el=document.createElement('div');
@@ -1207,19 +1130,19 @@ function renderByteGrid(){
   });
 }
 
-$('bfpResetBtn').addEventListener('click', ()=>{
+qelGet('bfpResetBtn').addEventListener('click', ()=>{
   if(!bfpState) return;
   bfpState.flips={};
   renderByteGrid();
-  $('bfpResult').style.display='none';
-  logLine($('bfpConsole'),'[*] flips reset','info');
+  qelGet('bfpResult').style.display='none';
+  logLine(qelGet('bfpConsole'),'[*] flips reset','info');
 });
 
-$('bfpDecryptBtn').addEventListener('click', async ()=>{
+qelGet('bfpDecryptBtn').addEventListener('click', async ()=>{
   if(!bfpState) return;
-  const c=$('bfpConsole');
-  $('bfpResult').style.display='none';
-  $('bfpRemediation').style.display='none';
+  const c=qelGet('bfpConsole');
+  qelGet('bfpResult').style.display='none';
+  qelGet('bfpRemediation').style.display='none';
 
   const tampered=new Uint8Array(bfpState.cipherBytes);
   const flippedIdx=Object.keys(bfpState.flips).filter(k=>bfpState.flips[k]).map(Number);
@@ -1232,15 +1155,15 @@ $('bfpDecryptBtn').addEventListener('click', async ()=>{
       const ptBuf=await crypto.subtle.decrypt({name:'AES-CTR',counter:bfpState.counter,length:64}, bfpState.key, tampered);
       const text=dec.decode(ptBuf);
       logLine(c,'[+] decryption succeeded — server accepted tampered ciphertext silently','ok');
-      $('bfpResult').className='result-box ok';
-      $('bfpResult').style.display='block';
-      $('bfpResult').textContent='Decrypted (tampered) plaintext: "'+text.replace(/[\x00-\x1f\x7f-\xff]/g,'')+'"\nNote the corresponding bytes changed — no error was raised.';
+      qelGet('bfpResult').className='result-box ok';
+      qelGet('bfpResult').style.display='block';
+      qelGet('bfpResult').textContent='Decrypted (tampered) plaintext: "'+text.replace(/[\x00-\x1f\x7f-\xff]/g,'')+'"\nNote the corresponding bytes changed — no error was raised.';
       addLog('Bit-Flipping','Vulnerable','Success','Tampered '+flippedIdx.length+' byte(s), decryption silently altered plaintext');
     }catch(e){
       logLine(c,'[!] decrypt error: '+e.message,'bad');
-      $('bfpResult').className='result-box bad';
-      $('bfpResult').style.display='block';
-      $('bfpResult').textContent='Unexpected decrypt error.';
+      qelGet('bfpResult').className='result-box bad';
+      qelGet('bfpResult').style.display='block';
+      qelGet('bfpResult').textContent='Unexpected decrypt error.';
     }
   } else {
     try{
@@ -1248,14 +1171,15 @@ $('bfpDecryptBtn').addEventListener('click', async ()=>{
       logLine(c,'[!] unexpected: GCM accepted tampered data','bad');
     }catch(e){
       logLine(c,'[-] AES-GCM rejected tampered ciphertext: auth tag mismatch','warn');
-      $('bfpResult').className='result-box bad';
-      $('bfpResult').style.display='block';
-      $('bfpResult').textContent='Attack failed: authenticated decryption threw an error — tampering was detected and the plaintext was never released.';
+      qelGet('bfpResult').className='result-box bad';
+      qelGet('bfpResult').style.display='block';
+      qelGet('bfpResult').textContent='Attack failed: authenticated decryption threw an error — tampering was detected and the plaintext was never released.';
       addLog('Bit-Flipping','Patched','Failed','GCM rejected tampered ciphertext, auth tag mismatch');
     }
   }
-  $('bfpRemediation').style.display='block';
+  qelGet('bfpRemediation').style.display='block';
 });
+})();
 </script>
 </body>
 </html>

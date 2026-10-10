@@ -1,9 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="normal">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Crypto CTF / Challenge Mode — Quantum Elite Labs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
   :root{
     --bg-0:#eef0fc;
@@ -23,22 +26,49 @@
     --warn:#d97706;
     --radius-lg:20px;
     --radius-md:12px;
-    --font-display:'Arial Rounded MT Bold','Arial Rounded MT',ui-rounded,'SF Pro Rounded','Baloo 2',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
-    --font-body:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
-    --font-mono:'SFMono-Regular',Consolas,'Liberation Mono',Menlo,monospace;
+    --font-display:'Space Grotesk','Arial Rounded MT Bold',ui-rounded,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    --font-body:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+    --font-mono:'JetBrains Mono','SFMono-Regular',Consolas,'Liberation Mono',Menlo,monospace;
   }
+  html[data-theme="hacker"]{
+    --bg-0:#07070f;
+    --surface:#0e0e1c;
+    --surface-soft:#131326;
+    --border:#242442;
+    --ink:#f1f1fb;
+    --ink-soft:#b4b6d6;
+    --ink-faint:#6b6e95;
+    --purple-bg:#1d1a3a;
+    --ok:#34d399;
+    --bad:#f87171;
+    --warn:#fbbf24;
+  }
+  html[data-theme="hacker"] body{background:
+    radial-gradient(900px 420px at 15% -10%, rgba(37,99,235,.18) 0%, transparent 60%),
+    radial-gradient(900px 420px at 100% 0%, rgba(236,72,153,.14) 0%, transparent 55%),
+    var(--bg-0);}
+  html[data-theme="hacker"] .data-box,
+  html[data-theme="hacker"] .mini-console{background:#000;border:1px solid var(--border);}
+  html[data-theme="hacker"] .chall.solved{background:#0d1f14;border-color:#1f6b3f;}
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;background:
     radial-gradient(900px 420px at 15% -10%, #dde3fb 0%, transparent 60%),
     radial-gradient(900px 420px at 100% 0%, #fbe3f0 0%, transparent 55%),
     var(--bg-0);
-    color:var(--ink);font-family:var(--font-body);-webkit-font-smoothing:antialiased;min-height:100vh;}
+    color:var(--ink);font-family:var(--font-body);-webkit-font-smoothing:antialiased;min-height:100vh;transition:background .25s ease, color .25s ease;}
   .wrap{max-width:1180px;margin:0 auto;padding:40px 24px 100px;}
 
   .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:14px;}
   .back-link{display:flex;align-items:center;gap:8px;color:var(--ink-soft);text-decoration:none;font-size:14px;font-weight:600;}
   .back-link:hover{color:var(--purple);}
+  .nav-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .pill-badge{display:flex;align-items:center;gap:7px;padding:8px 14px;border-radius:999px;background:var(--surface);border:1px solid var(--border);color:var(--ink-soft);font-size:12.5px;font-weight:700;}
   .elite-tag{display:flex;align-items:center;gap:8px;padding:8px 16px;border-radius:999px;background:linear-gradient(90deg,var(--grad-1),var(--grad-2),var(--grad-3));color:#fff;font-size:13px;font-weight:700;}
+  .theme-switch{display:flex;align-items:center;gap:8px;padding:6px 12px 6px 14px;border-radius:999px;background:var(--surface);border:1px solid var(--border);font-size:12.5px;font-weight:700;color:var(--ink-soft);cursor:pointer;user-select:none;}
+  .switch-track{width:38px;height:22px;border-radius:999px;background:var(--border);position:relative;transition:background .2s;flex-shrink:0;}
+  .switch-thumb{position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3);transition:left .2s;}
+  html[data-theme="hacker"] .switch-track{background:linear-gradient(90deg,var(--grad-1),var(--grad-2));}
+  html[data-theme="hacker"] .switch-thumb{left:18px;}
 
   .hero{text-align:center;margin-bottom:24px;}
   .hero h1{font-family:var(--font-display);font-weight:800;font-size:38px;line-height:1.15;margin:0 0 10px;letter-spacing:-.01em;}
@@ -85,7 +115,7 @@
   .mini-console .ln.hit{color:#fcd34d;font-weight:700;}
 
   .btn{border:none;border-radius:9px;padding:9px 14px;font-weight:700;font-size:12.5px;cursor:pointer;font-family:var(--font-body);}
-  .btn-ghost{background:#fff;border:1px solid var(--border);color:var(--ink);}
+  .btn-ghost{background:var(--surface);border:1px solid var(--border);color:var(--ink);}
   .btn-ghost:hover{border-color:var(--purple);}
   .btn-mini{background:var(--purple-bg);color:var(--purple);border:none;}
 
@@ -112,13 +142,20 @@
 <div class="wrap">
 
   <div class="topbar">
-    <a href="quantum-elite-labs.html" class="back-link">
+    <a href="../index.html" class="back-link">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M15 18l-6-6 6-6"/></svg>
       Quantum Elite Labs
     </a>
-    <div class="elite-tag">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M3 8l4 3 5-7 5 7 4-3-2 11H5L3 8z"/></svg>
-      Quantum Elite — Lab Unlocked
+    <div class="nav-actions">
+      <div class="pill-badge"><i class="fa-solid fa-lock"></i> 100% Client-Side</div>
+      <div class="elite-tag">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M3 8l4 3 5-7 5 7 4-3-2 11H5L3 8z"/></svg>
+        Quantum Elite — Lab Unlocked
+      </div>
+      <div class="theme-switch" id="themeSwitch">
+        <span id="themeLabel">Normal</span>
+        <span class="switch-track"><span class="switch-thumb"></span></span>
+      </div>
     </div>
   </div>
 
@@ -144,6 +181,28 @@
 (function(){ // isolated scope — nothing here leaks into the host page's globals, so it won't collide with jQuery or any other site script
 const qelGet=id=>document.getElementById(id);
 const enc=new TextEncoder();
+
+/* theme toggle (Normal / Hacker), persisted across Quantum Elite pages */
+(function(){
+  const saved=localStorage.getItem('qel-theme')||'normal';
+  document.documentElement.setAttribute('data-theme', saved);
+  function syncLabel(){
+    const mode=document.documentElement.getAttribute('data-theme');
+    const label=document.getElementById('themeLabel');
+    if(label) label.textContent = mode==='hacker' ? 'Hacker' : 'Normal';
+  }
+  syncLabel();
+  const sw=document.getElementById('themeSwitch');
+  if(sw){
+    sw.addEventListener('click',()=>{
+      const current=document.documentElement.getAttribute('data-theme')||'normal';
+      const next=current==='hacker'?'normal':'hacker';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('qel-theme', next);
+      syncLabel();
+    });
+  }
+})();
 
 async function sha256hex(str){
   const buf=await crypto.subtle.digest('SHA-256', enc.encode(str));
