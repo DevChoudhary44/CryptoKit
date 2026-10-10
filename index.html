@@ -759,7 +759,7 @@
 
         .premium-tool-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 24px; flex-shrink: 0; transition: all 0.3s; }
         [data-theme="normal"] .premium-tool-icon { background: #eef2ff; color: #6366f1; }
-        [data-theme="normal"] .quantum-tool-card .premium-tool-icon { background: #f5f3ff; color: #8b5cf6; }
+        [data-theme="normal"] .quantum-tool-card .premium-tool-icon { background: linear-gradient(135deg, #dbeafe, #ede9fe, #fce7f3); color: #8b5cf6; }
         [data-theme="hacker"] .premium-tool-icon { background: rgba(251,191,36,0.1); color: #fbbf24; }
         [data-theme="hacker"] .quantum-tool-card .premium-tool-icon { background: rgba(139,92,246,0.15); color: #a78bfa; }
 
@@ -773,7 +773,8 @@
 
         .premium-tool-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: auto !important; margin-top: 0 !important; }
         .premium-tool-tags .ptag, .premium-tool-tags .qtag { padding: 4px 14px; border-radius: 20px; font-size: 12px; font-weight: 500; font-family: 'JetBrains Mono', monospace; white-space: nowrap; }
-        [data-theme="normal"] .premium-tool-tags .ptag, [data-theme="normal"] .premium-tool-tags .qtag { background: #f8fafc; color: #64748b; border: 1px solid #e2e8f0; }
+        [data-theme="normal"] .premium-tool-tags .ptag { background: #f8fafc; color: #64748b; border: 1px solid #e2e8f0; }
+        [data-theme="normal"] .premium-tool-tags .qtag { background: linear-gradient(135deg, rgba(59,130,246,0.08), rgba(139,92,246,0.08), rgba(236,72,153,0.08)); color: #7c3aed; border: 1px solid rgba(139,92,246,0.2); }
         [data-theme="hacker"] .premium-tool-tags .ptag { background: rgba(251,191,36,0.1); color: #fbbf24; border: 1px solid rgba(251,191,36,0.3); }
         [data-theme="hacker"] .premium-tool-tags .qtag { background: rgba(139,92,246,0.15); color: #a78bfa; border: 1px solid rgba(139,92,246,0.3); }
 
@@ -787,8 +788,23 @@
         }
         .premium-tool-cta i { font-size: 12px; }
         .premium-tool-card:hover .premium-tool-cta { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(245, 158, 11, 0.5); background: linear-gradient(180deg, #fbbf24, #f59e0b); }
-        .quantum-tool-card .premium-tool-cta { background: linear-gradient(180deg, #a855f7, #7c3aed); color: #fff !important; box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4); }
-        .quantum-tool-card:hover .premium-tool-cta { background: linear-gradient(180deg, #c084fc, #a855f7); box-shadow: 0 12px 30px rgba(139, 92, 246, 0.55); }
+
+        /* ═══════════════════════════════════════════════════
+           QUANTUM ELITE — Normal Mode (Blue → Purple → Pink)
+        ═══════════════════════════════════════════════════ */
+        [data-theme="normal"] .quantum-tool-card .premium-tool-cta {
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #ec4899 100%) !important;
+            color: #fff !important;
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4) !important;
+        }
+        [data-theme="normal"] .quantum-tool-card:hover .premium-tool-cta {
+            background: linear-gradient(135deg, #2563eb 0%, #7c3aed 50%, #db2777 100%) !important;
+            box-shadow: 0 12px 30px rgba(139, 92, 246, 0.55) !important;
+        }
+
+        /* Hacker mode quantum CTA keeps original look */
+        [data-theme="hacker"] .quantum-tool-card .premium-tool-cta { background: linear-gradient(180deg, #a855f7, #7c3aed); color: #fff !important; box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4); }
+        [data-theme="hacker"] .quantum-tool-card:hover .premium-tool-cta { background: linear-gradient(180deg, #c084fc, #a855f7); box-shadow: 0 12px 30px rgba(139, 92, 246, 0.55); }
 
         /* Locked Premium Cards Styles */
         .premium-tool-card.locked::after {
@@ -810,16 +826,17 @@
             transform: translateY(-1px);
         }
         .premium-tool-card.quantum-tool-card.locked .premium-tool-cta {
-            background: linear-gradient(135deg, #2e1065, #0f052d) !important;
+            background: linear-gradient(135deg, #1e3a8a, #2e1065, #831843) !important;
             color: #e9d5ff !important; border: 1px solid rgba(168, 85, 247, 0.15) !important;
         }
         .premium-tool-card.quantum-tool-card.locked:hover .premium-tool-cta {
-            background: linear-gradient(135deg, #4c1d95, #2e1065) !important;
-            color: #f3e8ff !important; border-color: rgba(168, 85, 247, 0.3) !important;
+            background: linear-gradient(135deg, #2563eb, #7c3aed, #db2777) !important;
+            color: #fff !important; border-color: rgba(236, 72, 153, 0.3) !important;
         }
 
         .premium-tool-card .premium-crown { position: absolute; top: 16px; right: 20px; font-size: 18px; }
         [data-theme="normal"] .premium-tool-card .premium-crown { filter: drop-shadow(0 0 4px rgba(251,191,36,0.4)); opacity: 0.85; }
+        [data-theme="normal"] .quantum-tool-card .premium-crown { filter: drop-shadow(0 0 6px rgba(139,92,246,0.6)); opacity: 0.9; }
         [data-theme="hacker"] .premium-tool-card .premium-crown { filter: drop-shadow(0 0 6px rgba(251,191,36,0.6)); }
         [data-theme="hacker"] .quantum-tool-card .premium-crown { filter: drop-shadow(0 0 8px rgba(139,92,246,0.8)); }
 
@@ -836,6 +853,32 @@
         }
         [data-theme="normal"] .coming-soon-badge { background: #f1f5f9; color: #64748b; border: 1px dashed #cbd5e1; }
         [data-theme="hacker"] .coming-soon-badge { background: rgba(255,255,255,0.06); color: #a0aec0; }
+
+        /* ═══════════════════════════════════════════════════════════
+           QUANTUM SECTION BADGE — Normal Mode (Blue→Purple→Pink)
+        ═══════════════════════════════════════════════════════════ */
+        [data-theme="normal"] #quantumToolsSection .section-badge {
+            background: linear-gradient(135deg, rgba(59,130,246,0.12), rgba(139,92,246,0.12), rgba(236,72,153,0.12)) !important;
+            color: #7c3aed !important;
+            border: 1px solid rgba(139,92,246,0.3) !important;
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           THEME TRANSITION OVERLAY TEXT
+        ═══════════════════════════════════════════════════════════ */
+        html.premium-active .transition-text {
+            color: #fbbf24 !important;
+            text-shadow: 0 0 12px rgba(251, 191, 36, 0.5) !important;
+            -webkit-text-fill-color: #fbbf24 !important;
+            background: none !important;
+        }
+        html.enterprise-active .transition-text {
+            background: linear-gradient(135deg, #e9d5ff, #a855f7, #ffffff) !important;
+            -webkit-background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            background-clip: text !important;
+            text-shadow: 0 0 20px rgba(168, 85, 247, 0.4) !important;
+        }
 
         /* ═══════════════════════════════════════════════════════════
            PREMIUM ACTIVE — WARM GOLDEN THEME OVERRIDES
@@ -882,40 +925,150 @@
         html.premium-active[data-theme="hacker"] .hero-badge .dot { background: #fbbf24 !important; box-shadow: 0 0 8px #fbbf24 !important; }
         html.premium-active[data-theme="hacker"] .ai-fab { box-shadow: 0 4px 20px rgba(251,191,36,0.4) !important; }
 
-        /* Enterprise / Quantum Active */
+        /* ═══════════════════════════════════════════════════════════
+           ENTERPRISE / QUANTUM ACTIVE — Normal Mode
+           Blue (#3b82f6) → Purple (#8b5cf6) → Pink (#ec4899)
+        ═══════════════════════════════════════════════════════════ */
         html.enterprise-active[data-theme="normal"] .navbar {
-            border-bottom: 1px solid rgba(139, 92, 246, 0.2) !important;
-            background: linear-gradient(180deg, rgba(245,243,255,0.95), rgba(255,255,255,0.95)) !important;
+            border-bottom: 1px solid rgba(139, 92, 246, 0.25) !important;
+            background: linear-gradient(180deg, rgba(239,246,255,0.6), rgba(245,243,255,0.6), rgba(253,242,248,0.6)) !important;
+            backdrop-filter: blur(10px);
+        }
+        html.enterprise-active[data-theme="normal"] .hero-badge {
+            background: linear-gradient(135deg, rgba(59,130,246,0.12), rgba(139,92,246,0.12), rgba(236,72,153,0.12)) !important;
+            border-color: rgba(139,92,246,0.3) !important;
+        }
+        html.enterprise-active[data-theme="normal"] .hero-badge .dot {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6, #ec4899) !important;
+            box-shadow: 0 0 10px rgba(139, 92, 246, 0.6) !important;
         }
         html.enterprise-active[data-theme="normal"] .gradient-text {
-            background: linear-gradient(135deg, #7c3aed, #3b82f6, #06b6d4) !important;
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #ec4899 100%) !important;
             -webkit-background-clip: text !important;
             -webkit-text-fill-color: transparent !important;
             background-clip: text !important;
         }
-        html.enterprise-active[data-theme="normal"] .tool-card::before { background: linear-gradient(90deg, #8b5cf6, #3b82f6, #06b6d4) !important; }
-        html.enterprise-active[data-theme="normal"] .tool-cta.use-now-btn { background: linear-gradient(135deg, #7c3aed, #6366f1) !important; box-shadow: 0 4px 14px rgba(124, 58, 237, 0.3) !important; }
-        html.enterprise-active[data-theme="normal"] .btn-primary { background: linear-gradient(135deg, #7c3aed, #3b82f6) !important; box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3) !important; }
-        html.enterprise-active[data-theme="normal"] .scroll-top { background: linear-gradient(135deg, #7c3aed, #3b82f6) !important; color: #fff !important; }
-        html.enterprise-active[data-theme="normal"] .section-badge { background: rgba(139, 92, 246, 0.08) !important; color: #7c3aed !important; border-color: rgba(139, 92, 246, 0.2) !important; }
-        html.enterprise-active[data-theme="normal"] .cta-section .cta-glow { background: radial-gradient(circle, rgba(139, 92, 246, 0.15), transparent 70%) !important; }
-        html.enterprise-active[data-theme="normal"] .premium-tool-icon { background: #ede9fe !important; color: #7c3aed !important; }
-        html.enterprise-active[data-theme="normal"] .hero-badge { background: linear-gradient(135deg, rgba(139,92,246,0.12), rgba(59,130,246,0.08)) !important; border-color: rgba(139,92,246,0.3) !important; }
-        html.enterprise-active[data-theme="normal"] .hero-badge .dot { background: #7c3aed !important; box-shadow: 0 0 8px #7c3aed !important; }
-        html.enterprise-active[data-theme="normal"] .ai-fab { background: linear-gradient(135deg, #7c3aed, #3b82f6) !important; box-shadow: 0 4px 20px rgba(124,58,237,0.4) !important; }
-        html.enterprise-active[data-theme="normal"] .ai-chat-header { background: linear-gradient(135deg, #7c3aed, #3b82f6) !important; }
-        html.enterprise-active[data-theme="hacker"] .tool-card::before { background: linear-gradient(90deg, #a78bfa, #818cf8, #60a5fa) !important; box-shadow: 0 0 10px rgba(139, 92, 246, 0.5) !important; }
+        html.enterprise-active[data-theme="normal"] .tool-card::before,
+        html.enterprise-active[data-theme="normal"] .premium-tool-card::before {
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899) !important;
+        }
+        html.enterprise-active[data-theme="normal"] .tool-card:hover {
+            border-color: rgba(139, 92, 246, 0.35) !important;
+            box-shadow: 0 12px 35px rgba(139, 92, 246, 0.12) !important;
+        }
+        html.enterprise-active[data-theme="normal"] .tool-cta.use-now-btn,
+        html.enterprise-active[data-theme="normal"] .premium-tool-card .premium-tool-cta {
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #ec4899 100%) !important;
+            color: #fff !important;
+            box-shadow: 0 4px 14px rgba(139, 92, 246, 0.35) !important;
+            border: none !important;
+        }
+        html.enterprise-active[data-theme="normal"] .tool-card:hover .tool-cta.use-now-btn,
+        html.enterprise-active[data-theme="normal"] .premium-tool-card:hover .premium-tool-cta {
+            background: linear-gradient(135deg, #2563eb 0%, #7c3aed 50%, #db2777 100%) !important;
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.5) !important;
+        }
+        html.enterprise-active[data-theme="normal"] .section-badge,
+        html.enterprise-active[data-theme="normal"] #proToolsSection .section-badge {
+            background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(139,92,246,0.1), rgba(236,72,153,0.1)) !important;
+            color: #7c3aed !important;
+            border: 1px solid rgba(139, 92, 246, 0.3) !important;
+        }
+        html.enterprise-active[data-theme="normal"] .btn-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #ec4899 100%) !important;
+            box-shadow: 0 4px 16px rgba(139, 92, 246, 0.35) !important;
+            color: #fff !important;
+        }
+        html.enterprise-active[data-theme="normal"] .btn-primary:hover {
+            background: linear-gradient(135deg, #2563eb 0%, #7c3aed 50%, #db2777 100%) !important;
+            box-shadow: 0 6px 24px rgba(139, 92, 246, 0.5) !important;
+        }
+        html.enterprise-active[data-theme="normal"] .scroll-top {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6, #ec4899) !important;
+            color: #fff !important;
+        }
+        html.enterprise-active[data-theme="normal"] .stat-card:hover {
+            border-color: rgba(139, 92, 246, 0.3) !important;
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.12) !important;
+        }
+        html.enterprise-active[data-theme="normal"] .feature-card:hover {
+            border-color: rgba(139, 92, 246, 0.3) !important;
+        }
+        html.enterprise-active[data-theme="normal"] .cta-section .cta-glow {
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.18), rgba(236, 72, 153, 0.08) 50%, transparent 70%) !important;
+        }
+        html.enterprise-active[data-theme="normal"] .premium-tool-icon {
+            background: linear-gradient(135deg, #dbeafe, #ede9fe, #fce7f3) !important;
+            color: #7c3aed !important;
+        }
+        html.enterprise-active[data-theme="normal"] .premium-tool-tags .ptag {
+            background: linear-gradient(135deg, rgba(59,130,246,0.08), rgba(139,92,246,0.08), rgba(236,72,153,0.08)) !important;
+            color: #7c3aed !important;
+            border: 1px solid rgba(139,92,246,0.2) !important;
+        }
+        html.enterprise-active[data-theme="normal"] .step-number {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6, #ec4899) !important;
+        }
+        html.enterprise-active[data-theme="normal"] .ai-fab {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6, #ec4899) !important;
+            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.45) !important;
+        }
+        html.enterprise-active[data-theme="normal"] .ai-chat-header {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6, #ec4899) !important;
+        }
+        html.enterprise-active[data-theme="normal"] .premium-tool-card .premium-crown {
+            filter: drop-shadow(0 0 6px rgba(139,92,246,0.6)) !important;
+        }
+
+        /* Hacker Mode + Enterprise Active (Quantum Matrix) */
+        html.enterprise-active[data-theme="hacker"] .tool-card::before,
+        html.enterprise-active[data-theme="hacker"] .premium-tool-card::before { 
+            background: linear-gradient(90deg, #a78bfa, #818cf8, #60a5fa) !important; 
+            box-shadow: 0 0 10px rgba(139, 92, 246, 0.5) !important; 
+        }
         html.enterprise-active[data-theme="hacker"] .tool-cta.use-now-btn { color: #a78bfa !important; border-color: #a78bfa !important; box-shadow: 0 0 12px rgba(139, 92, 246, 0.3) !important; }
         html.enterprise-active[data-theme="hacker"] .tool-card:hover .tool-cta.use-now-btn { background: #a78bfa !important; color: #000 !important; }
         html.enterprise-active[data-theme="hacker"] .ai-fab { box-shadow: 0 4px 20px rgba(139,92,246,0.4) !important; }
+        html.enterprise-active[data-theme="hacker"] .premium-tool-card .premium-tool-cta {
+            background: linear-gradient(180deg, #a855f7, #7c3aed) !important;
+            color: #fff !important;
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4) !important;
+            border: none !important;
+        }
+        html.enterprise-active[data-theme="hacker"] .premium-tool-card:hover .premium-tool-cta {
+            background: linear-gradient(180deg, #c084fc, #a855f7) !important;
+            box-shadow: 0 12px 30px rgba(139, 92, 246, 0.55) !important;
+        }
+        html.enterprise-active[data-theme="hacker"] .premium-tool-icon {
+            background: rgba(139,92,246,0.15) !important;
+            color: #a78bfa !important;
+        }
+        html.enterprise-active[data-theme="hacker"] .premium-tool-tags .ptag {
+            background: rgba(139,92,246,0.15) !important;
+            color: #a78bfa !important;
+            border: 1px solid rgba(139,92,246,0.3) !important;
+        }
+        html.enterprise-active[data-theme="hacker"] #proToolsSection .section-badge {
+            background: rgba(139,92,246,0.15) !important;
+            color: #a78bfa !important;
+            border: 1px solid rgba(139,92,246,0.3) !important;
+        }
+        html.enterprise-active[data-theme="hacker"] .premium-tool-card .premium-crown {
+            filter: drop-shadow(0 0 8px rgba(139,92,246,0.8)) !important;
+        }
 
         /* Premium Mode Selector Badge */
         html.premium-active .mode-selector .mode-btn { border-color: rgba(251,191,36,0.3) !important; }
-        html.enterprise-active .mode-selector .mode-btn { border-color: rgba(139,92,246,0.3) !important; }
+        html.enterprise-active .mode-selector .mode-btn { border-color: rgba(139,92,246,0.4) !important; }
         html.premium-active .mode-option-title { color: #d97706 !important; }
-        html.enterprise-active .mode-option-title { color: #7c3aed !important; }
-        [data-theme="hacker"].premium-active .mode-option-title { color: #fbbf24 !important; }
-        [data-theme="hacker"].enterprise-active .mode-option-title { color: #a78bfa !important; }
+        html.enterprise-active .mode-option-title {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6, #ec4899) !important;
+            -webkit-background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            background-clip: text !important;
+        }
+        [data-theme="hacker"].premium-active .mode-option-title { color: #fbbf24 !important; background: none !important; -webkit-text-fill-color: #fbbf24 !important; }
+        [data-theme="hacker"].enterprise-active .mode-option-title { color: #a78bfa !important; background: none !important; -webkit-text-fill-color: #a78bfa !important; }
 
         /* Premium mobile menu accent */
         html.premium-active .mobile-menu .mobile-menu-body a:hover,
@@ -925,8 +1078,35 @@
         }
         html.enterprise-active .mobile-menu .mobile-menu-body a:hover,
         html.enterprise-active .mobile-menu .mobile-menu-body a:active {
-            background: rgba(124, 58, 237, 0.08) !important;
+            background: linear-gradient(135deg, rgba(59,130,246,0.08), rgba(139,92,246,0.08), rgba(236,72,153,0.08)) !important;
             color: #7c3aed !important;
+        }
+
+        /* Mobile menu premium links — Enterprise variant */
+        html.enterprise-active .mobile-menu a#mobilePremiumLink {
+            background: linear-gradient(135deg, rgba(59,130,246,0.15), rgba(139,92,246,0.15), rgba(236,72,153,0.15)) !important;
+            border: 1px solid rgba(139,92,246,0.35) !important;
+            color: #7c3aed !important;
+        }
+        html.enterprise-active .mobile-menu a#mobilePremiumLink:hover {
+            background: linear-gradient(135deg, rgba(59,130,246,0.22), rgba(139,92,246,0.22), rgba(236,72,153,0.22)) !important;
+        }
+        [data-theme="hacker"].enterprise-active .mobile-menu a#mobilePremiumLink {
+            color: #a78bfa !important;
+            background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(139,92,246,0.1), rgba(236,72,153,0.1)) !important;
+            border-color: rgba(139,92,246,0.3) !important;
+        }
+
+        /* Nav Premium Button when Quantum Active (Normal) */
+        html.enterprise-active[data-theme="normal"] .btn-nav-cta {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6, #ec4899) !important;
+            color: #fff !important;
+            box-shadow: 0 4px 14px rgba(139, 92, 246, 0.35) !important;
+            border: none !important;
+        }
+        html.enterprise-active[data-theme="normal"] .btn-nav-cta:hover {
+            background: linear-gradient(135deg, #2563eb, #7c3aed, #db2777) !important;
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.5) !important;
         }
 
         /* AI Elite Badge */
@@ -1261,11 +1441,11 @@
     <!----------------------------------------- Quantum Elite Premium Section -------------------------->
     <section class="premium-tools-section" id="quantumToolsSection">
         <div class="premium-tools-header">
-            <div class="section-badge" style="background: rgba(139,92,246,0.15); color: #a78bfa; border: 1px solid rgba(139,92,246,0.3);">
+            <div class="section-badge" style="background: linear-gradient(135deg, rgba(59,130,246,0.15), rgba(139,92,246,0.15), rgba(236,72,153,0.15)); color: #7c3aed; border: 1px solid rgba(139,92,246,0.3);">
                 🌌 Quantum Elite
             </div>
             <h2 class="section-title">
-                Quantum Elite <span style="background: linear-gradient(135deg, #3b82f6, #a855f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Labs</span>
+                Quantum Elite <span style="background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #ec4899 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Labs</span>
             </h2>
             <p class="section-subtitle">Next-generation cryptographic simulators, challenge modules, and forensic suites.</p>
         </div>
@@ -1723,7 +1903,7 @@
                 document.title = 'CryptoKit v2.0 Pro Cipher — Advanced Cryptography Arsenal';
             } else if (tier === 'enterprise') {
                 if (heroVer) heroVer.innerHTML = 'v3.0 Quantum — Elite Labs Fully Unlocked';
-                if (footVer) footVer.innerHTML = '&copy; 2026 CryptoKit <strong style="color:#a78bfa;">v3.0 Quantum</strong>. MIT License. Made with ❤️';
+                if (footVer) footVer.innerHTML = '&copy; 2026 CryptoKit <strong style="background:linear-gradient(135deg,#3b82f6,#8b5cf6,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">v3.0 Quantum</strong>. MIT License. Made with ❤️';
                 if (termTitle) termTitle.textContent = 'cryptokit v3.0-quantum ~ zsh';
                 document.title = 'CryptoKit v3.0 Quantum — Elite Cryptography Labs';
             } else {
@@ -1752,7 +1932,7 @@
                 if (aiStatus) aiStatus.textContent = 'Online · Elite Engine';
                 if (fabIcon) fabIcon.textContent = '🤖';
                 if (aiFab) aiFab.title = 'Ask CryptoBot Elite';
-                if (mobAsst) mobAsst.innerHTML = '<i class="fas fa-robot" style="width:20px;"></i> Assistant <span style="font-size:10px;font-weight:700;color:' + (tier === 'enterprise' ? '#a78bfa' : '#f59e0b') + ';margin-left:4px;">ELITE</span>';
+                if (mobAsst) mobAsst.innerHTML = '<i class="fas fa-robot" style="width:20px;"></i> Assistant <span style="font-size:10px;font-weight:700;color:' + (tier === 'enterprise' ? '#8b5cf6' : '#f59e0b') + ';margin-left:4px;">ELITE</span>';
                 window.cryptobotName = 'CryptoBot Elite';
             } else {
                 if (aiName) aiName.textContent = 'CryptoBot';
