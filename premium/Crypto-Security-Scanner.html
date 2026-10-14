@@ -4,11 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Crypto Security Scanner — CryptoKit Premium</title>
-<!-- Added Share Tech Mono for Hacker Mode -->
-<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
   /* ---------------- NORMAL THEME ---------------- */
-  [data-theme="normal"] {
+  [data-theme="normal"]{
     --bg-0:#eef0fc;
     --surface:#ffffff;
     --surface-soft:#f4f5fd;
@@ -33,112 +31,76 @@
     --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
   }
 
-  /* ---------------- HACKER THEME ---------------- */
-  [data-theme="hacker"] {
-    --bg-0:#000000;
-    --surface:#050505;
-    --surface-soft:#0a0a0a;
-    --border:rgba(0, 255, 65, 0.25);
-    --ink:#00FF41;
-    --ink-soft:#00CC33;
-    --ink-faint:#006611;
-    --accent-1:#00FF41;
-    --accent-2:#39FF14;
-    --accent-soft:rgba(0, 255, 65, 0.08);
-    --gold-1:#00FF41;
-    --gold-2:#39FF14;
-    --gold-bg:rgba(0, 255, 65, 0.05);
-    --gold-border:rgba(0, 255, 65, 0.3);
-    --good:#00FF41; --good-bg:rgba(0, 255, 65, 0.08);
-    --warn:#FFD700; --warn-bg:rgba(255, 215, 0, 0.1);
-    --bad:#FF0040; --bad-bg:rgba(255, 0, 64, 0.12);
-    --crit:#FF0040; --crit-bg:rgba(255, 0, 64, 0.15);
+  /* ---------------- HACKER (DARK) THEME ---------------- */
+  [data-theme="hacker"]{
+    --bg-0:#07070f;
+    --surface:#0e0e1c;
+    --surface-soft:#131326;
+    --border:#2b2740;
+    --ink:#f1f1fb;
+    --ink-soft:#b4b6d6;
+    --ink-faint:#6b6e95;
+    --accent-1:#818cf8;
+    --accent-2:#38bdf8;
+    --accent-soft:#1d1a3a;
+    --gold-1:#fbbf24;
+    --gold-2:#f59e0b;
+    --gold-bg:#2a2210;
+    --gold-border:#4d3c14;
+    --good:#34d399; --good-bg:#0d2518;
+    --warn:#fbbf24; --warn-bg:#2a2210;
+    --bad:#f87171; --bad-bg:#2a1414;
+    --crit:#fb7185; --crit-bg:#2a1118;
     --radius-lg:18px; --radius-md:12px; --radius-sm:8px;
-    --font-display: 'Share Tech Mono', monospace;
-    --font-body: 'Share Tech Mono', monospace;
-    --font-mono: 'Share Tech Mono', monospace;
+    --font-display: 'Arial Rounded MT Bold', 'Arial Rounded MT', ui-rounded, 'SF Pro Rounded', 'Baloo 2', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
   }
 
   *{ box-sizing:border-box; }
-  
   html,body{
     margin:0; padding:0;
-    background: var(--bg-0);
-    color:var(--ink); 
-    font-family:var(--font-body); 
-    -webkit-font-smoothing:antialiased;
-    transition: background-color 0.4s ease, color 0.4s ease;
+    background:var(--bg-0);
+    color:var(--ink); font-family:var(--font-body); -webkit-font-smoothing:antialiased;
+    transition:background-color .3s ease, color .3s ease;
   }
-
-  /* Normal background details */
-  [data-theme="normal"] body {
+  [data-theme="normal"] body{
     background:
       radial-gradient(1100px 500px at 12% -8%, #f8ecd8 0%, transparent 60%),
       radial-gradient(900px 500px at 100% 0%, #e7f1fb 0%, transparent 55%),
       var(--bg-0);
   }
-
-  /* Hacker background details */
-  [data-theme="hacker"] body {
-    background-image:
-      radial-gradient(ellipse 900px 500px at 15% -5%, rgba(0,255,65,0.06), transparent 60%),
-      radial-gradient(ellipse 700px 500px at 100% 10%, rgba(57,255,20,0.04), transparent 60%);
+  [data-theme="hacker"] body{
+    background:
+      radial-gradient(1100px 500px at 12% -8%, rgba(245,158,11,.14) 0%, transparent 60%),
+      radial-gradient(900px 500px at 100% 0%, rgba(99,102,241,.14) 0%, transparent 55%),
+      var(--bg-0);
   }
-
-  /* Hacker CRT grid */
-  [data-theme="hacker"] body::before {
-    content: ''; position: fixed; inset: 0;
-    background-image:
-        linear-gradient(rgba(0,255,65,0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,255,65,0.04) 1px, transparent 1px);
-    background-size: 40px 40px; z-index: -1; pointer-events: none;
-    animation: gridMove 20s linear infinite;
-  }
-  @keyframes gridMove {
-    0%   { background-position: 0 0; }
-    100% { background-position: 40px 40px; }
-  }
-
-  .wrap{ max-width:1080px; margin:0 auto; padding:36px 24px 80px; position:relative; z-index:2; }
+  [data-theme="hacker"] .finding-snippet{ background:#000; }
+  .wrap{ max-width:1080px; margin:0 auto; padding:36px 24px 80px; }
 
   .topbar{ display:flex; align-items:center; justify-content:space-between; margin-bottom:34px; flex-wrap:wrap; gap:12px;}
   .pill{
-    display:inline-flex; align-items:center; gap:8px; text-decoration: none;
+    display:inline-flex; align-items:center; gap:8px;
     background:var(--surface); border:1px solid var(--border);
     padding:9px 16px; border-radius:999px; font-size:13.5px; color:var(--ink-soft); font-weight:500;
-    transition: all 0.3s ease;
   }
-  .back-pill{ color:var(--ink); cursor:pointer; }
-  .back-pill:hover { border-color: var(--accent-1); color: var(--accent-1); transform: translateX(-2px); }
-  
-  [data-theme="hacker"] .pill { text-transform: uppercase; font-size: 11px; letter-spacing: 0.05em; background: rgba(0,255,65,0.03); box-shadow: 0 0 10px rgba(0,255,65,0.03); }
-  [data-theme="hacker"] .back-pill:hover { box-shadow: 0 0 16px rgba(0,255,65,0.2); text-shadow: 0 0 8px rgba(0,255,65,0.4); }
-
+  .back-pill{ color:var(--ink); }
   .lock-pill{ color:var(--accent-1); font-weight:600; }
   .lock-pill svg{ color:var(--accent-1); }
-  [data-theme="hacker"] .lock-pill { text-shadow: 0 0 6px rgba(0,255,65,0.3); }
-
-  .toggle-pill{ gap:10px; cursor:pointer; user-select:none; }
-  .switch{ width:34px; height:19px; border-radius:999px; background:#d5d8ee; position:relative; flex-shrink:0; transition: background 0.3s; }
-  .switch::after{ 
-    content:''; position:absolute; top:2px; left:2px; width:15px; height:15px; 
-    border-radius:50%; background:#fff; box-shadow:0 1px 2px rgba(0,0,0,.25); 
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
-  }
-  
-  /* Hacker Theme Switch Styling */
-  [data-theme="hacker"] .switch { background: rgba(0,255,65,0.3); }
-  [data-theme="hacker"] .switch::after { left: 17px; background: var(--accent-1); box-shadow: 0 0 8px var(--accent-1); }
-  [data-theme="hacker"] #themeLabel { text-shadow: 0 0 6px rgba(0,255,65,0.4); }
+  .toggle-pill{ gap:10px; cursor:pointer; user-select:none; transition:background .3s ease; }
+  .switch{ width:34px; height:19px; border-radius:999px; background:#d5d8ee; position:relative; flex-shrink:0; transition:background .3s ease; }
+  .switch::after{ content:''; position:absolute; top:2px; left:2px; width:15px; height:15px; border-radius:50%; background:#fff; box-shadow:0 1px 2px rgba(0,0,0,.25); transition:left .3s cubic-bezier(.4,0,.2,1); }
+  [data-theme="hacker"] .switch{ background:linear-gradient(90deg, var(--gold-1), var(--gold-2)); }
+  [data-theme="hacker"] .switch::after{ left:17px; }
 
   .kicker{
     display:inline-flex; align-items:center; gap:7px;
     background:var(--gold-bg); border:1px solid var(--gold-border);
     padding:7px 14px; border-radius:999px;
     font-size:11.5px; letter-spacing:.08em; color:var(--gold-1); font-weight:800;
-    margin-bottom:18px; transition: all 0.3s ease;
+    margin-bottom:18px;
   }
-  [data-theme="hacker"] .kicker { box-shadow: 0 0 12px rgba(0,255,65,0.08); text-shadow: 0 0 8px rgba(0,255,65,0.4); }
 
   .hero{ display:flex; gap:20px; align-items:flex-start; margin-bottom:16px; }
   .hero-icon{
@@ -146,72 +108,129 @@
     background:linear-gradient(135deg, var(--gold-1), var(--gold-2));
     display:flex; align-items:center; justify-content:center;
     box-shadow:0 10px 24px -8px rgba(217,119,6,.5);
-    transition: all 0.3s ease;
   }
-  [data-theme="hacker"] .hero-icon { background: transparent; border: 2px solid var(--accent-1); box-shadow: 0 0 20px rgba(0,255,65,0.25); animation: pulseHacker 2s infinite; }
-  [data-theme="hacker"] .hero-icon svg { stroke: var(--accent-1); }
-  @keyframes pulseHacker { 0%, 100% { box-shadow: 0 0 20px rgba(0,255,65,0.25); } 50% { box-shadow: 0 0 35px rgba(0,255,65,0.5); } }
-
   .hero h1{
     font-family:var(--font-display); font-weight:800; font-size:34px; line-height:1.15;
     margin:0 0 10px 0; letter-spacing:-.01em;
     background:linear-gradient(90deg, var(--gold-1), #ef8f1e);
     -webkit-background-clip:text; background-clip:text; color:transparent;
-    transition: all 0.3s ease;
   }
-  [data-theme="hacker"] .hero h1 { background:none; color: var(--accent-1); -webkit-text-fill-color: var(--accent-1); text-shadow: 0 0 15px rgba(0,255,65,0.4); letter-spacing: 2px; }
-
   .hero p{ margin:0; color:var(--ink-soft); font-size:15.5px; line-height:1.55; max-width:640px; }
 
   .tag-row{ display:flex; gap:10px; flex-wrap:wrap; margin:18px 0 30px 78px; }
   .tag{
-    font-family:var(--font-mono); font-size:13px; color:var(--ink-faint);
+    font-family:var(--font-mono); font-size:13px; color:#585c7b;
     background:var(--surface); border:1px solid var(--border);
-    padding:8px 18px; border-radius:999px; transition: all 0.3s ease;
+    padding:8px 18px; border-radius:999px;
   }
   .tag.tag-gold{ color:var(--gold-1); border-color:var(--gold-border); background:var(--gold-bg); font-family:var(--font-body); font-weight:700; }
-  [data-theme="hacker"] .tag.tag-gold { box-shadow: 0 0 10px rgba(0,255,65,0.15); text-shadow: 0 0 6px rgba(0,255,65,0.3); }
 
   .panel{
     background:var(--surface); border:1px solid var(--border);
     border-radius:var(--radius-lg); padding:32px;
     box-shadow:0 4px 24px -12px rgba(30,35,80,.10);
-    transition: all 0.4s ease;
   }
-  [data-theme="hacker"] .panel { box-shadow: 0 0 25px rgba(0,255,65,0.02); }
-  [data-theme="hacker"] .panel:hover { border-color: rgba(0,255,65,0.35); box-shadow: 0 0 30px rgba(0,255,65,0.06); }
-
   .panel + .panel{ margin-top:20px; }
   .panel-head{ display:flex; align-items:center; gap:9px; margin-bottom:6px; }
   .panel-head svg{ color:var(--gold-1); flex-shrink:0; }
   .panel-head h2{ font-size:18px; margin:0; font-weight:700; }
-  [data-theme="hacker"] .panel-head h2 { text-shadow: 0 0 10px rgba(0,255,65,0.3); letter-spacing: 1px; }
-
   .panel-sub{ color:var(--ink-soft); font-size:14px; margin:0 0 20px 0; line-height:1.5; }
+
+  /* ---------------- Paywall ---------------- */
+  .paywall{
+    border:1px solid var(--gold-border); border-radius:var(--radius-lg);
+    background:linear-gradient(180deg, var(--surface-soft), var(--surface));
+    padding:38px; text-align:center; position:relative; overflow:hidden;
+  }
+  .paywall::before{
+    content:''; position:absolute; inset:0;
+    background: radial-gradient(500px 220px at 50% -10%, rgba(245,158,11,.16), transparent 60%);
+    pointer-events:none;
+  }
+  .crown-badge{
+    width:60px; height:60px; border-radius:50%; margin:0 auto 18px;
+    background:linear-gradient(135deg, var(--gold-1), var(--gold-2));
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 10px 24px -8px rgba(217,119,6,.55);
+  }
+  .paywall h2{ font-family:var(--font-display); font-size:26px; font-weight:800; margin:0 0 8px 0; color:var(--ink); }
+  .paywall .sub{ color:var(--ink-soft); font-size:14.5px; max-width:480px; margin:0 auto 28px; line-height:1.6; }
+
+  .price-cards{ display:grid; grid-template-columns:1fr 1fr; gap:16px; max-width:620px; margin:0 auto 26px; text-align:left; }
+  @media(max-width:640px){ .price-cards{ grid-template-columns:1fr; } }
+  .price-card{
+    border:1.5px solid var(--border); border-radius:var(--radius-md); padding:22px;
+    background:var(--surface); position:relative;
+  }
+  .price-card.featured{ border-color:var(--gold-2); box-shadow:0 8px 24px -10px rgba(245,158,11,.35); }
+  .price-card .badge{
+    position:absolute; top:-11px; right:18px; background:linear-gradient(90deg, var(--gold-1), var(--gold-2));
+    color:#fff; font-size:11px; font-weight:800; padding:4px 12px; border-radius:999px; letter-spacing:.03em;
+  }
+  .price-card .plan{ font-size:13px; font-weight:700; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.05em; }
+  .price-card .amount{ font-family:var(--font-display); font-size:32px; font-weight:800; margin:6px 0 2px; color:var(--ink); }
+  .price-card .amount span{ font-size:14px; font-weight:600; color:var(--ink-faint); font-family:var(--font-body); }
+  .price-card ul{ list-style:none; margin:16px 0 0; padding:0; display:flex; flex-direction:column; gap:9px; }
+  .price-card li{ display:flex; align-items:flex-start; gap:8px; font-size:13.5px; color:var(--ink-soft); }
+  .price-card li svg{ flex-shrink:0; color:var(--good); margin-top:2px; }
+
+  .buy-btn{
+    width:100%; margin-top:18px; padding:12px 18px; border-radius:var(--radius-sm);
+    font-size:14.5px; font-weight:700; font-family:var(--font-body); cursor:pointer; border:none;
+    background:linear-gradient(90deg, var(--gold-1), var(--gold-2)); color:#fff;
+    box-shadow:0 8px 20px -8px rgba(217,119,6,.55);
+    display:flex; align-items:center; justify-content:center; gap:8px;
+    transition:filter .15s ease, transform .1s ease;
+  }
+  .buy-btn:hover{ filter:brightness(1.05); }
+  .buy-btn:active{ transform:scale(.98); }
+  .buy-btn.outline{ background:var(--surface); color:var(--gold-1); border:1.5px solid var(--gold-2); box-shadow:none; }
+  .buy-btn:disabled{ opacity:.6; cursor:not-allowed; }
+
+  .demo-note{
+    max-width:520px; margin:22px auto 0; font-size:12.5px; color:var(--ink-faint);
+    background:var(--surface-soft); border:1px solid var(--border); border-radius:var(--radius-sm);
+    padding:12px 16px; line-height:1.55; text-align:left; display:flex; gap:9px;
+  }
+  .demo-note svg{ flex-shrink:0; color:var(--ink-faint); margin-top:1px; }
+
+  .license-row{ max-width:420px; margin:22px auto 0; display:flex; gap:8px; }
+  .license-row input{
+    flex:1; padding:11px 13px; border-radius:var(--radius-sm); border:1px solid var(--border);
+    background:var(--surface-soft); font-size:13.5px; font-family:var(--font-mono); outline:none;
+  }
+  .license-row input:focus{ border-color:var(--gold-2); background:var(--surface); }
+  .license-row button{
+    padding:11px 18px; border-radius:var(--radius-sm); border:1px solid var(--gold-border);
+    background:var(--gold-bg); color:var(--gold-1); font-weight:700; font-size:13.5px; cursor:pointer;
+  }
+  .license-row button:hover{ background:#fdeac2; }
+
+  .locked-preview{ position:relative; margin-top:28px; text-align:left; }
+  .locked-preview .blurred{ filter:blur(5px); opacity:.55; pointer-events:none; user-select:none; }
+  .locked-preview .lock-overlay{
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:8px;
+    color:var(--ink-soft); font-size:13.5px; font-weight:600;
+  }
+  .locked-preview .lock-overlay svg{ color:var(--gold-1); }
 
   /* ---------------- Scanner (unlocked) ---------------- */
   .premium-strip{
     display:flex; align-items:center; justify-content:space-between; gap:10px;
     background:var(--gold-bg); border:1px solid var(--gold-border); border-radius:var(--radius-md);
     padding:12px 18px; margin-bottom:20px; font-size:13.5px; color:var(--gold-1); font-weight:700;
-    transition: all 0.3s ease;
   }
-  [data-theme="hacker"] .premium-strip { box-shadow: 0 0 15px rgba(0,255,65,0.08); text-shadow: 0 0 8px rgba(0,255,65,0.4); }
   .premium-strip .left{ display:flex; align-items:center; gap:8px; }
 
   .field{ margin-bottom:18px; }
-  .field label{ display:block; font-size:13px; font-weight:600; color:var(--ink); margin-bottom:8px; text-transform:uppercase; letter-spacing: 0.05em; }
-  [data-theme="hacker"] .field label { color: rgba(0,255,65,0.6); }
-
+  .field label{ display:block; font-size:13px; font-weight:600; color:var(--ink); margin-bottom:8px; }
   select, textarea{
     width:100%; padding:11px 13px; border-radius:var(--radius-sm);
     border:1px solid var(--border); background:var(--surface-soft);
-    font-size:14px; font-family:var(--font-mono); color:var(--ink); outline:none;
-    transition: all 0.3s ease;
+    font-size:14px; font-family:var(--font-body); color:var(--ink); outline:none;
   }
-  select:focus, textarea:focus{ border-color:var(--gold-2); background:var(--surface); box-shadow: 0 0 0 3px var(--gold-bg); }
-  [data-theme="hacker"] select:focus, [data-theme="hacker"] textarea:focus { box-shadow: 0 0 0 3px rgba(0,255,65,0.1), 0 0 15px rgba(0,255,65,0.1); }
-  textarea{ font-size:12.5px; min-height:220px; resize:vertical; line-height:1.6; }
+  select:focus, textarea:focus{ border-color:var(--gold-2); background:var(--surface); }
+  textarea{ font-family:var(--font-mono); font-size:12.5px; min-height:220px; resize:vertical; line-height:1.6; }
 
   .btn-row{ display:flex; gap:10px; flex-wrap:wrap; margin-top:6px; }
   .btn{
@@ -219,28 +238,20 @@
     padding:11px 18px; border-radius:var(--radius-sm);
     font-size:14px; font-weight:600; font-family:var(--font-body);
     cursor:pointer; border:1px solid var(--border); background:var(--surface); color:var(--ink);
-    transition:all .15s ease;
+    transition:transform .1s ease, background .15s ease;
   }
-  .btn:hover{ background:var(--surface-soft); border-color:var(--ink-soft); }
+  .btn:hover{ background:var(--surface-soft); }
   .btn:active{ transform:scale(.98); }
-  [data-theme="hacker"] .btn { text-transform: uppercase; letter-spacing: 1px; font-size: 12px; }
-  
   .btn-primary{
     background:linear-gradient(90deg, var(--gold-1), var(--gold-2));
     border:none; color:#fff; box-shadow:0 8px 20px -8px rgba(217,119,6,.5);
   }
-  [data-theme="hacker"] .btn-primary { background: var(--accent-1); color: #000; box-shadow: 0 0 15px rgba(0,255,65,0.3); font-weight: 800; }
-  .btn-primary:hover{ filter:brightness(1.05); transform: translateY(-1px); }
-  [data-theme="hacker"] .btn-primary:hover { box-shadow: 0 0 25px rgba(0,255,65,0.6); }
-
+  .btn-primary:hover{ filter:brightness(1.05); }
   .btn-ghost{ background:transparent; border:1px dashed var(--border); color:var(--ink-soft); }
-  [data-theme="hacker"] .btn-ghost:hover { border-color: var(--accent-1); color: var(--accent-1); text-shadow: 0 0 8px rgba(0,255,65,0.4); }
 
   .sample-links{ display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; }
-  .sample-link{ font-size:12.5px; color:var(--accent-1); background:var(--accent-soft); border:none; padding:5px 11px; border-radius:999px; cursor:pointer; font-weight:600; transition:all 0.2s;}
+  .sample-link{ font-size:12.5px; color:var(--accent-1); background:var(--accent-soft); border:none; padding:5px 11px; border-radius:999px; cursor:pointer; font-weight:600; }
   .sample-link:hover{ filter:brightness(0.97); }
-  [data-theme="hacker"] .sample-link { background: rgba(0,255,65,0.1); border: 1px solid rgba(0,255,65,0.3); text-shadow: 0 0 5px rgba(0,255,65,0.4); }
-  [data-theme="hacker"] .sample-link:hover { background: rgba(0,255,65,0.2); }
 
   .score-wrap{ display:flex; gap:24px; align-items:center; margin-top:24px; flex-wrap:wrap; }
   .score-ring{ width:120px; height:120px; flex-shrink:0; position:relative; }
@@ -251,12 +262,9 @@
   }
   .score-ring .score-num .n{ font-size:30px; font-weight:800; line-height:1; }
   .score-ring .score-num .l{ font-size:10.5px; color:var(--ink-faint); font-family:var(--font-body); font-weight:600; letter-spacing:.04em; margin-top:2px; }
-  
   .score-summary{ flex:1; min-width:220px; }
   .score-summary h3{ margin:0 0 6px 0; font-size:19px; font-family:var(--font-display); }
-  [data-theme="hacker"] .score-summary h3 { text-shadow: 0 0 8px currentColor; }
   .score-summary p{ margin:0; color:var(--ink-soft); font-size:13.5px; line-height:1.55; }
-  
   .sev-counts{ display:flex; gap:10px; margin-top:12px; flex-wrap:wrap; }
   .sev-chip{ display:flex; align-items:center; gap:6px; font-size:12.5px; font-weight:700; padding:5px 11px; border-radius:999px; }
   .sev-chip.crit{ background:var(--crit-bg); color:var(--crit); }
@@ -265,44 +273,32 @@
   .sev-chip.low{ background:var(--accent-soft); color:var(--accent-1); }
   .sev-chip.info{ background:var(--surface-soft); color:var(--ink-faint); }
 
-  /* Hacker specific shadow glows for chips */
-  [data-theme="hacker"] .sev-chip.crit { box-shadow: 0 0 10px rgba(255,0,64,0.3); border: 1px solid var(--crit); }
-  [data-theme="hacker"] .sev-chip.high { box-shadow: 0 0 10px rgba(255,0,64,0.2); border: 1px solid var(--bad); }
-  [data-theme="hacker"] .sev-chip.med { box-shadow: 0 0 10px rgba(255,215,0,0.2); border: 1px solid var(--warn); }
-
-  .finding{ border:1px solid var(--border); border-radius:var(--radius-md); padding:16px 18px; margin-top:12px; background:var(--surface-soft); transition: all 0.3s ease; }
-  .finding:hover { border-color: var(--ink-faint); box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-  [data-theme="hacker"] .finding:hover { border-color: var(--accent-1); box-shadow: 0 0 15px rgba(0,255,65,0.1); }
-
+  .finding{ border:1px solid var(--border); border-radius:var(--radius-md); padding:16px 18px; margin-top:12px; background:var(--surface-soft); }
   .finding-head{ display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; }
   .finding-title{ display:flex; align-items:center; gap:9px; font-size:14px; font-weight:700; }
   .sev-dot{ width:9px; height:9px; border-radius:50%; flex-shrink:0; }
-  .sev-dot.crit{ background:var(--crit); box-shadow: 0 0 8px var(--crit); }
-  .sev-dot.high{ background:var(--bad); box-shadow: 0 0 8px var(--bad); }
-  .sev-dot.med{ background:var(--warn); box-shadow: 0 0 8px var(--warn); }
-  .sev-dot.low{ background:var(--accent-1); box-shadow: 0 0 8px var(--accent-1); }
+  .sev-dot.crit{ background:var(--crit); }
+  .sev-dot.high{ background:var(--bad); }
+  .sev-dot.med{ background:var(--warn); }
+  .sev-dot.low{ background:var(--accent-1); }
   .sev-dot.info{ background:var(--ink-faint); }
-  
   .finding-line{ font-family:var(--font-mono); font-size:11.5px; color:var(--ink-faint); }
   .finding-desc{ font-size:13px; color:var(--ink-soft); margin-top:8px; line-height:1.55; }
   .finding-snippet{ font-family:var(--font-mono); font-size:11.5px; background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:8px 10px; margin-top:8px; color:var(--ink); white-space:pre-wrap; word-break:break-all; }
   .finding-fix{ font-size:12.5px; color:var(--good); margin-top:8px; display:flex; gap:6px; align-items:flex-start; }
-  [data-theme="hacker"] .finding-fix { text-shadow: 0 0 6px rgba(0,255,65,0.3); }
   .finding-fix svg{ flex-shrink:0; margin-top:1px; }
 
-  .empty-good{ display:flex; align-items:center; gap:10px; background:var(--good-bg); color:var(--good); border-radius:var(--radius-md); padding:16px; margin-top:18px; font-size:14px; font-weight:600; border: 1px solid transparent; }
-  [data-theme="hacker"] .empty-good { border-color: var(--good); box-shadow: 0 0 15px rgba(0,255,65,0.1); text-shadow: 0 0 5px rgba(0,255,65,0.4); }
+  .empty-good{ display:flex; align-items:center; gap:10px; background:var(--good-bg); color:var(--good); border-radius:var(--radius-md); padding:16px; margin-top:18px; font-size:14px; font-weight:600; }
 
-  .divider{ height:1px; background:var(--border); margin:26px 0; transition: background 0.3s; }
+  .divider{ height:1px; background:var(--border); margin:26px 0; }
   .footnote{ text-align:center; color:var(--ink-faint); font-size:12.5px; margin-top:26px; display:flex; align-items:center; justify-content:center; gap:6px; }
-  [data-theme="hacker"] .footnote { letter-spacing: 1px; text-shadow: 0 0 5px rgba(0,255,65,0.2); }
 </style>
 </head>
 <body>
 <div class="wrap">
 
   <div class="topbar">
-    <a href="../index.html" class="pill back-pill" id="homeBtn" style="text-decoration:none;" title="Go back to Home">
+     <a href="../index.html" class="pill back-pill" style="text-decoration: none; color: inherit; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
       Back to CryptoKit
     </a>
@@ -311,10 +307,7 @@
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>
         100% Client-Side — Nothing Ever Leaves Your Browser
       </div>
-      <div class="pill toggle-pill" id="themeToggle" title="Toggle Theme">
-        <span id="themeLabel">Normal</span>
-        <span class="switch"></span>
-      </div>
+      <div class="pill toggle-pill" id="themeToggle" title="Toggle Theme"><span id="themeLabel">Normal</span><span class="switch"></span></div>
     </div>
   </div>
 
@@ -340,6 +333,8 @@
     <span class="tag">Static Analysis</span>
     <span class="tag">OWASP-Aligned</span>
     <span class="tag tag-gold">★ Premium</span>
+  </div>
+
   </div>
 
   <!-- ============ SCANNER (premium — already unlocked) ============ -->
@@ -385,86 +380,35 @@
 
 <script>
 (function(){
+  // Premium is unlocked by default on this page — no paywall gating.
 
-  // ════════════════════════════════════════════════════════════
-  //  THEME SYNC KEY — must match the main index.html exactly
-  //  Main page uses: localStorage.setItem('cryptokit-theme', mode)
-  // ════════════════════════════════════════════════════════════
-  const THEME_KEY = 'cryptokit-theme';
-
-  // ---------------- Back Button Smart Navigation ----------------
-  document.getElementById('homeBtn').addEventListener('click', function(e) {
-    if (e.ctrlKey || e.metaKey || e.shiftKey || e.button === 1) return;
-    e.preventDefault();
-    let sameSite = false;
-    try {
-      sameSite = !!document.referrer && new URL(document.referrer).origin === location.origin;
-    } catch (_) {}
-    if (sameSite && history.length > 1) {
-      history.back();
-      setTimeout(function() {
-        if (!document.hidden) location.href = '../index.html';
-      }, 400);
-    } else {
-      location.href = '../index.html';
+  /* theme toggle (Normal / Hacker), persisted across Quantum Elite / CryptoKit pages */
+  (function(){
+    const saved=localStorage.getItem('qel-theme')||'normal';
+    document.documentElement.setAttribute('data-theme', saved);
+    function syncLabel(){
+      const mode=document.documentElement.getAttribute('data-theme');
+      const label=document.getElementById('themeLabel');
+      if(label) label.textContent = mode==='hacker' ? 'Hacker' : 'Normal';
     }
-  });
-
-  // ════════════════════════════════════════════════════════════
-  //  THEME MANAGEMENT — Reads & writes same localStorage key
-  //  so main page ↔ tool pages stay perfectly in sync
-  // ════════════════════════════════════════════════════════════
-  const themeToggle = document.getElementById('themeToggle');
-  const themeLabel  = document.getElementById('themeLabel');
-
-  function applyTheme(theme, saveToStorage) {
-    // Normalise legacy values (like 'premium') to 'normal'
-    if (theme !== 'hacker') theme = 'normal';
-
-    document.documentElement.setAttribute('data-theme', theme);
-    themeLabel.textContent = (theme === 'hacker') ? 'HACKER' : 'Normal';
-
-    // Only write to storage when user explicitly toggles here
-    if (saveToStorage) {
-      try { localStorage.setItem(THEME_KEY, theme); } catch(_){}
+    syncLabel();
+    const sw=document.getElementById('themeToggle');
+    if(sw){
+      sw.addEventListener('click',()=>{
+        const current=document.documentElement.getAttribute('data-theme')||'normal';
+        const next=current==='hacker'?'normal':'hacker';
+        document.documentElement.setAttribute('data-theme', next);
+        localStorage.setItem('qel-theme', next);
+        syncLabel();
+      });
     }
-  }
-
-  // ── Read saved theme on load (same key the main page writes) ──
-  let savedTheme = 'normal';
-  try { savedTheme = localStorage.getItem(THEME_KEY) || 'normal'; } catch(_){}
-  if (savedTheme !== 'hacker') savedTheme = 'normal';
-  applyTheme(savedTheme, false);
-
-  // ── Toggle on click ──
-  themeToggle.addEventListener('click', () => {
-    const current = document.documentElement.getAttribute('data-theme');
-    const next = (current === 'hacker' ? 'normal' : 'hacker');
-    applyTheme(next, true);        // save = true
-  });
-
-  // ── Cross-tab sync: if user switches theme on the main page
-  //    (or another tool tab) while this scanner is also open,
-  //    update instantly ──
-  window.addEventListener('storage', function(e) {
-    if (e.key === THEME_KEY && e.newValue) {
-      applyTheme(e.newValue, false);  // save = false (already saved by other tab)
-    }
-  });
-
-  // ── Also sync when this tab regains focus (covers mobile
-  //    browsers that don't always fire the storage event) ──
-  document.addEventListener('visibilitychange', function() {
-    if (!document.hidden) {
-      let current = 'normal';
-      try { current = localStorage.getItem(THEME_KEY) || 'normal'; } catch(_){}
-      if (current !== 'hacker') current = 'normal';
-      if (current !== document.documentElement.getAttribute('data-theme')) {
-        applyTheme(current, false);
+    window.addEventListener('storage', function(e){
+      if(e.key==='qel-theme' && e.newValue){
+        document.documentElement.setAttribute('data-theme', e.newValue);
+        syncLabel();
       }
-    }
-  });
-
+    });
+  })();
 
   // ---------------- Sample snippets ----------------
   const VULNERABLE_SAMPLE = `import hashlib
@@ -690,7 +634,7 @@ API_ENDPOINT = "https://api.example.com/v1/payments"
     const code = document.getElementById('scanInput').value;
     const resultsArea = document.getElementById('resultsArea');
     if(!code.trim()){
-      resultsArea.innerHTML = `<div class="empty-good" style="background:var(--warn-bg); color:var(--warn); border-color:var(--warn);">Paste some code or config to scan first.</div>`;
+      resultsArea.innerHTML = `<div class="status" style="background:var(--warn-bg); color:var(--warn); display:flex; gap:10px; padding:14px 16px; border-radius:12px; margin-top:18px;">Paste some code or config to scan first.</div>`;
       return;
     }
     const findings = runScan(code).sort((a,b)=> SEV_META[a.sev].order - SEV_META[b.sev].order);

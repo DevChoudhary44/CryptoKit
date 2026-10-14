@@ -4,10 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Batch File Integrity Checker — CryptoKit Premium</title>
-<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
   /* ---------------- NORMAL THEME ---------------- */
-  [data-theme="normal"] {
+  [data-theme="normal"]{
     --bg-0:#eef0fc;
     --surface:#ffffff;
     --surface-soft:#f4f5fd;
@@ -18,9 +17,6 @@
     --accent-1:#d97706;
     --accent-2:#f59e0b;
     --accent-soft:#fef3e2;
-    --gold-1:#d97706;
-    --gold-2:#f59e0b;
-    --gold-bg:#fef3e2;
     --gold-border:#fbd999;
     --good:#1f9d68; --good-bg:#eafaf2;
     --warn:#b4700a; --warn-bg:#fff6e6;
@@ -31,153 +27,107 @@
     --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
   }
 
-  /* ---------------- HACKER THEME ---------------- */
-  [data-theme="hacker"] {
-    --bg-0:#000000;
-    --surface:#050505;
-    --surface-soft:#0a0a0a;
-    --border:rgba(0, 255, 65, 0.25);
-    --ink:#00FF41;
-    --ink-soft:#00CC33;
-    --ink-faint:#006611;
-    --accent-1:#00FF41;
-    --accent-2:#39FF14;
-    --accent-soft:rgba(0, 255, 65, 0.08);
-    --gold-1:#00FF41;
-    --gold-2:#39FF14;
-    --gold-bg:rgba(0, 255, 65, 0.05);
-    --gold-border:rgba(0, 255, 65, 0.3);
-    --good:#00FF41; --good-bg:rgba(0, 255, 65, 0.08);
-    --warn:#FFD700; --warn-bg:rgba(255, 215, 0, 0.1);
-    --bad:#FF0040; --bad-bg:rgba(255, 0, 64, 0.12);
+  /* ---------------- HACKER (DARK) THEME ---------------- */
+  [data-theme="hacker"]{
+    --bg-0:#07070f;
+    --surface:#0e0e1c;
+    --surface-soft:#131326;
+    --border:#2b2740;
+    --ink:#f1f1fb;
+    --ink-soft:#b4b6d6;
+    --ink-faint:#6b6e95;
+    --accent-1:#fbbf24;
+    --accent-2:#f59e0b;
+    --accent-soft:#2a2210;
+    --gold-border:#4d3c14;
+    --good:#34d399; --good-bg:#0d2518;
+    --warn:#fbbf24; --warn-bg:#2a2210;
+    --bad:#f87171; --bad-bg:#2a1414;
     --radius-lg:18px; --radius-md:12px; --radius-sm:8px;
-    --font-display: 'Share Tech Mono', monospace;
-    --font-body: 'Share Tech Mono', monospace;
-    --font-mono: 'Share Tech Mono', monospace;
+    --font-display: 'Arial Rounded MT Bold', 'Arial Rounded MT', ui-rounded, 'SF Pro Rounded', 'Baloo 2', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
   }
 
   *{ box-sizing:border-box; }
   html,body{
     margin:0; padding:0;
-    background: var(--bg-0);
+    background:var(--bg-0);
     color:var(--ink); font-family:var(--font-body); -webkit-font-smoothing:antialiased;
-    transition: background-color 0.4s ease, color 0.4s ease;
+    transition:background-color .3s ease, color .3s ease;
   }
-
-  [data-theme="normal"] body {
+  [data-theme="normal"] body{
     background:
       radial-gradient(1100px 500px at 12% -8%, #f8ecd8 0%, transparent 60%),
       radial-gradient(900px 500px at 100% 0%, #e7f1fb 0%, transparent 55%),
       var(--bg-0);
   }
-
-  [data-theme="hacker"] body {
-    background-image:
-      radial-gradient(ellipse 900px 500px at 15% -5%, rgba(0,255,65,0.06), transparent 60%),
-      radial-gradient(ellipse 700px 500px at 100% 10%, rgba(57,255,20,0.04), transparent 60%);
+  [data-theme="hacker"] body{
+    background:
+      radial-gradient(1100px 500px at 12% -8%, rgba(245,158,11,.14) 0%, transparent 60%),
+      radial-gradient(900px 500px at 100% 0%, rgba(99,102,241,.14) 0%, transparent 55%),
+      var(--bg-0);
   }
-
-  [data-theme="hacker"] body::before {
-    content: ''; position: fixed; inset: 0;
-    background-image:
-        linear-gradient(rgba(0,255,65,0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,255,65,0.04) 1px, transparent 1px);
-    background-size: 40px 40px; z-index: -1; pointer-events: none;
-    animation: gridMove 20s linear infinite;
-  }
-  @keyframes gridMove {
-    0%   { background-position: 0 0; }
-    100% { background-position: 40px 40px; }
-  }
-
-  .wrap{ max-width:1080px; margin:0 auto; padding:36px 24px 80px; position:relative; z-index:2; }
+  .wrap{ max-width:1080px; margin:0 auto; padding:36px 24px 80px; }
 
   .topbar{ display:flex; align-items:center; justify-content:space-between; margin-bottom:34px; flex-wrap:wrap; gap:12px;}
   .pill{
-    display:inline-flex; align-items:center; gap:8px; text-decoration:none;
+    display:inline-flex; align-items:center; gap:8px;
     background:var(--surface); border:1px solid var(--border);
     padding:9px 16px; border-radius:999px; font-size:13.5px; color:var(--ink-soft); font-weight:500;
-    transition: all 0.3s ease;
   }
-  .back-pill{ color:var(--ink); cursor:pointer; }
-  .back-pill:hover { border-color: var(--accent-1); color: var(--accent-1); transform: translateX(-2px); }
-  
-  [data-theme="hacker"] .pill { text-transform: uppercase; font-size: 11px; letter-spacing: 0.05em; background: rgba(0,255,65,0.03); box-shadow: 0 0 10px rgba(0,255,65,0.03); }
-  [data-theme="hacker"] .back-pill:hover { box-shadow: 0 0 16px rgba(0,255,65,0.2); text-shadow: 0 0 8px rgba(0,255,65,0.4); }
-
+  .back-pill{ color:var(--ink); }
   .lock-pill{ color:var(--accent-1); font-weight:600; }
   .lock-pill svg{ color:var(--accent-1); }
-  [data-theme="hacker"] .lock-pill { text-shadow: 0 0 6px rgba(0,255,65,0.3); }
-
-  .toggle-pill{ gap:10px; cursor:pointer; user-select:none; }
-  .switch{ width:34px; height:19px; border-radius:999px; background:#d5d8ee; position:relative; flex-shrink:0; transition: background 0.3s; }
-  .switch::after{ 
-    content:''; position:absolute; top:2px; left:2px; width:15px; height:15px; 
-    border-radius:50%; background:#fff; box-shadow:0 1px 2px rgba(0,0,0,.25); 
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
-  }
-  
-  [data-theme="hacker"] .switch { background: rgba(0,255,65,0.3); }
-  [data-theme="hacker"] .switch::after { left: 17px; background: var(--accent-1); box-shadow: 0 0 8px var(--accent-1); }
-  [data-theme="hacker"] #themeLabel { text-shadow: 0 0 6px rgba(0,255,65,0.4); }
+  .toggle-pill{ gap:10px; cursor:pointer; user-select:none; transition:background .3s ease; }
+  .switch{ width:34px; height:19px; border-radius:999px; background:#d5d8ee; position:relative; flex-shrink:0; transition:background .3s ease; }
+  .switch::after{ content:''; position:absolute; top:2px; left:2px; width:15px; height:15px; border-radius:50%; background:#fff; box-shadow:0 1px 2px rgba(0,0,0,.25); transition:left .3s cubic-bezier(.4,0,.2,1); }
+  [data-theme="hacker"] .switch{ background:linear-gradient(90deg, var(--accent-1), var(--accent-2)); }
+  [data-theme="hacker"] .switch::after{ left:17px; }
 
   .kicker{
     display:inline-flex; align-items:center; gap:7px;
-    background:var(--gold-bg); border:1px solid var(--gold-border);
+    background:var(--accent-soft); border:1px solid var(--gold-border);
     padding:7px 14px; border-radius:999px;
-    font-size:11.5px; letter-spacing:.08em; color:var(--gold-1); font-weight:800;
-    margin-bottom:18px; transition: all 0.3s ease;
+    font-size:11.5px; letter-spacing:.08em; color:var(--accent-1); font-weight:800;
+    margin-bottom:18px;
   }
-  [data-theme="hacker"] .kicker { box-shadow: 0 0 12px rgba(0,255,65,0.08); text-shadow: 0 0 8px rgba(0,255,65,0.4); }
 
   .hero{ display:flex; gap:20px; align-items:flex-start; margin-bottom:16px; }
   .hero-icon{
     width:58px; height:58px; border-radius:16px; flex-shrink:0;
-    background:linear-gradient(135deg, var(--gold-1), var(--gold-2));
+    background:linear-gradient(135deg, var(--accent-1), var(--accent-2));
     display:flex; align-items:center; justify-content:center;
     box-shadow:0 10px 24px -8px rgba(217,119,6,.5);
-    transition: all 0.3s ease;
   }
-  [data-theme="hacker"] .hero-icon { background: transparent; border: 2px solid var(--accent-1); box-shadow: 0 0 20px rgba(0,255,65,0.25); animation: pulseHacker 2s infinite; }
-  [data-theme="hacker"] .hero-icon svg { stroke: var(--accent-1); }
-  @keyframes pulseHacker { 0%, 100% { box-shadow: 0 0 20px rgba(0,255,65,0.25); } 50% { box-shadow: 0 0 35px rgba(0,255,65,0.5); } }
-
   .hero h1{
     font-family:var(--font-display); font-weight:800; font-size:34px; line-height:1.15;
     margin:0 0 10px 0; letter-spacing:-.01em;
-    background:linear-gradient(90deg, var(--gold-1), var(--gold-2));
+    background:linear-gradient(90deg, var(--accent-1), var(--accent-2));
     -webkit-background-clip:text; background-clip:text; color:transparent;
-    transition: all 0.3s ease;
   }
-  [data-theme="hacker"] .hero h1 { background:none; color: var(--accent-1); -webkit-text-fill-color: var(--accent-1); text-shadow: 0 0 15px rgba(0,255,65,0.4); letter-spacing: 2px; }
-
   .hero p{ margin:0; color:var(--ink-soft); font-size:15.5px; line-height:1.55; max-width:660px; }
 
   .tag-row{ display:flex; gap:10px; flex-wrap:wrap; margin:18px 0 30px 78px; }
   .tag{
-    font-family:var(--font-mono); font-size:13px; color:var(--ink-faint);
+    font-family:var(--font-mono); font-size:13px; color:#585c7b;
     background:var(--surface); border:1px solid var(--border);
-    padding:8px 18px; border-radius:999px; transition: all 0.3s ease;
+    padding:8px 18px; border-radius:999px;
   }
-  .tag.tag-gold{ color:var(--gold-1); border-color:var(--gold-border); background:var(--gold-bg); font-family:var(--font-body); font-weight:700; }
-  [data-theme="hacker"] .tag.tag-gold { box-shadow: 0 0 10px rgba(0,255,65,0.15); text-shadow: 0 0 6px rgba(0,255,65,0.3); }
+
+  .tag.tag-gold{ color:var(--accent-1); border-color:var(--gold-border); background:var(--accent-soft); font-weight:700; }
 
   .premium-strip{
     display:flex; align-items:center; gap:8px;
-    background:var(--gold-bg); border:1px solid var(--gold-border); border-radius:var(--radius-md);
-    padding:12px 18px; margin-bottom:20px; font-size:13.5px; color:var(--gold-1); font-weight:700;
-    transition: all 0.3s ease;
+    background:var(--accent-soft); border:1px solid var(--gold-border); border-radius:var(--radius-md);
+    padding:12px 18px; margin-bottom:20px; font-size:13.5px; color:var(--accent-1); font-weight:700;
   }
-  [data-theme="hacker"] .premium-strip { box-shadow: 0 0 15px rgba(0,255,65,0.08); text-shadow: 0 0 8px rgba(0,255,65,0.4); }
 
   .tabs{
     display:flex; background:var(--surface); border:1px solid var(--border);
     border-radius:var(--radius-lg); padding:6px; gap:4px; margin-bottom:22px; flex-wrap:wrap;
     box-shadow:0 2px 10px -6px rgba(30,35,80,.08);
-    transition: all 0.3s ease;
   }
-  [data-theme="hacker"] .tabs { box-shadow: 0 0 20px rgba(0,255,65,0.05); }
-
   .tab{
     flex:1; min-width:140px; display:flex; align-items:center; justify-content:center; gap:8px;
     padding:12px 14px; border-radius:11px; cursor:pointer;
@@ -186,42 +136,29 @@
     transition:background .15s ease, color .15s ease;
   }
   .tab svg{ opacity:.75; }
-  .tab.active{ background:linear-gradient(90deg, var(--accent-soft), #fff3e0); color:var(--accent-1); }
-  [data-theme="hacker"] .tab.active{ background: rgba(0,255,65,0.1); color: var(--accent-1); text-shadow: 0 0 8px rgba(0,255,65,0.4); box-shadow: inset 0 0 10px rgba(0,255,65,0.1); }
+  .tab.active{ background:var(--accent-soft); color:var(--accent-1); }
   .tab.active svg{ opacity:1; }
   .tab:not(.active):hover{ color:var(--ink-soft); background:var(--surface-soft); }
-  [data-theme="hacker"] .tab { text-transform: uppercase; letter-spacing: 1px; font-size: 12px; }
 
   .panel{
     background:var(--surface); border:1px solid var(--border);
     border-radius:var(--radius-lg); padding:32px;
     box-shadow:0 4px 24px -12px rgba(30,35,80,.10);
-    transition: all 0.4s ease;
   }
-  [data-theme="hacker"] .panel { box-shadow: 0 0 25px rgba(0,255,65,0.02); }
-  [data-theme="hacker"] .panel:hover { border-color: rgba(0,255,65,0.35); box-shadow: 0 0 30px rgba(0,255,65,0.06); }
-
   .panel + .panel{ margin-top:20px; }
   .panel-head{ display:flex; align-items:center; gap:9px; margin-bottom:6px; }
   .panel-head svg{ color:var(--accent-1); flex-shrink:0; }
   .panel-head h2{ font-size:18px; margin:0; font-weight:700; }
-  [data-theme="hacker"] .panel-head h2 { text-shadow: 0 0 10px rgba(0,255,65,0.3); letter-spacing: 1px; }
-
   .panel-sub{ color:var(--ink-soft); font-size:14px; margin:0 0 20px 0; line-height:1.5; }
 
   .field{ margin-bottom:18px; }
   .field label{ display:block; font-size:13px; font-weight:600; color:var(--ink); margin-bottom:8px; }
-  [data-theme="hacker"] .field label { color: rgba(0,255,65,0.6); text-transform: uppercase; letter-spacing: 0.05em; }
-
   select{
     width:100%; padding:11px 13px; border-radius:var(--radius-sm);
     border:1px solid var(--border); background:var(--surface-soft);
     font-size:14px; font-family:var(--font-body); color:var(--ink); outline:none;
-    transition: all 0.3s ease;
   }
-  select:focus{ border-color:var(--accent-1); background:var(--surface); box-shadow: 0 0 0 3px var(--gold-bg); }
-  [data-theme="hacker"] select { font-family: var(--font-mono); }
-  [data-theme="hacker"] select:focus { box-shadow: 0 0 0 3px rgba(0,255,65,0.1), 0 0 15px rgba(0,255,65,0.1); }
+  select:focus{ border-color:var(--accent-1); background:var(--surface); }
 
   .field-row{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
   @media(max-width:640px){ .field-row{ grid-template-columns:1fr; } }
@@ -232,24 +169,18 @@
     padding:11px 18px; border-radius:var(--radius-sm);
     font-size:14px; font-weight:600; font-family:var(--font-body);
     cursor:pointer; border:1px solid var(--border); background:var(--surface); color:var(--ink);
-    transition:all .15s ease;
+    transition:transform .1s ease, background .15s ease;
   }
-  .btn:hover{ background:var(--surface-soft); border-color:var(--ink-soft); }
+  .btn:hover{ background:var(--surface-soft); }
   .btn:active{ transform:scale(.98); }
-  [data-theme="hacker"] .btn { text-transform: uppercase; letter-spacing: 1px; font-size: 12px; }
-
   .btn-primary{
-    background:linear-gradient(90deg, var(--gold-1), var(--gold-2));
+    background:linear-gradient(90deg, var(--accent-1), var(--accent-2));
     border:none; color:#fff; box-shadow:0 8px 20px -8px rgba(217,119,6,.5);
   }
-  [data-theme="hacker"] .btn-primary { background: var(--accent-1); color: #000; box-shadow: 0 0 15px rgba(0,255,65,0.3); font-weight: 800; }
-  .btn-primary:hover{ filter:brightness(1.05); transform: translateY(-1px); }
-  [data-theme="hacker"] .btn-primary:hover { box-shadow: 0 0 25px rgba(0,255,65,0.6); }
+  .btn-primary:hover{ filter:brightness(1.05); }
   .btn-primary:disabled{ opacity:.5; cursor:not-allowed; box-shadow:none; }
   .btn-ghost{ background:transparent; border:1px dashed var(--border); color:var(--ink-soft); }
-  [data-theme="hacker"] .btn-ghost:hover { border-color: var(--accent-1); color: var(--accent-1); text-shadow: 0 0 8px rgba(0,255,65,0.4); }
   .btn-sm{ padding:7px 12px; font-size:12.5px; }
-  [data-theme="hacker"] .btn-sm { font-size: 11px; }
 
   .dropzone{
     border:2px dashed var(--border); border-radius:var(--radius-md);
@@ -257,35 +188,27 @@
     margin-top:6px; transition:border-color .15s ease, background .15s ease;
   }
   .dropzone.drag{ border-color:var(--accent-1); background:var(--accent-soft); }
-  [data-theme="hacker"] .dropzone.drag{ box-shadow: 0 0 20px rgba(0,255,65,0.2); }
   .dropzone svg{ color:var(--ink-faint); margin-bottom:8px; }
-  [data-theme="hacker"] .dropzone.drag svg{ color: var(--accent-1); }
   .dropzone h3{ margin:0 0 4px 0; font-size:14.5px; }
   .dropzone p{ margin:0 0 14px 0; color:var(--ink-faint); font-size:12.5px; }
 
   .summary-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-top:18px; }
   @media(max-width:760px){ .summary-grid{ grid-template-columns:repeat(2,1fr); } }
-  .summary-stat{ border:1px solid var(--border); border-radius:var(--radius-md); padding:14px; background:var(--surface-soft); text-align:center; transition: all 0.3s ease; }
-  [data-theme="hacker"] .summary-stat:hover { border-color: var(--accent-1); box-shadow: 0 0 15px rgba(0,255,65,0.1); }
+  .summary-stat{ border:1px solid var(--border); border-radius:var(--radius-md); padding:14px; background:var(--surface-soft); text-align:center; }
   .summary-stat .num{ font-size:22px; font-weight:800; font-family:var(--font-display); color:var(--accent-1); }
-  [data-theme="hacker"] .summary-stat .num { text-shadow: 0 0 10px rgba(0,255,65,0.4); }
   .summary-stat .lbl{ font-size:11.5px; color:var(--ink-faint); margin-top:2px; }
-  [data-theme="hacker"] .summary-stat .lbl { text-transform: uppercase; letter-spacing: 0.05em; }
   .summary-stat.bad .num{ color:var(--bad); }
-  [data-theme="hacker"] .summary-stat.bad .num { text-shadow: 0 0 10px rgba(255,0,64,0.4); }
   .summary-stat.good .num{ color:var(--good); }
 
   .progress-wrap{ margin-top:16px; }
   .progress-bar-bg{ height:8px; border-radius:999px; background:var(--surface-soft); overflow:hidden; border:1px solid var(--border); }
-  .progress-bar-fill{ height:100%; border-radius:999px; background:linear-gradient(90deg, var(--gold-1), var(--gold-2)); transition:width .15s ease; }
-  [data-theme="hacker"] .progress-bar-fill { background: var(--accent-1); box-shadow: 0 0 10px var(--accent-1); }
+  .progress-bar-fill{ height:100%; border-radius:999px; background:linear-gradient(90deg, var(--accent-1), var(--accent-2)); transition:width .15s ease; }
   .progress-label{ font-size:12.5px; color:var(--ink-faint); margin-top:6px; }
 
   table.results{ width:100%; border-collapse:collapse; margin-top:16px; font-size:13px; }
   table.results th{ text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:var(--ink-faint); padding:9px 10px; border-bottom:1px solid var(--border); position:sticky; top:0; background:var(--surface); }
   table.results td{ padding:9px 10px; border-bottom:1px solid var(--border); color:var(--ink-soft); vertical-align:middle; }
   table.results tr:hover td{ background:var(--surface-soft); }
-  [data-theme="hacker"] table.results tr:hover td{ background: rgba(0,255,65,0.03); }
   table.results td.name{ color:var(--ink); font-weight:600; max-width:260px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   table.results td.hash{ font-family:var(--font-mono); font-size:11.5px; max-width:220px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .table-scroll{ max-height:420px; overflow-y:auto; border:1px solid var(--border); border-radius:var(--radius-md); margin-top:6px; }
@@ -299,30 +222,21 @@
   .chip.removed{ background:var(--bad-bg); color:var(--bad); }
   .chip.modified{ background:var(--warn-bg); color:var(--warn); }
   .chip.same{ background:var(--accent-soft); color:var(--accent-1); }
-  [data-theme="hacker"] .chip.dup { box-shadow: 0 0 8px rgba(255,215,0,0.2); border: 1px solid var(--warn); }
-  [data-theme="hacker"] .chip.added { box-shadow: 0 0 8px rgba(0,255,65,0.2); border: 1px solid var(--good); }
-  [data-theme="hacker"] .chip.removed { box-shadow: 0 0 8px rgba(255,0,64,0.3); border: 1px solid var(--bad); }
-  [data-theme="hacker"] .chip.modified { box-shadow: 0 0 8px rgba(255,215,0,0.2); border: 1px solid var(--warn); }
 
-  .status{ display:flex; align-items:flex-start; gap:10px; border-radius:var(--radius-md); padding:14px 16px; margin-top:18px; font-size:14px; line-height:1.5; border: 1px solid transparent; }
+  .status{ display:flex; align-items:flex-start; gap:10px; border-radius:var(--radius-md); padding:14px 16px; margin-top:18px; font-size:14px; line-height:1.5; }
   .status svg{ flex-shrink:0; margin-top:1px; }
   .status-good{ background:var(--good-bg); color:var(--good); }
   .status-bad{ background:var(--bad-bg); color:var(--bad); }
   .status-warn{ background:var(--warn-bg); color:var(--warn); }
-  [data-theme="hacker"] .status-good { border-color: var(--good); box-shadow: 0 0 15px rgba(0,255,65,0.1); text-shadow: 0 0 5px rgba(0,255,65,0.4); }
-  [data-theme="hacker"] .status-bad { border-color: var(--bad); box-shadow: 0 0 15px rgba(255,0,64,0.1); }
-  [data-theme="hacker"] .status-warn { border-color: var(--warn); box-shadow: 0 0 15px rgba(255,215,0,0.1); }
   .status strong{ display:block; margin-bottom:2px; }
 
-  .dup-group{ border:1px solid var(--border); border-radius:var(--radius-md); padding:14px 16px; margin-top:12px; background:var(--surface-soft); transition: all 0.3s ease; }
-  [data-theme="hacker"] .dup-group:hover { border-color: var(--accent-1); box-shadow: 0 0 15px rgba(0,255,65,0.08); }
+  .dup-group{ border:1px solid var(--border); border-radius:var(--radius-md); padding:14px 16px; margin-top:12px; background:var(--surface-soft); }
   .dup-group .gh{ font-family:var(--font-mono); font-size:11.5px; color:var(--ink-faint); margin-bottom:8px; display:flex; justify-content:space-between; }
   .dup-group ul{ margin:0; padding-left:18px; font-size:13px; color:var(--ink); }
   .dup-group li{ margin-bottom:3px; }
 
   .divider{ height:1px; background:var(--border); margin:26px 0; }
   .footnote{ text-align:center; color:var(--ink-faint); font-size:12.5px; margin-top:26px; display:flex; align-items:center; justify-content:center; gap:6px; }
-  [data-theme="hacker"] .footnote { letter-spacing: 1px; text-shadow: 0 0 5px rgba(0,255,65,0.2); }
   input[type=file]{ display:none; }
 </style>
 </head>
@@ -330,19 +244,16 @@
 <div class="wrap">
 
   <div class="topbar">
-    <a href="../index.html" class="pill back-pill" id="homeBtn" style="text-decoration:none;" title="Go back to Home">
+     <a href="../index.html" class="pill back-pill" style="text-decoration: none; color: inherit; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
       Back to CryptoKit
     </a>
     <div style="display:flex; gap:10px; flex-wrap:wrap;">
       <div class="pill lock-pill">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>
-        100% Client-Side — Nothing Ever Leaves Your Browser
+        100% Client-Side — Files Never Leave Your Browser
       </div>
-      <div class="pill toggle-pill" id="themeToggle" title="Toggle Theme">
-        <span id="themeLabel">Normal</span>
-        <span class="switch"></span>
-      </div>
+      <div class="pill toggle-pill" id="themeToggle" title="Toggle Theme"><span id="themeLabel">Normal</span><span class="switch"></span></div>
     </div>
   </div>
 
@@ -539,72 +450,33 @@
 
 <script>
 (function(){
-
-  // ════════════════════════════════════════════════════════════
-  //  THEME SYNC KEY — must match the main index.html exactly
-  // ════════════════════════════════════════════════════════════
-  const THEME_KEY = 'cryptokit-theme';
-
-  // ---------------- Back Button Smart Navigation ----------------
-  document.getElementById('homeBtn').addEventListener('click', function(e) {
-    if (e.ctrlKey || e.metaKey || e.shiftKey || e.button === 1) return;
-    e.preventDefault();
-    let sameSite = false;
-    try {
-      sameSite = !!document.referrer && new URL(document.referrer).origin === location.origin;
-    } catch (_) {}
-    if (sameSite && history.length > 1) {
-      history.back();
-      setTimeout(function() {
-        if (!document.hidden) location.href = '../index.html';
-      }, 400);
-    } else {
-      location.href = '../index.html';
+  /* theme toggle (Normal / Hacker), persisted across Quantum Elite / CryptoKit pages */
+  (function(){
+    const saved=localStorage.getItem('qel-theme')||'normal';
+    document.documentElement.setAttribute('data-theme', saved);
+    function syncLabel(){
+      const mode=document.documentElement.getAttribute('data-theme');
+      const label=document.getElementById('themeLabel');
+      if(label) label.textContent = mode==='hacker' ? 'Hacker' : 'Normal';
     }
-  });
-
-  // ════════════════════════════════════════════════════════════
-  //  THEME MANAGEMENT
-  // ════════════════════════════════════════════════════════════
-  const themeToggle = document.getElementById('themeToggle');
-  const themeLabel  = document.getElementById('themeLabel');
-
-  function applyTheme(theme, saveToStorage) {
-    if (theme !== 'hacker') theme = 'normal';
-    document.documentElement.setAttribute('data-theme', theme);
-    themeLabel.textContent = (theme === 'hacker') ? 'HACKER' : 'Normal';
-    if (saveToStorage) {
-      try { localStorage.setItem(THEME_KEY, theme); } catch(_){}
+    syncLabel();
+    const sw=document.getElementById('themeToggle');
+    if(sw){
+      sw.addEventListener('click',()=>{
+        const current=document.documentElement.getAttribute('data-theme')||'normal';
+        const next=current==='hacker'?'normal':'hacker';
+        document.documentElement.setAttribute('data-theme', next);
+        localStorage.setItem('qel-theme', next);
+        syncLabel();
+      });
     }
-  }
-
-  let savedTheme = 'normal';
-  try { savedTheme = localStorage.getItem(THEME_KEY) || 'normal'; } catch(_){}
-  if (savedTheme !== 'hacker') savedTheme = 'normal';
-  applyTheme(savedTheme, false);
-
-  themeToggle.addEventListener('click', () => {
-    const current = document.documentElement.getAttribute('data-theme');
-    const next = (current === 'hacker' ? 'normal' : 'hacker');
-    applyTheme(next, true);
-  });
-
-  window.addEventListener('storage', function(e) {
-    if (e.key === THEME_KEY && e.newValue) {
-      applyTheme(e.newValue, false);
-    }
-  });
-
-  document.addEventListener('visibilitychange', function() {
-    if (!document.hidden) {
-      let current = 'normal';
-      try { current = localStorage.getItem(THEME_KEY) || 'normal'; } catch(_){}
-      if (current !== 'hacker') current = 'normal';
-      if (current !== document.documentElement.getAttribute('data-theme')) {
-        applyTheme(current, false);
+    window.addEventListener('storage', function(e){
+      if(e.key==='qel-theme' && e.newValue){
+        document.documentElement.setAttribute('data-theme', e.newValue);
+        syncLabel();
       }
-    }
-  });
+    });
+  })();
 
   // ---------------- Tabs ----------------
   const tabs = document.querySelectorAll('.tab');
@@ -651,7 +523,7 @@
   }
 
   // ================= BATCH HASH =================
-  let batchFiles = [];
+  let batchFiles = []; // {name, size, file, hash}
 
   function addBatchFiles(fileListLike){
     Array.from(fileListLike).forEach(file=>{
