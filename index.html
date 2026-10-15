@@ -5,6 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>CryptoKit - Your Complete Cryptography Toolkit</title>
 
+    <!-- ★ QUANTUM ELITE DARK — early boot: applies the saved dark theme before the page paints (no white flash) -->
+    <script>
+        (function () {
+            try {
+                if (localStorage.getItem('cryptokit_premium_tier') !== 'enterprise') return;
+                /* Matrix rain (hacker mode) no longer exists in Quantum Elite → move those users to Elite Dark */
+                if (localStorage.getItem('cryptokit-theme') === 'hacker') {
+                    localStorage.setItem('cryptokit-theme', 'normal');
+                    localStorage.setItem('cryptokit-elite-dark', '1');
+                }
+                if (localStorage.getItem('cryptokit-elite-dark') === '1') {
+                    document.documentElement.classList.add('theme-dark');
+                }
+            } catch (e) {}
+        })();
+    </script>
+
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
@@ -409,6 +426,299 @@
         html.premium-active .ai-elite-badge { background: rgba(255,255,255,0.25); color: #fff; }
         html.enterprise-active .ai-elite-badge { background: rgba(255,255,255,0.25); color: #fff; }
     </style>
+    <!-- ═══════════════════════════════════════════════════════════════════
+         ★ QUANTUM ELITE — DARK THEME  (replaces the Matrix-rain "Elite Mode")
+         ═══════════════════════════════════════════════════════════════════ -->
+    <style id="quantum-elite-dark">
+        /* Palette taken from the Quantum Elite Labs pages (Attack Simulator):
+           page #07070f · surface #0e0e1c · soft #131326 · violet tint #1d1a3a
+           border #242442 · text #f1f1fb · muted #b4b6d6 · accent #7c3aed
+           gradient #2563eb → #7c3aed → #ec4899 · console #000 / #93c5fd
+           Active while <html> has class "theme-dark" (Quantum Elite tier only). */
+
+        /* ── 1. Quantum Elite never shows Matrix rain / scanlines ── */
+        html.enterprise-active #matrix-canvas, html.enterprise-active .scanlines,
+        html.theme-dark #matrix-canvas, html.theme-dark .scanlines { display: none !important; }
+
+        /* ── 2. Theme switcher: Hacker option → Elite Dark for Quantum Elite ── */
+        #optDarkOption, #mobileDarkOption { display: none !important; }
+        html.enterprise-active #optDarkOption, html.enterprise-active #mobileDarkOption { display: flex !important; }
+        html.enterprise-active #optHackerOption, html.enterprise-active #mobileHackerOption { display: none !important; }
+        .mode-btn .qd-on { display: none !important; }
+        html.theme-dark .mode-btn .qd-on { display: inline !important; }
+        html.theme-dark .mode-btn #modeIcon, html.theme-dark .mode-btn #modeLabel { display: none !important; }
+        html.theme-dark #checkNormal, html.theme-dark #normalDot { display: none !important; }
+        html.theme-dark #checkDark, html.theme-dark #darkDot { display: inline-block !important; }
+
+        /* ── 3. Design tokens (re-maps the variables used by style.css + auth.css) ── */
+        html.theme-dark {
+            color-scheme: dark;
+            --bg-primary: #07070f;   --bg-secondary: #0e0e1c;  --bg-card: #0e0e1c;  --bg-card-hover: #131326;  --card-bg: #0e0e1c;
+            --primary: #7c3aed;      --primary-glow: rgba(124, 58, 237, 0.28);
+            --secondary: #93c5fd;    --accent: #a78bfa;        --success: #6ee7b7;
+            --text-primary: #f1f1fb; --text-secondary: #b4b6d6; --text-muted: #7d80a8;
+            --border: #242442;       --border-hover: #7c3aed;
+            --glass: #131326;        --glass-border: #242442;
+            --shadow: 0 14px 34px -22px rgba(0, 0, 0, 0.9);
+            --shadow-hover: 0 22px 44px -22px rgba(124, 58, 237, 0.55);
+            --tag-bg: #131326;       --tag-border: #242442;     --input-bg: #131326;   --scrollbar: #7c3aed;
+        }
+        html.theme-dark body {
+            background:
+                radial-gradient(900px 420px at 15% -10%, rgba(37, 99, 235, 0.10), transparent 60%),
+                radial-gradient(900px 420px at 100% 0%, rgba(236, 72, 153, 0.13), transparent 55%),
+                #07070f;
+            color: #f1f1fb;
+        }
+        html.theme-dark ::selection { background: rgba(124, 58, 237, 0.45); color: #fff; }
+        html.theme-dark #particle-canvas { opacity: 0.14; }
+        html.theme-dark .bg-shape { opacity: 0.08; }
+        html.theme-dark .bg-shape-1 { background: #ec4899; }
+        html.theme-dark .bg-shape-2 { background: #2563eb; }
+        html.theme-dark .bg-shape-3 { background: #7c3aed; }
+
+        /* Switch overlay (typewriter) */
+        html.theme-dark .theme-transition-overlay, .theme-transition-overlay.qd-transition {
+            background:
+                radial-gradient(700px 360px at 15% 0%, rgba(37, 99, 235, 0.14), transparent 60%),
+                radial-gradient(700px 360px at 100% 0%, rgba(236, 72, 153, 0.16), transparent 55%),
+                #07070f !important;
+        }
+        .theme-transition-overlay.qd-transition .transition-text {
+            font-family: 'JetBrains Mono', monospace !important;
+            background: linear-gradient(90deg, #93c5fd, #a78bfa, #f0abfc) !important;
+            -webkit-background-clip: text !important; background-clip: text !important;
+            -webkit-text-fill-color: transparent !important; color: transparent !important; text-shadow: none !important;
+        }
+
+        /* ── 4. Navbar ── */
+        html.theme-dark[data-theme] .navbar { background: rgba(7, 7, 15, 0.78) !important; backdrop-filter: blur(18px) saturate(140%); -webkit-backdrop-filter: blur(18px) saturate(140%); border-bottom: 1px solid #242442 !important; }
+        html.theme-dark[data-theme] .navbar.scrolled { background: rgba(7, 7, 15, 0.92) !important; box-shadow: 0 12px 30px -18px rgba(0, 0, 0, 0.9); }
+        html.theme-dark[data-theme] .nav-logo-icon { background: linear-gradient(135deg, #2563eb, #7c3aed, #ec4899); box-shadow: 0 6px 18px -6px rgba(124, 58, 237, 0.65); }
+        html.theme-dark[data-theme] .nav-logo-icon svg { color: #fff; }
+        html.theme-dark[data-theme] .nav-logo-text { background: none; color: #f1f1fb; -webkit-text-fill-color: #f1f1fb; }
+        html.theme-dark[data-theme] .nav-links a { color: #b4b6d6; }
+        html.theme-dark[data-theme] .nav-links a:hover { color: #f1f1fb; }
+        html.theme-dark[data-theme] .nav-links a::after { background: linear-gradient(90deg, #2563eb, #7c3aed, #ec4899); }
+
+        html.theme-dark[data-theme] .mode-selector .mode-btn { background: #0e0e1c !important; border: 1px solid #242442 !important; color: #b4b6d6 !important; border-radius: 999px !important; padding: 0 14px !important; }
+        html.theme-dark[data-theme] .mode-selector .mode-btn:hover { border-color: #7c3aed !important; color: #f1f1fb !important; box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.18); }
+        html.theme-dark[data-theme] .mode-dropdown { background: #0e0e1c; border: 1px solid #242442; box-shadow: 0 24px 50px -16px rgba(0, 0, 0, 0.85); }
+        html.theme-dark[data-theme] .mode-option:hover { background: #131326; }
+        html.theme-dark[data-theme] .mode-option-icon { background: #1d1a3a; }
+        html.theme-dark[data-theme] .mode-option-desc { color: #7d80a8; }
+        html.theme-dark[data-theme] .mode-check { color: #a78bfa; }
+
+        html.theme-dark[data-theme] .btn-nav-auth { background: #0e0e1c !important; border: 1px solid #242442 !important; color: #f1f1fb !important; border-radius: 999px !important; }
+        html.theme-dark[data-theme] .btn-nav-auth:hover { background: #131326 !important; border-color: #7c3aed !important; }
+        html.theme-dark[data-theme] .btn-nav-auth.is-logout { background: rgba(239, 68, 68, 0.08) !important; border-color: rgba(248, 113, 113, 0.35) !important; color: #fca5a5 !important; }
+        html.theme-dark[data-theme] .btn-nav-auth.is-logout:hover { background: rgba(239, 68, 68, 0.16) !important; border-color: #f87171 !important; color: #fecaca !important; }
+        html.theme-dark[data-theme] .btn-nav-cta { background: linear-gradient(90deg, #2563eb, #7c3aed, #ec4899) !important; color: #fff !important; border: none !important; border-radius: 999px !important; box-shadow: 0 8px 22px -10px rgba(124, 58, 237, 0.75) !important; }
+        html.theme-dark[data-theme] .btn-nav-cta:hover { background: linear-gradient(90deg, #2563eb, #7c3aed, #ec4899) !important; filter: brightness(1.1); transform: translateY(-1px); box-shadow: 0 10px 26px -8px rgba(236, 72, 153, 0.55) !important; }
+
+        /* ── 5. Mobile menu + popup ── */
+        html.theme-dark[data-theme] .hamburger { background: #0e0e1c; border-color: #242442; }
+        html.theme-dark[data-theme] .hamburger:hover { background: #131326; border-color: #7c3aed; }
+        html.theme-dark[data-theme] .hamburger span { background: #f1f1fb; }
+        html.theme-dark[data-theme] .mobile-menu { background: #0a0a14 !important; border-left: 1px solid #242442; box-shadow: -20px 0 50px rgba(0, 0, 0, 0.7); }
+        html.theme-dark[data-theme] .mobile-menu-header { background: #0a0a14; border-bottom-color: #242442; }
+        html.theme-dark[data-theme] .mobile-menu-brand svg { color: #a78bfa; }
+        html.theme-dark[data-theme] .mobile-menu-brand-text { color: #f1f1fb; }
+        html.theme-dark[data-theme] .mobile-menu-close { background: #131326; border-color: #242442; color: #f1f1fb; }
+        html.theme-dark[data-theme] .mobile-menu .mobile-menu-body a { color: #e4e5f5 !important; border-bottom-color: rgba(36, 36, 66, 0.7) !important; }
+        html.theme-dark[data-theme] .mobile-menu .mobile-menu-body a:hover, html.theme-dark[data-theme] .mobile-menu .mobile-menu-body a:active { background: #1d1a3a !important; color: #c4b5fd !important; }
+        html.theme-dark[data-theme] .mobile-menu-divider { color: #7d80a8; opacity: 1; }
+        html.theme-dark[data-theme] .mobile-menu a#mobilePremiumLink { background: linear-gradient(135deg, rgba(37, 99, 235, 0.16), rgba(124, 58, 237, 0.16), rgba(236, 72, 153, 0.16)) !important; border: 1px solid rgba(124, 58, 237, 0.4) !important; color: #e9d5ff !important; }
+        html.theme-dark[data-theme] .mobile-menu a#mobileAuthBtn { background: linear-gradient(90deg, #7c3aed, #8b3df0) !important; color: #fff !important; box-shadow: 0 8px 20px -8px rgba(124, 58, 237, 0.7); }
+        html.theme-dark[data-theme] .mobile-menu a#mobileAuthBtn:hover { background: linear-gradient(90deg, #6d28d9, #7c3aed) !important; }
+        html.theme-dark[data-theme] .mobile-menu a#mobileAuthBtn.is-logout { background: linear-gradient(135deg, #ef4444, #dc2626) !important; box-shadow: 0 8px 20px -8px rgba(239, 68, 68, 0.6); }
+        html.theme-dark[data-theme] .mobile-menu a#mobileThemeToggleLink { background: rgba(255, 255, 255, 0.02) !important; }
+        html.theme-dark[data-theme] .mobile-theme-submenu { background: #0e0e1c; border-left-color: #7c3aed; }
+        html.theme-dark[data-theme] .mobile-theme-submenu a { color: #e4e5f5 !important; border-bottom-color: rgba(36, 36, 66, 0.7) !important; }
+        html.theme-dark[data-theme] .mobile-theme-submenu a .theme-active-dot { background: #a78bfa; box-shadow: 0 0 8px #a78bfa; }
+        html.theme-dark[data-theme] .mobile-theme-submenu a#mobileNormalOption.active-theme { color: #e4e5f5 !important; font-weight: 500; background: transparent !important; }
+        html.theme-dark[data-theme] .mobile-theme-submenu a#mobileDarkOption { color: #c4b5fd !important; font-weight: 600; background: rgba(124, 58, 237, 0.12) !important; }
+        html.theme-dark[data-theme] .mobile-dev-popup-box { background: #0e0e1c; border-color: #7c3aed; box-shadow: 0 24px 60px -20px rgba(124, 58, 237, 0.6); }
+        html.theme-dark[data-theme] .mobile-dev-popup-title { color: #f1f1fb; }
+        html.theme-dark[data-theme] .mobile-dev-popup-msg { color: #b4b6d6; }
+        html.theme-dark[data-theme] .mobile-dev-popup-msg strong { color: #c4b5fd; }
+        html.theme-dark[data-theme] .mobile-dev-popup-close { background: linear-gradient(90deg, #7c3aed, #8b3df0); }
+
+        /* ── 6. Hero ── */
+        html.theme-dark[data-theme] .hero-badge { background: #0e0e1c !important; border: 1px solid #242442 !important; color: #a78bfa; border-radius: 999px; }
+        html.theme-dark[data-theme] .hero-badge .dot { background: linear-gradient(135deg, #2563eb, #7c3aed, #ec4899) !important; box-shadow: 0 0 10px rgba(124, 58, 237, 0.8) !important; }
+        html.theme-dark[data-theme] .hero-title { color: #f1f1fb; }
+        html.theme-dark[data-theme] .gradient-text { background: linear-gradient(90deg, #2563eb, #7c3aed, #ec4899) !important; -webkit-background-clip: text !important; background-clip: text !important; -webkit-text-fill-color: transparent !important; }
+        html.theme-dark[data-theme] .hero-subtitle, html.theme-dark[data-theme] .trust-item { color: #b4b6d6; }
+        html.theme-dark[data-theme] .trust-item i { color: #a78bfa; }
+        html.theme-dark[data-theme] .btn-primary { background: linear-gradient(90deg, #7c3aed, #8b3df0) !important; color: #fff !important; border: none; box-shadow: 0 10px 24px -10px rgba(124, 58, 237, 0.7) !important; }
+        html.theme-dark[data-theme] .btn-primary:hover { background: linear-gradient(90deg, #6d28d9, #7c3aed) !important; box-shadow: 0 14px 30px -10px rgba(124, 58, 237, 0.85) !important; transform: translateY(-2px); }
+        html.theme-dark[data-theme] #heroPremiumBtn { background: linear-gradient(90deg, #2563eb, #7c3aed, #ec4899) !important; box-shadow: 0 12px 28px -12px rgba(236, 72, 153, 0.6), 0 10px 24px -14px rgba(37, 99, 235, 0.6) !important; }
+        html.theme-dark[data-theme] #heroPremiumBtn:hover { filter: brightness(1.08); }
+        html.theme-dark[data-theme] .btn-secondary { background: #0e0e1c; color: #f1f1fb; border: 1px solid #242442; }
+        html.theme-dark[data-theme] .btn-secondary:hover { background: #131326; border-color: #7c3aed; color: #c4b5fd; }
+
+        /* Hero terminal → console look from the reference (#000 + soft blue) */
+        html.theme-dark[data-theme] .hero-terminal { background: #000 !important; border: 1px solid #242442 !important; border-radius: 20px; box-shadow: 0 30px 70px -30px rgba(124, 58, 237, 0.55) !important; }
+        html.theme-dark[data-theme] .terminal-header { background: #0e0e1c !important; border-bottom: 1px solid #242442 !important; border-radius: 20px 20px 0 0; }
+        html.theme-dark[data-theme] .terminal-title { color: #7d80a8; }
+        html.theme-dark[data-theme] .terminal-os-switch { background: #131326; border-color: #242442; }
+        html.theme-dark[data-theme] .os-btn { color: #7d80a8; }
+        html.theme-dark[data-theme] .os-btn:hover { color: #f1f1fb; background: #1d1a3a; }
+        html.theme-dark[data-theme] .os-btn.active { background: linear-gradient(90deg, #2563eb, #7c3aed); color: #fff; box-shadow: 0 4px 12px -4px rgba(124, 58, 237, 0.7); }
+        html.theme-dark[data-theme] #terminalBody, html.theme-dark[data-theme] .terminal-body { color: #b4b6d6; }
+        html.theme-dark[data-theme] #terminalBody::-webkit-scrollbar-track { background: #000; }
+        html.theme-dark[data-theme] .term-prompt, html.theme-dark[data-theme] .terminal-prompt { color: #a78bfa; }
+        html.theme-dark[data-theme] .term-prompt.win { color: #93c5fd; }
+        html.theme-dark[data-theme] .term-input, html.theme-dark[data-theme] .terminal-cmd { color: #f1f1fb; }
+        html.theme-dark[data-theme] .term-cursor, html.theme-dark[data-theme] .terminal-cursor-blink { color: #a78bfa; }
+        html.theme-dark[data-theme] .terminal-cursor { background: #a78bfa; }
+        html.theme-dark[data-theme] .term-out, html.theme-dark[data-theme] .terminal-key, html.theme-dark[data-theme] .terminal-line .terminal-output { color: #b4b6d6; }
+        html.theme-dark[data-theme] .term-out.success, html.theme-dark[data-theme] .terminal-success { color: #6ee7b7; }
+        html.theme-dark[data-theme] .term-out.warn, html.theme-dark[data-theme] .terminal-line .terminal-info { color: #fcd34d; }
+        html.theme-dark[data-theme] .term-out.error { color: #fca5a5; }
+        html.theme-dark[data-theme] .term-out.info, html.theme-dark[data-theme] .terminal-value, html.theme-dark[data-theme] .terminal-line .terminal-hash { color: #93c5fd; }
+        html.theme-dark[data-theme] .term-jump-btn { background: linear-gradient(90deg, #7c3aed, #8b3df0); }
+
+        /* ── 7. Live demo ── */
+        html.theme-dark[data-theme] .demo-container { background: #0e0e1c; border: 1px solid #242442; box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.9); }
+        html.theme-dark[data-theme] .demo-header h2 { color: #f1f1fb; }
+        html.theme-dark[data-theme] .demo-header p { color: #b4b6d6; }
+        html.theme-dark[data-theme] .demo-tab { background: #131326; border: 1px solid #242442; color: #b4b6d6; border-radius: 999px; }
+        html.theme-dark[data-theme] .demo-tab.active, html.theme-dark[data-theme] .demo-tab:hover { background: linear-gradient(90deg, #7c3aed, #8b3df0); border-color: transparent; color: #fff; box-shadow: 0 8px 18px -8px rgba(124, 58, 237, 0.6); }
+        html.theme-dark[data-theme] .demo-input, html.theme-dark[data-theme] .demo-select { background: #131326; border: 1px solid #242442; color: #f1f1fb; }
+        html.theme-dark[data-theme] .demo-input::placeholder { color: #7d80a8; }
+        html.theme-dark[data-theme] .demo-input:focus, html.theme-dark[data-theme] .demo-select:focus { border-color: #7c3aed; box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.22); outline: none; }
+        html.theme-dark[data-theme] .demo-result { background: #000; border: 1px solid #242442; }
+        html.theme-dark[data-theme] .demo-result-text { color: #93c5fd; }
+        html.theme-dark[data-theme] .demo-result-placeholder { color: #7d80a8; }
+        html.theme-dark[data-theme] .btn-copy { background: #1d1a3a; border: 1px solid rgba(124, 58, 237, 0.45); color: #c4b5fd; }
+        html.theme-dark[data-theme] .btn-copy:hover { background: #7c3aed; color: #fff; }
+
+        /* ── 8. Section headings ── */
+        html.theme-dark[data-theme] .section-badge, html.theme-dark[data-theme] #proToolsSection .section-badge { background: #0e0e1c !important; border: 1px solid #242442 !important; color: #a78bfa !important; border-radius: 999px; }
+        html.theme-dark[data-theme] #quantumToolsSection .section-badge { background: linear-gradient(90deg, rgba(37, 99, 235, 0.16), rgba(124, 58, 237, 0.16), rgba(236, 72, 153, 0.16)) !important; border: 1px solid rgba(124, 58, 237, 0.45) !important; color: #e9d5ff !important; }
+        html.theme-dark[data-theme] .section-title { color: #f1f1fb; }
+        html.theme-dark[data-theme] .section-subtitle { color: #b4b6d6; }
+
+        /* ── 9. Free tool cards ── */
+        html.theme-dark[data-theme] .tool-card { background: #0e0e1c; border: 1px solid #242442; box-shadow: 0 14px 34px -22px rgba(0, 0, 0, 0.9); }
+        html.theme-dark[data-theme] .tool-card::before { background: linear-gradient(90deg, #2563eb, #7c3aed, #ec4899) !important; }
+        html.theme-dark[data-theme] .tool-card:hover { background: #10101f; border-color: #7c3aed !important; transform: translateY(-6px); box-shadow: 0 22px 44px -22px rgba(124, 58, 237, 0.55) !important; }
+        html.theme-dark[data-theme] .tool-icon { background: #1d1a3a !important; border: 1px solid rgba(124, 58, 237, 0.22); }
+        html.theme-dark[data-theme] .tool-icon.purple { color: #a78bfa; }
+        html.theme-dark[data-theme] .tool-icon.blue   { color: #60a5fa; }
+        html.theme-dark[data-theme] .tool-icon.green  { color: #818cf8; }
+        html.theme-dark[data-theme] .tool-icon.red    { color: #f472b6; }
+        html.theme-dark[data-theme] .tool-icon.yellow { color: #c084fc; }
+        html.theme-dark[data-theme] .tool-icon.pink   { color: #e879f9; }
+        html.theme-dark[data-theme] .tool-name { color: #f1f1fb; }
+        html.theme-dark[data-theme] .tool-desc { color: #b4b6d6; }
+        html.theme-dark[data-theme] .tag { background: #131326; border: 1px solid #242442; color: #b4b6d6; }
+        html.theme-dark[data-theme] .tool-cta.use-now-btn { background: linear-gradient(90deg, #7c3aed, #8b3df0) !important; color: #fff !important; border: none !important; box-shadow: 0 8px 18px -8px rgba(124, 58, 237, 0.6) !important; }
+        html.theme-dark[data-theme] .tool-card:hover .tool-cta.use-now-btn { background: linear-gradient(90deg, #6d28d9, #7c3aed) !important; box-shadow: 0 12px 24px -8px rgba(124, 58, 237, 0.8) !important; }
+
+        /* ── 10. Pro Arsenal + Quantum Elite Labs cards ── */
+        html.theme-dark[data-theme] .premium-tool-card { background: #0e0e1c; border: 1px solid #242442; box-shadow: 0 14px 34px -22px rgba(0, 0, 0, 0.9); }
+        html.theme-dark[data-theme] .premium-tool-card:hover { border-color: #7c3aed; transform: translateY(-6px); box-shadow: 0 22px 44px -22px rgba(124, 58, 237, 0.55); }
+        html.theme-dark[data-theme] .premium-tool-card::before { background: linear-gradient(90deg, #7c3aed, #8b3df0) !important; }
+        html.theme-dark[data-theme] .quantum-tool-card::before { background: linear-gradient(90deg, #2563eb, #7c3aed, #ec4899) !important; }
+        html.theme-dark[data-theme] .premium-tool-icon { background: #1d1a3a !important; color: #a78bfa !important; border: 1px solid rgba(124, 58, 237, 0.25); }
+        html.theme-dark[data-theme] .quantum-tool-card .premium-tool-icon { background: linear-gradient(135deg, rgba(37, 99, 235, 0.22), rgba(124, 58, 237, 0.22), rgba(236, 72, 153, 0.22)) !important; color: #f0abfc !important; border-color: rgba(236, 72, 153, 0.3); }
+        html.theme-dark[data-theme] .premium-tool-name { color: #f1f1fb; }
+        html.theme-dark[data-theme] .premium-tool-desc { color: #b4b6d6; }
+        html.theme-dark[data-theme] .premium-tool-tags .ptag { background: #131326 !important; color: #b4b6d6 !important; border: 1px solid #242442 !important; }
+        html.theme-dark[data-theme] .premium-tool-tags .qtag { background: #1d1a3a; color: #c4b5fd; border: 1px solid rgba(124, 58, 237, 0.4); }
+        html.theme-dark[data-theme] .premium-tool-card .premium-tool-cta { background: linear-gradient(90deg, #7c3aed, #8b3df0) !important; color: #fff !important; border: none !important; box-shadow: 0 10px 22px -10px rgba(124, 58, 237, 0.7) !important; }
+        html.theme-dark[data-theme] .premium-tool-card:hover .premium-tool-cta { background: linear-gradient(90deg, #6d28d9, #7c3aed) !important; box-shadow: 0 14px 28px -10px rgba(124, 58, 237, 0.85) !important; }
+        html.theme-dark[data-theme] .quantum-tool-card .premium-tool-cta { background: linear-gradient(90deg, #2563eb, #7c3aed, #ec4899) !important; box-shadow: 0 12px 26px -12px rgba(236, 72, 153, 0.55), 0 10px 22px -14px rgba(37, 99, 235, 0.6) !important; }
+        html.theme-dark[data-theme] .quantum-tool-card:hover .premium-tool-cta { background: linear-gradient(90deg, #2563eb, #7c3aed, #ec4899) !important; filter: brightness(1.1); }
+        html.theme-dark[data-theme] .premium-tool-card.locked::after { background: rgba(0, 0, 0, 0.12); }
+        html.theme-dark[data-theme] .premium-tool-card.locked .premium-tool-cta { background: #131326 !important; color: #b4b6d6 !important; border: 1px solid #242442 !important; box-shadow: none !important; }
+        html.theme-dark[data-theme] .premium-tool-card.locked:hover .premium-tool-cta { background: #1d1a3a !important; color: #f1f1fb !important; border-color: #7c3aed !important; }
+        html.theme-dark[data-theme] .premium-tool-card .premium-crown { filter: drop-shadow(0 0 8px rgba(124, 58, 237, 0.7)) !important; opacity: 1; }
+        html.theme-dark[data-theme] .premium-tool-card.coming-soon { background: #0b0b16; border: 1px dashed #242442; }
+        html.theme-dark[data-theme] .coming-soon-badge { background: #131326; color: #7d80a8; border: 1px dashed #242442; }
+
+        /* ── 11. Why / How / Stats ── */
+        html.theme-dark[data-theme] .why-list li { color: #b4b6d6; }
+        html.theme-dark[data-theme] .why-list li strong { color: #f1f1fb; }
+        html.theme-dark[data-theme] .why-list li .check { background: #1d1a3a; border: 1px solid rgba(124, 58, 237, 0.45); }
+        html.theme-dark[data-theme] .why-list li .check i { color: #a78bfa; }
+        html.theme-dark[data-theme] .feature-card, html.theme-dark[data-theme] .stat-card, html.theme-dark[data-theme] .review-card { background: #0e0e1c; border: 1px solid #242442; box-shadow: 0 14px 34px -22px rgba(0, 0, 0, 0.9); }
+        html.theme-dark[data-theme] .feature-card:hover, html.theme-dark[data-theme] .stat-card:hover, html.theme-dark[data-theme] .review-card:hover { border-color: #7c3aed !important; box-shadow: 0 18px 40px -20px rgba(124, 58, 237, 0.5) !important; }
+        html.theme-dark[data-theme] .feature-title, html.theme-dark[data-theme] .step-title { color: #f1f1fb; }
+        html.theme-dark[data-theme] .feature-desc, html.theme-dark[data-theme] .step-desc, html.theme-dark[data-theme] .stat-label { color: #b4b6d6; }
+        html.theme-dark[data-theme] .step-number { background: linear-gradient(135deg, #2563eb, #7c3aed, #ec4899) !important; color: #fff; box-shadow: 0 12px 26px -10px rgba(124, 58, 237, 0.7); }
+        html.theme-dark[data-theme] .step-connector { color: rgba(167, 139, 250, 0.55); }
+        html.theme-dark[data-theme] .stat-number { background: linear-gradient(90deg, #2563eb, #7c3aed, #ec4899); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+
+        /* ── 12. Feedback ── */
+        html.theme-dark[data-theme] .review-text { color: #b4b6d6; }
+        html.theme-dark[data-theme] .review-name { color: #f1f1fb; }
+        html.theme-dark[data-theme] .review-role { color: #7d80a8; }
+        html.theme-dark[data-theme] .review-avatar { background: linear-gradient(135deg, #2563eb, #7c3aed, #ec4899); color: #fff; }
+        html.theme-dark[data-theme] .feedback-form-wrapper { background: #0e0e1c; border: 1px solid #242442; box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.9); }
+        html.theme-dark[data-theme] .feedback-form-title { color: #f1f1fb; }
+        html.theme-dark[data-theme] .feedback-input, html.theme-dark[data-theme] .feedback-textarea { background: #131326; border: 1px solid #242442; color: #f1f1fb; }
+        html.theme-dark[data-theme] .feedback-input::placeholder, html.theme-dark[data-theme] .feedback-textarea::placeholder { color: #7d80a8; }
+        html.theme-dark[data-theme] .feedback-input:focus, html.theme-dark[data-theme] .feedback-textarea:focus { border-color: #7c3aed; box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.22); }
+        html.theme-dark[data-theme] .rating-label { color: #b4b6d6; }
+        html.theme-dark[data-theme] .rating-star { color: #4b4b7a; }
+        html.theme-dark[data-theme] .rating-star:hover, html.theme-dark[data-theme] .rating-star.active { color: #fcd34d; text-shadow: 0 0 10px rgba(252, 211, 77, 0.45); }
+
+        /* ── 13. CTA + footer ── */
+        html.theme-dark[data-theme] .cta-container { background: #0e0e1c; border: 1px solid #242442; box-shadow: 0 30px 70px -30px rgba(124, 58, 237, 0.35); }
+        html.theme-dark[data-theme] .cta-section .cta-glow { background: radial-gradient(circle, rgba(124, 58, 237, 0.28), rgba(236, 72, 153, 0.10) 50%, transparent 70%) !important; }
+        html.theme-dark[data-theme] .cta-container h2 { color: #f1f1fb; }
+        html.theme-dark[data-theme] .cta-container p { color: #b4b6d6; }
+        html.theme-dark[data-theme] .footer { background: #0a0a14; border-top: 1px solid #242442; }
+        html.theme-dark[data-theme] .footer-brand p, html.theme-dark[data-theme] .footer-col ul li a { color: #b4b6d6; }
+        html.theme-dark[data-theme] .footer-col h4 { color: #f1f1fb; }
+        html.theme-dark[data-theme] .footer-col ul li a:hover, html.theme-dark[data-theme] .footer-bottom-links a:hover { color: #c4b5fd; }
+        html.theme-dark[data-theme] .footer-bottom { border-top-color: #242442; }
+        html.theme-dark[data-theme] .footer-bottom p, html.theme-dark[data-theme] .footer-bottom-links a { color: #7d80a8; }
+        html.theme-dark[data-theme] .social-btn { background: #0e0e1c; border: 1px solid #242442; color: #b4b6d6; }
+        html.theme-dark[data-theme] .social-btn:hover { background: linear-gradient(135deg, #2563eb, #7c3aed, #ec4899); border-color: transparent; color: #fff; }
+
+        /* ── 14. Floating buttons + CryptoBot chat ── */
+        html.theme-dark[data-theme] .scroll-top { background: #0e0e1c !important; color: #c4b5fd !important; border: 1px solid #242442 !important; box-shadow: 0 10px 24px -10px rgba(0, 0, 0, 0.9); }
+        html.theme-dark[data-theme] .scroll-top:hover { border-color: #7c3aed !important; color: #fff !important; }
+        html.theme-dark[data-theme] .ai-fab { background: linear-gradient(135deg, #2563eb, #7c3aed, #ec4899) !important; box-shadow: 0 12px 30px -8px rgba(124, 58, 237, 0.65) !important; }
+        html.theme-dark[data-theme] .ai-chat-window { background: #0e0e1c; border: 1px solid #242442; box-shadow: 0 30px 70px -20px rgba(0, 0, 0, 0.9); }
+        html.theme-dark[data-theme] .ai-chat-header { background: linear-gradient(90deg, #2563eb, #7c3aed, #ec4899) !important; }
+        html.theme-dark[data-theme] .ai-categories { background: #0e0e1c; border-bottom-color: #242442; }
+        html.theme-dark[data-theme] .ai-categories-label, html.theme-dark[data-theme] .ai-feedback { color: #7d80a8; }
+        html.theme-dark[data-theme] .ai-chip { background: #131326; border: 1px solid #242442; color: #b4b6d6; }
+        html.theme-dark[data-theme] .ai-chip:hover { background: #7c3aed; border-color: #7c3aed; color: #fff; }
+        html.theme-dark[data-theme] .ai-messages { background: #0b0b16; }
+        html.theme-dark[data-theme] .ai-msg-content.bot { background: #131326; border: 1px solid #242442; color: #f1f1fb; }
+        html.theme-dark[data-theme] .ai-msg-content.user, html.theme-dark[data-theme] .ai-tool-btn, html.theme-dark[data-theme] .ai-send-btn { background: linear-gradient(90deg, #7c3aed, #8b3df0); color: #fff; }
+        html.theme-dark[data-theme] .ai-msg-avatar.bot { background: linear-gradient(135deg, #2563eb, #7c3aed, #ec4899); }
+        html.theme-dark[data-theme] .ai-msg-avatar.user { background: linear-gradient(135deg, #7c3aed, #8b3df0); }
+        html.theme-dark[data-theme] .ai-typing-dots { background: #131326; border: 1px solid #242442; }
+        html.theme-dark[data-theme] .ai-typing-dot { background: #a78bfa; }
+        html.theme-dark[data-theme] .ai-suggestion-btn { background: transparent; border: 1px solid rgba(124, 58, 237, 0.45); color: #c4b5fd; }
+        html.theme-dark[data-theme] .ai-suggestion-btn:hover { background: #7c3aed; color: #fff; }
+        html.theme-dark[data-theme] .ai-fb-btn { border-color: #242442; color: #7d80a8; }
+        html.theme-dark[data-theme] .ai-fb-btn:hover { border-color: #7c3aed; color: #c4b5fd; }
+        html.theme-dark[data-theme] .ai-input-area { background: #0e0e1c; border-top-color: #242442; }
+        html.theme-dark[data-theme] .ai-input { background: #131326; border: 1px solid #242442; color: #f1f1fb; }
+        html.theme-dark[data-theme] .ai-input::placeholder { color: #7d80a8; }
+        html.theme-dark[data-theme] .ai-input:focus { border-color: #7c3aed; box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.22); }
+
+        /* ── 15. Login screen (if shown while dark) ── */
+        html.theme-dark[data-theme] .auth-screen {
+            background:
+                radial-gradient(900px 420px at 15% -10%, rgba(37, 99, 235, 0.10), transparent 60%),
+                radial-gradient(900px 420px at 100% 0%, rgba(236, 72, 153, 0.13), transparent 55%),
+                #07070f;
+        }
+        html.theme-dark[data-theme] .auth-card { background: #0e0e1c; border: 1px solid #242442; box-shadow: 0 30px 70px -30px rgba(124, 58, 237, 0.4); }
+        html.theme-dark[data-theme] .auth-input { background: #131326; border: 1px solid #242442; color: #f1f1fb; }
+        html.theme-dark[data-theme] .auth-input:focus { border-color: #7c3aed; box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.22); }
+        html.theme-dark[data-theme] .auth-link-muted, html.theme-dark[data-theme] .auth-switch-text a { color: #a78bfa; }
+    </style>
 </head>
 <body>
 
@@ -497,18 +807,28 @@
                 <button class="mode-btn" onclick="if(typeof toggleModeDropdown==='function')toggleModeDropdown();">
                     <span id="modeIcon">☀️</span>
                     <span class="mode-label" id="modeLabel">Normal</span>
+                    <!-- ★ shown only while Elite Dark is active -->
+                    <span class="qd-on" aria-hidden="true">🌙</span>
+                    <span class="mode-label qd-on">Dark</span>
                     <i class="fas fa-chevron-down mode-arrow" id="modeArrow"></i>
                 </button>
                 <div class="mode-dropdown" id="modeDropdown">
-                    <div class="mode-option" onclick="if(typeof selectMode==='function')selectMode('normal');setTimeout(applyTierLabels,50);">
+                    <div class="mode-option" id="optNormalOption" onclick="if(window.CKEliteDark)CKEliteDark.set(false);if(typeof selectMode==='function')selectMode('normal');if(typeof applyTierLabels==='function')setTimeout(applyTierLabels,50);">
                         <span class="mode-option-icon" id="optNormalIcon">☀️</span>
                         <div><div class="mode-option-title" id="optNormalTitle">Normal Mode</div><div class="mode-option-desc" id="optNormalDesc">Clean &amp; professional</div></div>
                         <i class="fas fa-check mode-check" id="checkNormal"></i>
                     </div>
-                    <div class="mode-option" onclick="if(typeof selectMode==='function')selectMode('hacker');setTimeout(applyTierLabels,50);">
+                    <!-- Hacker / Matrix-rain mode — hidden automatically for Quantum Elite -->
+                    <div class="mode-option" id="optHackerOption" onclick="if(window.CKEliteDark&&CKEliteDark.isElite()){CKEliteDark.set(true);}else{if(typeof selectMode==='function')selectMode('hacker');if(typeof applyTierLabels==='function')setTimeout(applyTierLabels,50);}">
                         <span class="mode-option-icon" id="optHackerIcon">💀</span>
                         <div><div class="mode-option-title" id="optHackerTitle">Hacker Mode</div><div class="mode-option-desc" id="optHackerDesc">Matrix &amp; hacker vibes</div></div>
                         <i class="fas fa-check mode-check" id="checkHacker" style="display:none;"></i>
+                    </div>
+                    <!-- ★ NEW: Elite Dark — Quantum Elite only (replaces Matrix rain) -->
+                    <div class="mode-option" id="optDarkOption" onclick="if(window.CKEliteDark)CKEliteDark.set(true);">
+                        <span class="mode-option-icon">🌙</span>
+                        <div><div class="mode-option-title">Elite Dark</div><div class="mode-option-desc">Midnight violet theme</div></div>
+                        <i class="fas fa-check mode-check" id="checkDark" style="display:none;"></i>
                     </div>
                     <div class="mode-option" onclick="window.location.href='developer.html';">
                         <span class="mode-option-icon">💻</span>
@@ -565,8 +885,10 @@
                 <i class="fas fa-chevron-down theme-arrow" id="mobileThemeArrow"></i>
             </a>
             <div class="mobile-theme-submenu" id="mobileThemeSubmenu">
-                <a href="#" id="mobileNormalOption" onclick="event.preventDefault();mobileSwitchTheme('normal');"><span id="mobNormalLabel">☀️ Normal Mode</span> <span class="theme-active-dot" id="normalDot" style="display:none;"></span></a>
-                <a href="#" id="mobileHackerOption" onclick="event.preventDefault();mobileSwitchTheme('hacker');"><span id="mobHackerLabel">💀 Hacker Mode</span> <span class="theme-active-dot" id="hackerDot" style="display:none;"></span></a>
+                <a href="#" id="mobileNormalOption" onclick="event.preventDefault();if(window.CKEliteDark)CKEliteDark.set(false);if(typeof mobileSwitchTheme==='function')mobileSwitchTheme('normal');"><span id="mobNormalLabel">☀️ Normal Mode</span> <span class="theme-active-dot" id="normalDot" style="display:none;"></span></a>
+                <a href="#" id="mobileHackerOption" onclick="event.preventDefault();if(window.CKEliteDark&&CKEliteDark.isElite()){CKEliteDark.set(true);if(typeof closeMobileMenu==='function')setTimeout(closeMobileMenu,350);}else if(typeof mobileSwitchTheme==='function'){mobileSwitchTheme('hacker');}"><span id="mobHackerLabel">💀 Hacker Mode</span> <span class="theme-active-dot" id="hackerDot" style="display:none;"></span></a>
+                <!-- ★ NEW: Elite Dark — Quantum Elite only (replaces Matrix rain) -->
+                <a href="#" id="mobileDarkOption" onclick="event.preventDefault();if(window.CKEliteDark)CKEliteDark.set(true);if(typeof closeMobileMenu==='function')setTimeout(closeMobileMenu,350);"><span>🌙 Elite Dark Mode</span> <span class="theme-active-dot" id="darkDot" style="display:none;"></span></a>
                 <a href="#" id="mobileDevOption" onclick="event.preventDefault();showMobileDevPopup();"><span>💻 Terminal Mode</span></a>
             </div>
         </div>
@@ -849,25 +1171,20 @@
 
     </div>
 
-    <script>
-        /* ═══════════════════════════════════════════════════════════════════
-           CRITICAL — LOCK TERMINAL BEFORE script.js LOADS
-           This flag tells any legacy terminal code in script.js to STOP touching
-           the terminalBody element. We own it exclusively.
-           ═══════════════════════════════════════════════════════════════════ */
-        window.__CRYPTOKIT_TERMINAL_LOCKED = true;
-        window.initTerminalDemo = function(){};
-        window.startTerminal    = function(){};
-        window.runTerminal      = function(){};
-        window.typeTerminal     = function(){};
+    <!-- ═══════════════════════════════════════════════════════════════════
+         SCRIPTS
+         ═══════════════════════════════════════════════════════════════════ -->
 
+    <!-- Auth check — runs first, so a logged-in user goes straight to the app -->
+    <script>
         (function () {
             var isAuthed = (function () {
                 try { return sessionStorage.getItem('cryptokit_auth') === 'true' || localStorage.getItem('cryptokit_auth') === 'true'; } catch (e) { return false; }
             })();
             if (isAuthed) {
-                document.getElementById('authScreen').classList.add('auth-screen-hidden');
-                document.getElementById('mainApp').classList.remove('main-app-hidden');
+                var authEl = document.getElementById('authScreen'), appEl = document.getElementById('mainApp');
+                if (authEl) authEl.classList.add('auth-screen-hidden');
+                if (appEl)  appEl.classList.remove('main-app-hidden');
             }
         })();
     </script>
@@ -875,329 +1192,141 @@
     <script src="script.js"></script>
     <script src="auth.js"></script>
 
+    <!-- ═══════════════════════════════════════════════════════════════════
+         LOGIN SAFETY NET
+         • If auth.js ever fails to load (wrong path / renamed / blocked),
+           these fallbacks keep Login, Sign Up and Logout working, so the
+           page can never get stuck on the login screen again.
+         • When auth.js loads normally, ITS functions are used and the
+           fallbacks below are skipped.
+         ═══════════════════════════════════════════════════════════════════ -->
     <script>
-    /* ═══════════════════════════════════════════════════════════════════════════
-       TERMINAL CONTROLLER v2 — SCROLL-SAFE
-       Three key fixes:
-         1. Overrides any terminal-related functions in script.js
-         2. CSS already removed scroll-behavior: smooth (critical)
-         3. Pauses auto-scroll on mouseenter / touchstart (critical)
-       ═══════════════════════════════════════════════════════════════════════════ */
-    (function() {
-        'use strict';
+        (function () {
+            var KEY = 'cryptokit_auth';
+            function el(id) { return document.getElementById(id); }
+            function each(list, fn) { for (var i = 0; i < list.length; i++) fn(list[i]); }
+            function val(id) { var i = el(id); return i ? i.value : ''; }
+            function validEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
 
-        /* Nuke any existing listeners on the terminal body from script.js */
-        var oldBody = document.getElementById('terminalBody');
-        if (oldBody) {
-            var fresh = oldBody.cloneNode(false);
-            oldBody.parentNode.replaceChild(fresh, oldBody);
-        }
-
-        const WIN_COMMANDS = [
-            { input: 'cryptokit --version',                      out: [ { t: 'CryptoKit v1.0.0 (Windows x64) - Build 2026.01', c: 'info' } ] },
-            { input: 'cryptokit hash sha256 "Hello World"',      out: [ { t: 'SHA-256:', c: '' }, { t: 'a591a6d40bf420404a011733cfb7b190d62c65bf0bcda32b57b277d9ad9f146e', c: 'success' } ] },
-            { input: 'cryptokit encrypt aes-256 secret.txt',     out: [ { t: '[*] Loading plaintext...', c: '' }, { t: '[+] File encrypted: secret.txt.enc', c: 'success' }, { t: '[+] IV: 7f3d2e1a8b9c4f6d', c: 'success' }, { t: '[+] Key stored in: C:\\Users\\admin\\.cryptokit\\keyring', c: 'success' } ] },
-            { input: 'cryptokit genkey rsa 4096',                out: [ { t: 'Generating RSA-4096 keypair...', c: 'info' }, { t: '[====================] 100%', c: '' }, { t: '[+] Private key: id_rsa', c: 'success' }, { t: '[+] Public key:  id_rsa.pub', c: 'success' }, { t: '[+] Fingerprint: SHA256:xk7Nq2...', c: '' } ] },
-            { input: 'cryptokit verify signature.sig',           out: [ { t: 'Signature algorithm: RSA-PSS', c: '' }, { t: 'Hash function: SHA-256', c: '' }, { t: '[+] Signature is VALID', c: 'success' } ] },
-            { input: 'cryptokit scan --audit *.key',             out: [ { t: 'Scanning cryptographic artifacts...', c: 'info' }, { t: '[+] 0 critical issues', c: 'success' }, { t: '[!] 1 warning: MD5 usage detected in legacy.key', c: 'warn' }, { t: '[+] Audit complete.', c: 'success' } ] },
-            { input: 'cryptokit passwd --generate 24',           out: [ { t: 'Generated: Xk9#mP2$vL8!qR4@nT7^wZ3&', c: 'success' }, { t: 'Entropy: 142 bits', c: '' }, { t: 'Strength: EXCELLENT', c: 'success' } ] },
-            { input: 'cryptokit base64 encode data.bin',         out: [ { t: 'ZGF0YS5iaW4gLSBjcnlwdG9raXQgYmFzZTY0IGVuY29kZWQ=', c: 'success' } ] },
-            { input: 'cryptokit tls --check cryptokit.io',       out: [ { t: 'Connecting to cryptokit.io:443...', c: 'info' }, { t: '[+] TLS 1.3 handshake OK', c: 'success' }, { t: '[+] Cipher: TLS_AES_256_GCM_SHA384', c: 'success' }, { t: '[+] Certificate valid until 2027-04-11', c: 'success' } ] },
-            { input: 'cryptokit ecdsa sign document.pdf',        out: [ { t: 'Signing with curve: secp256r1', c: '' }, { t: '[+] Signature written to document.pdf.sig', c: 'success' } ] },
-            { input: 'cryptokit entropy --test random',          out: [ { t: 'Collecting 1 MB sample...', c: 'info' }, { t: 'Shannon entropy: 7.998 bits/byte', c: 'success' }, { t: '[+] Source quality: EXCELLENT', c: 'success' } ] },
-            { input: 'cryptokit hmac sha512 --key secret.key',   out: [ { t: 'HMAC-SHA512:', c: '' }, { t: 'c1e4e2f1a9d6b3c5e8f0d2a1b4c7e8f9...', c: 'success' } ] },
-            { input: 'cls', out: [] }
-        ];
-
-        const MAC_COMMANDS = [
-            { input: 'cryptokit --version',                      out: [ { t: 'CryptoKit v1.0.0 (Darwin arm64) - Build 2026.01', c: 'info' } ] },
-            { input: 'cryptokit hash sha256 "Hello World"',      out: [ { t: 'SHA-256:', c: '' }, { t: 'a591a6d40bf420404a011733cfb7b190d62c65bf0bcda32b57b277d9ad9f146e', c: 'success' } ] },
-            { input: 'cryptokit encrypt aes-256 secret.txt',     out: [ { t: '→ Loading plaintext...', c: '' }, { t: '✓ File encrypted: secret.txt.enc', c: 'success' }, { t: '✓ IV: 7f3d2e1a8b9c4f6d', c: 'success' }, { t: '✓ Key stored in: ~/.cryptokit/keyring', c: 'success' } ] },
-            { input: 'cryptokit genkey rsa 4096',                out: [ { t: 'Generating RSA-4096 keypair...', c: 'info' }, { t: '[████████████████████] 100%', c: '' }, { t: '✓ Private key: ~/.ssh/id_rsa', c: 'success' }, { t: '✓ Public key:  ~/.ssh/id_rsa.pub', c: 'success' }, { t: '✓ Fingerprint: SHA256:xk7Nq2...', c: '' } ] },
-            { input: 'cryptokit verify signature.sig',           out: [ { t: 'Signature algorithm: RSA-PSS', c: '' }, { t: 'Hash function: SHA-256', c: '' }, { t: '✓ Signature is VALID', c: 'success' } ] },
-            { input: 'cryptokit scan --audit *.key',             out: [ { t: 'Scanning cryptographic artifacts...', c: 'info' }, { t: '✓ 0 critical issues', c: 'success' }, { t: '⚠ 1 warning: MD5 usage detected in legacy.key', c: 'warn' }, { t: '✓ Audit complete.', c: 'success' } ] },
-            { input: 'cryptokit passwd --generate 24',           out: [ { t: 'Generated: Xk9#mP2$vL8!qR4@nT7^wZ3&', c: 'success' }, { t: 'Entropy: 142 bits', c: '' }, { t: 'Strength: EXCELLENT', c: 'success' } ] },
-            { input: 'cryptokit base64 encode data.bin',         out: [ { t: 'ZGF0YS5iaW4gLSBjcnlwdG9raXQgYmFzZTY0IGVuY29kZWQ=', c: 'success' } ] },
-            { input: 'cryptokit tls --check cryptokit.io',       out: [ { t: 'Connecting to cryptokit.io:443...', c: 'info' }, { t: '✓ TLS 1.3 handshake OK', c: 'success' }, { t: '✓ Cipher: TLS_AES_256_GCM_SHA384', c: 'success' }, { t: '✓ Certificate valid until 2027-04-11', c: 'success' } ] },
-            { input: 'cryptokit ecdsa sign document.pdf',        out: [ { t: 'Signing with curve: secp256r1', c: '' }, { t: '✓ Signature written to document.pdf.sig', c: 'success' } ] },
-            { input: 'cryptokit entropy --test /dev/urandom',    out: [ { t: 'Collecting 1 MB sample...', c: 'info' }, { t: 'Shannon entropy: 7.998 bits/byte', c: 'success' }, { t: '✓ Source quality: EXCELLENT', c: 'success' } ] },
-            { input: 'cryptokit hmac sha512 --key secret.key',   out: [ { t: 'HMAC-SHA512:', c: '' }, { t: 'c1e4e2f1a9d6b3c5e8f0d2a1b4c7e8f9...', c: 'success' } ] },
-            { input: 'clear', out: [] }
-        ];
-
-        let currentOS      = 'win';
-        let cmdIndex       = 0;
-        let runningToken   = 0;
-        let userScrolledUp = false;
-        let userInteracting = false;    // FIX #3: user is hovering/touching
-        let unInteractTimer = null;
-
-        const body    = document.getElementById('terminalBody');
-        const jumpBtn = document.getElementById('termJumpBtn');
-        const title   = document.getElementById('terminalTitle');
-        const btnMac  = document.getElementById('osMac');
-        const btnWin  = document.getElementById('osWin');
-
-        if (!body) { console.error('[Terminal] #terminalBody not found'); return; }
-
-        function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
-
-        function isAtBottom() {
-            return (body.scrollHeight - body.scrollTop - body.clientHeight) < 30;
-        }
-
-        /* FIX: Smart scroll — never fights the user */
-        function smartScroll() {
-            // Don't auto-scroll if user is interacting OR has scrolled up
-            if (userInteracting || userScrolledUp) return;
-            // Use direct scrollTop assignment (never scrollIntoView — too aggressive)
-            body.scrollTop = body.scrollHeight;
-        }
-
-        window.termJumpToBottom = function() {
-            userScrolledUp = false;
-            body.scrollTop = body.scrollHeight;
-            if (jumpBtn) jumpBtn.classList.remove('show');
-        };
-
-        /* === FIX #3 — PAUSE auto-scroll while user is near terminal === */
-        function markInteracting() {
-            userInteracting = true;
-            if (unInteractTimer) clearTimeout(unInteractTimer);
-            // Resume auto-scroll 1.5s after user stops interacting
-            unInteractTimer = setTimeout(function() {
-                userInteracting = false;
-                // If they ended up at bottom, re-enable auto-scroll
-                if (isAtBottom()) {
-                    userScrolledUp = false;
-                    if (jumpBtn) jumpBtn.classList.remove('show');
-                }
-            }, 1500);
-        }
-
-        body.addEventListener('mouseenter', function() { userInteracting = true; }, { passive: true });
-        body.addEventListener('mouseleave', function() {
-            // Delay before resuming auto-scroll
-            if (unInteractTimer) clearTimeout(unInteractTimer);
-            unInteractTimer = setTimeout(function() {
-                userInteracting = false;
-                if (isAtBottom()) userScrolledUp = false;
-            }, 800);
-        }, { passive: true });
-
-        body.addEventListener('wheel', function(e) {
-            markInteracting();
-            if (e.deltaY < 0) {
-                userScrolledUp = true;
-                if (jumpBtn) jumpBtn.classList.add('show');
-            } else if (e.deltaY > 0 && isAtBottom()) {
-                userScrolledUp = false;
-                if (jumpBtn) jumpBtn.classList.remove('show');
+            function saveAuth(on, remember) {
+                try {
+                    localStorage.removeItem(KEY);
+                    sessionStorage.removeItem(KEY);
+                    if (on) (remember ? localStorage : sessionStorage).setItem(KEY, 'true');
+                } catch (e) {}
             }
-        }, { passive: true });
-
-        body.addEventListener('touchstart', function() { userInteracting = true; }, { passive: true });
-        body.addEventListener('touchend', function() { markInteracting(); }, { passive: true });
-        body.addEventListener('touchmove', function() {
-            userInteracting = true;
-            if (!isAtBottom()) {
-                userScrolledUp = true;
-                if (jumpBtn) jumpBtn.classList.add('show');
+            function banner(id, type, msg) {
+                var b = el(id); if (!b) return;
+                b.textContent = msg || '';
+                b.className = msg ? 'auth-banner show ' + type : 'auth-banner';
             }
-        }, { passive: true });
-
-        body.addEventListener('scroll', function() {
-            if (isAtBottom()) {
-                userScrolledUp = false;
-                if (jumpBtn) jumpBtn.classList.remove('show');
-            } else if (userInteracting) {
-                // Only mark as "scrolled up" if the user is actively scrolling
-                userScrolledUp = true;
-                if (jumpBtn) jumpBtn.classList.add('show');
+            function fieldError(inputId, msg) {
+                var input = el(inputId), err = el(inputId + 'Error');
+                if (input) input.classList.add('auth-input-error');
+                if (err) { err.textContent = msg; err.classList.add('show'); }
             }
-        }, { passive: true });
-
-        /* Keyboard navigation */
-        body.setAttribute('tabindex', '0');
-        body.addEventListener('keydown', function(e) {
-            if (['ArrowUp','ArrowDown','PageUp','PageDown','Home','End'].indexOf(e.key) !== -1) {
-                markInteracting();
-                if (e.key === 'ArrowUp' || e.key === 'PageUp' || e.key === 'Home') {
-                    userScrolledUp = true;
-                    if (jumpBtn) jumpBtn.classList.add('show');
-                }
+            function clearErrors(formId) {
+                var f = el(formId); if (!f) return;
+                each(f.querySelectorAll('.auth-error'), function (e) { e.textContent = ''; e.classList.remove('show'); });
+                each(f.querySelectorAll('.auth-input'), function (i) { i.classList.remove('auth-input-error'); });
             }
-        });
-
-        function getPrompt() {
-            if (currentOS === 'win') {
-                return '<span class="term-prompt win">C:\\Users\\admin&gt;</span>';
-            }
-            return '<span class="term-prompt">admin@mac</span> <span class="term-prompt" style="color:#64748b;">~</span> <span class="term-prompt">%</span>';
-        }
-
-        async function typeCommand(text, token) {
-            const line = document.createElement('div');
-            line.className = 'term-line';
-            line.innerHTML = getPrompt() + ' <span class="term-input"></span><span class="term-cursor">▊</span>';
-            body.appendChild(line);
-            smartScroll();
-
-            const inputSpan = line.querySelector('.term-input');
-            const cursor    = line.querySelector('.term-cursor');
-
-            for (let i = 0; i < text.length; i++) {
-                if (token !== runningToken) return;
-                inputSpan.textContent += text[i];
-                smartScroll();
-                await sleep(35 + Math.random() * 45);
-            }
-            if (cursor) cursor.remove();
-        }
-
-        async function printOutput(lines, token) {
-            for (const line of lines) {
-                if (token !== runningToken) return;
-                const div = document.createElement('div');
-                div.className = 'term-out' + (line.c ? ' ' + line.c : '');
-                div.textContent = line.t;
-                body.appendChild(div);
-                smartScroll();
-                await sleep(120 + Math.random() * 80);
-            }
-        }
-
-        function trimOldLines() {
-            const MAX = 400;
-            while (body.children.length > MAX) {
-                body.removeChild(body.firstChild);
-            }
-        }
-
-        async function runLoop(token) {
-            while (token === runningToken) {
-                const pool = currentOS === 'win' ? WIN_COMMANDS : MAC_COMMANDS;
-                const cmd  = pool[cmdIndex % pool.length];
-                cmdIndex++;
-
-                if (cmd.input === 'cls' || cmd.input === 'clear') {
-                    await typeCommand(cmd.input, token);
-                    if (token !== runningToken) break;
-                    await sleep(400);
-                    if (token !== runningToken) break;
-                    body.innerHTML = '';
-                    userScrolledUp = false;
-                    if (jumpBtn) jumpBtn.classList.remove('show');
-                    await sleep(400);
-                    continue;
-                }
-
-                await typeCommand(cmd.input, token);
-                if (token !== runningToken) break;
-                await sleep(250);
-
-                await printOutput(cmd.out, token);
-                if (token !== runningToken) break;
-
-                const spacer = document.createElement('div');
-                spacer.className = 'term-out';
-                spacer.innerHTML = '&nbsp;';
-                body.appendChild(spacer);
-                smartScroll();
-
-                trimOldLines();
-                await sleep(1400 + Math.random() * 800);
-            }
-        }
-
-        window.switchTermOS = function(os) {
-            if (os !== 'win' && os !== 'mac') return;
-            if (os === currentOS) return;
-            currentOS = os;
-
-            if (btnMac && btnWin) {
-                btnMac.classList.toggle('active', os === 'mac');
-                btnWin.classList.toggle('active', os === 'win');
+            function showApp() {
+                var a = el('authScreen'), m = el('mainApp');
+                if (a) a.classList.add('auth-screen-hidden');
+                if (m) m.classList.remove('main-app-hidden');
+                window.scrollTo(0, 0);
             }
 
-            if (title) {
-                title.textContent = os === 'win' ? 'C:\\Users\\admin> cmd.exe' : 'admin@mac ~ zsh';
+            if (typeof window.switchAuthPanel !== 'function') {
+                window.switchAuthPanel = function (which) {
+                    var lp = el('loginPanel'), sp = el('signupPanel');
+                    if (!lp || !sp) return;
+                    clearErrors('loginForm'); clearErrors('signupForm');
+                    banner('loginBanner'); banner('signupBanner');
+                    lp.classList.toggle('active', which !== 'signup');
+                    sp.classList.toggle('active', which === 'signup');
+                };
+            }
+            if (typeof window.togglePasswordVisibility !== 'function') {
+                window.togglePasswordVisibility = function (inputId, btn) {
+                    var input = el(inputId); if (!input) return;
+                    var show = input.type === 'password';
+                    input.type = show ? 'text' : 'password';
+                    var icon = btn && btn.querySelector('i');
+                    if (icon) { icon.classList.toggle('fa-eye', !show); icon.classList.toggle('fa-eye-slash', show); }
+                    if (btn) btn.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+                };
+            }
+            if (typeof window.handleForgotPassword !== 'function') {
+                window.handleForgotPassword = function () {
+                    banner('loginBanner', 'info', 'Password reset isn\'t available in this preview yet.');
+                };
+            }
+            if (typeof window.handleLogin !== 'function') {
+                window.handleLogin = function (event) {
+                    if (event) event.preventDefault();
+                    clearErrors('loginForm');
+                    var email = val('loginEmail').trim(), pass = val('loginPassword'), ok = true;
+                    if (!email) { fieldError('loginEmail', 'Email is required.'); ok = false; }
+                    else if (!validEmail(email)) { fieldError('loginEmail', 'Enter a valid email address.'); ok = false; }
+                    if (!pass) { fieldError('loginPassword', 'Password is required.'); ok = false; }
+                    if (!ok) { banner('loginBanner', 'error', 'Please fix the highlighted fields.'); return false; }
+                    banner('loginBanner', 'success', 'Login successful — loading CryptoKit…');
+                    saveAuth(true, !!(el('rememberMe') && el('rememberMe').checked));
+                    setTimeout(showApp, 500);
+                    return false;
+                };
+            }
+            if (typeof window.handleSignup !== 'function') {
+                window.handleSignup = function (event) {
+                    if (event) event.preventDefault();
+                    clearErrors('signupForm');
+                    var name = val('signupName').trim(), email = val('signupEmail').trim(),
+                        pass = val('signupPassword'), conf = val('signupConfirmPassword'), ok = true;
+                    if (!name) { fieldError('signupName', 'Name is required.'); ok = false; }
+                    if (!email) { fieldError('signupEmail', 'Email is required.'); ok = false; }
+                    else if (!validEmail(email)) { fieldError('signupEmail', 'Enter a valid email address.'); ok = false; }
+                    if (!pass) { fieldError('signupPassword', 'Password is required.'); ok = false; }
+                    if (!conf) { fieldError('signupConfirmPassword', 'Please confirm your password.'); ok = false; }
+                    else if (pass && conf !== pass) { fieldError('signupConfirmPassword', 'Passwords do not match.'); ok = false; }
+                    if (!ok) { banner('signupBanner', 'error', 'Please fix the highlighted fields.'); return false; }
+                    banner('signupBanner', 'success', 'Account created — logging you in…');
+                    saveAuth(true, false);
+                    setTimeout(showApp, 600);
+                    return false;
+                };
+            }
+            if (typeof window.handleLogout !== 'function') {
+                window.handleLogout = function () {
+                    saveAuth(false);
+                    var a = el('authScreen'), m = el('mainApp');
+                    if (m) m.classList.add('main-app-hidden');
+                    if (a) a.classList.remove('auth-screen-hidden');
+                    window.switchAuthPanel('login');
+                    var lf = el('loginForm'), sf = el('signupForm');
+                    if (lf) lf.reset();
+                    if (sf) sf.reset();
+                };
             }
 
-            runningToken++;
-            const newToken = runningToken;
+            /* The login / sign-up forms must NEVER do a real page submit —
+               that page reload is what kept sending you back to the login screen. */
+            document.addEventListener('submit', function (e) {
+                var f = e.target;
+                if (f && (f.id === 'loginForm' || f.id === 'signupForm')) e.preventDefault();
+            }, true);
 
-            setTimeout(function() {
-                body.innerHTML = '';
-                userScrolledUp = false;
-                userInteracting = false;
-                cmdIndex = 0;
-                if (jumpBtn) jumpBtn.classList.remove('show');
-
-                const welcome = document.createElement('div');
-                welcome.className = 'term-out info';
-                welcome.textContent = os === 'win'
-                    ? 'Microsoft Windows [Version 10.0.22631.3155]\n(c) Microsoft Corporation. All rights reserved.\n'
-                    : 'Last login: ' + new Date().toDateString() + ' on ttys001\n';
-                body.appendChild(welcome);
-
-                const sp = document.createElement('div');
-                sp.className = 'term-out';
-                sp.innerHTML = '&nbsp;';
-                body.appendChild(sp);
-
-                runLoop(newToken);
-            }, 150);
-        };
-
-        function boot() {
-            // Fully clear anything script.js may have put there
-            body.innerHTML = '';
-
-            const welcome = document.createElement('div');
-            welcome.className = 'term-out info';
-            welcome.textContent = 'Microsoft Windows [Version 10.0.22631.3155]\n(c) Microsoft Corporation. All rights reserved.\n';
-            body.appendChild(welcome);
-
-            const sp = document.createElement('div');
-            sp.className = 'term-out';
-            sp.innerHTML = '&nbsp;';
-            body.appendChild(sp);
-
-            if (btnMac) btnMac.classList.remove('active');
-            if (btnWin) btnWin.classList.add('active');
-            if (title)  title.textContent = 'C:\\Users\\admin> cmd.exe';
-
-            runningToken++;
-            runLoop(runningToken);
-        }
-
-        function waitForVisible() {
-            const mainApp = document.getElementById('mainApp');
-            if (mainApp && !mainApp.classList.contains('main-app-hidden')) {
-                // Wait a tick so script.js doesn't overwrite our content
-                setTimeout(boot, 300);
-            } else {
-                if (mainApp && window.MutationObserver) {
-                    const obs = new MutationObserver(function() {
-                        if (!mainApp.classList.contains('main-app-hidden')) {
-                            obs.disconnect();
-                            setTimeout(boot, 300);
-                        }
-                    });
-                    obs.observe(mainApp, { attributes: true, attributeFilter: ['class'] });
-                } else {
-                    setTimeout(boot, 300);
-                }
-            }
-        }
-
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', waitForVisible);
-        } else {
-            waitForVisible();
-        }
-    })();
+            /* Terminal "Jump to Latest" button — only used if script.js doesn't provide termJumpToBottom */
+            window.addEventListener('load', function () {
+                if (typeof window.termJumpToBottom === 'function') return;
+                var tb = el('terminalBody'), jb = el('termJumpBtn');
+                if (!tb || !jb) return;
+                window.termJumpToBottom = function () { tb.scrollTop = tb.scrollHeight; jb.classList.remove('show'); };
+                tb.addEventListener('scroll', function () {
+                    jb.classList.toggle('show', tb.scrollHeight - tb.scrollTop - tb.clientHeight > 40);
+                }, { passive: true });
+            });
+        })();
     </script>
 
     <script>
@@ -1207,11 +1336,15 @@
         if (typeof selectMode !== 'function') { window.selectMode = function(mode) { document.documentElement.setAttribute('data-theme', mode); localStorage.setItem('cryptokit-theme', mode); }; }
         if (typeof toggleModeDropdown !== 'function') { window.toggleModeDropdown = function() { var d = document.getElementById('modeDropdown'); if (d) d.classList.toggle('active'); }; }
 
+        /* ═══════════════════════════════════════════════════
+           MOBILE MENU FUNCTIONS
+        ═══════════════════════════════════════════════════ */
         window.toggleMobileMenu = function() {
             var menu = document.getElementById('mobileMenu');
             var overlay = document.getElementById('mobileMenuOverlay');
             var hamburger = document.getElementById('hamburgerBtn');
             if (!menu) return;
+
             if (menu.classList.contains('active')) {
                 closeMobileMenu();
             } else {
@@ -1228,31 +1361,45 @@
             var hamburger = document.getElementById('hamburgerBtn');
             var submenu = document.getElementById('mobileThemeSubmenu');
             var arrow = document.getElementById('mobileThemeArrow');
+
             if (menu) menu.classList.remove('active');
             if (overlay) overlay.classList.remove('active');
             if (hamburger) hamburger.classList.remove('active');
             document.body.classList.remove('menu-open');
+
             if (submenu) submenu.classList.remove('open');
             if (arrow) arrow.style.transform = 'rotate(0deg)';
         };
+
+        // Legacy compat
         window.toggleMenu = window.toggleMobileMenu;
 
+        /* ═══════════════════════════════════════════════════
+           AUTH STATE — LOGIN / LOGOUT BUTTON (AUTO SYNC)
+        ═══════════════════════════════════════════════════ */
         function isUserAuthed() {
-            try { return sessionStorage.getItem('cryptokit_auth') === 'true' || localStorage.getItem('cryptokit_auth') === 'true'; }
-            catch (e) { return false; }
+            try {
+                return sessionStorage.getItem('cryptokit_auth') === 'true' ||
+                       localStorage.getItem('cryptokit_auth') === 'true';
+            } catch (e) { return false; }
         }
 
         var __lastAuthState = null;
+
         function syncAuthUI(force) {
             var authed = isUserAuthed();
             if (!force && authed === __lastAuthState) return;
             __lastAuthState = authed;
+
             var nb = document.getElementById('navAuthBtn');
             if (nb) {
-                nb.innerHTML = authed ? '<i class="fas fa-arrow-right-from-bracket"></i> Logout' : '<i class="fas fa-user"></i> Login';
+                nb.innerHTML = authed
+                    ? '<i class="fas fa-arrow-right-from-bracket"></i> Logout'
+                    : '<i class="fas fa-user"></i> Login';
                 nb.classList.toggle('is-logout', authed);
                 nb.setAttribute('title', authed ? 'Log out of CryptoKit' : 'Log in to CryptoKit');
             }
+
             var mb = document.getElementById('mobileAuthBtn');
             if (mb) {
                 mb.innerHTML = authed ? '🚪 Logout' : '👤 Login';
@@ -1261,19 +1408,27 @@
         }
         window.updateAuthButtons = syncAuthUI;
 
+        /* Login / Logout toggle */
         window.handleAuthToggle = function() {
             var authed = isUserAuthed();
             closeMobileMenu();
+
             if (authed) {
-                if (typeof handleLogout === 'function') { handleLogout(); }
-                else {
-                    try { sessionStorage.removeItem('cryptokit_auth'); localStorage.removeItem('cryptokit_auth'); } catch(e) {}
+                /* ---- LOGOUT ---- */
+                if (typeof handleLogout === 'function') {
+                    handleLogout();
+                } else {
+                    try {
+                        sessionStorage.removeItem('cryptokit_auth');
+                        localStorage.removeItem('cryptokit_auth');
+                    } catch(e) {}
                     document.getElementById('mainApp').classList.add('main-app-hidden');
                     document.getElementById('authScreen').classList.remove('auth-screen-hidden');
                     if (typeof switchAuthPanel === 'function') switchAuthPanel('login');
                 }
                 syncAuthUI(true);
             } else {
+                /* ---- GO TO LOGIN SCREEN ---- */
                 document.getElementById('mainApp').classList.add('main-app-hidden');
                 document.getElementById('authScreen').classList.remove('auth-screen-hidden');
                 if (typeof switchAuthPanel === 'function') switchAuthPanel('login');
@@ -1281,19 +1436,34 @@
             }
         };
 
+        /* Watch for auth changes from auth.js (login/signup success) */
         (function setupAuthWatchers() {
+            // 1) Poll (cheap, catches everything)
             setInterval(function(){ syncAuthUI(false); }, 400);
+
+            // 2) Observe #mainApp visibility toggles
             document.addEventListener('DOMContentLoaded', function() {
                 var mainAppEl = document.getElementById('mainApp');
                 if (mainAppEl && window.MutationObserver) {
-                    new MutationObserver(function() { syncAuthUI(true); }).observe(mainAppEl, { attributes: true, attributeFilter: ['class'] });
+                    new MutationObserver(function() {
+                        syncAuthUI(true);
+                    }).observe(mainAppEl, { attributes: true, attributeFilter: ['class'] });
                 }
             });
-            window.addEventListener('storage', function(e) { if (e.key === 'cryptokit_auth') syncAuthUI(true); });
+
+            // 3) Cross-tab storage changes
+            window.addEventListener('storage', function(e) {
+                if (e.key === 'cryptokit_auth') syncAuthUI(true);
+            });
+
+            // 4) Focus / visibility
             window.addEventListener('focus', function(){ syncAuthUI(true); });
             document.addEventListener('visibilitychange', function(){ if (!document.hidden) syncAuthUI(true); });
         })();
 
+        /* ═══════════════════════════════════════════════════
+           THEME SUBMENU (MOBILE)
+        ═══════════════════════════════════════════════════ */
         function toggleMobileThemeMenu() {
             var s = document.getElementById('mobileThemeSubmenu'), a = document.getElementById('mobileThemeArrow');
             if (!s || !a) return;
@@ -1308,11 +1478,13 @@
         }
         function updateMobileThemeDots() {
             var t = document.documentElement.getAttribute('data-theme') || 'normal';
-            var nd = document.getElementById('normalDot'), hd = document.getElementById('hackerDot');
-            var nl = document.getElementById('mobileNormalOption'), hl = document.getElementById('mobileHackerOption');
-            if (nd) nd.style.display = 'none'; if (hd) hd.style.display = 'none';
-            if (nl) nl.classList.remove('active-theme'); if (hl) hl.classList.remove('active-theme');
+            var dark = document.documentElement.classList.contains('theme-dark');   /* ★ Quantum Elite Dark */
+            var nd = document.getElementById('normalDot'), hd = document.getElementById('hackerDot'), dd = document.getElementById('darkDot');
+            var nl = document.getElementById('mobileNormalOption'), hl = document.getElementById('mobileHackerOption'), dl = document.getElementById('mobileDarkOption');
+            if (nd) nd.style.display = 'none'; if (hd) hd.style.display = 'none'; if (dd) dd.style.display = 'none';
+            if (nl) nl.classList.remove('active-theme'); if (hl) hl.classList.remove('active-theme'); if (dl) dl.classList.remove('active-theme');
             if (t === 'hacker') { if (hd) hd.style.display = 'inline-block'; if (hl) hl.classList.add('active-theme'); }
+            else if (dark) { if (dd) dd.style.display = 'inline-block'; if (dl) dl.classList.add('active-theme'); }
             else { if (nd) nd.style.display = 'inline-block'; if (nl) nl.classList.add('active-theme'); }
         }
         function showMobileDevPopup() {
@@ -1321,7 +1493,12 @@
             if (p) { p.classList.add('show'); document.body.style.overflow = 'hidden'; }
         }
 
-        window.addEventListener('resize', function() { if (window.innerWidth > 1100) closeMobileMenu(); });
+        /* Close menu on window resize if it gets too wide */
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 1100) closeMobileMenu();
+        });
+
+        /* Close menu on ESC key */
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 var menu = document.getElementById('mobileMenu');
@@ -1331,12 +1508,15 @@
             }
         });
 
+        /* Swipe-to-close support on mobile menu */
         (function() {
             var touchStartX = 0, touchEndX = 0;
             document.addEventListener('DOMContentLoaded', function() {
                 var menu = document.getElementById('mobileMenu');
                 if (!menu) return;
-                menu.addEventListener('touchstart', function(e) { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+                menu.addEventListener('touchstart', function(e) {
+                    touchStartX = e.changedTouches[0].screenX;
+                }, { passive: true });
                 menu.addEventListener('touchend', function(e) {
                     touchEndX = e.changedTouches[0].screenX;
                     if (touchEndX - touchStartX > 70) closeMobileMenu();
@@ -1344,13 +1524,20 @@
             });
         })();
 
+        /* ═══════════════════════════════════════════════════════
+           GET CURRENT TIER
+        ═══════════════════════════════════════════════════════ */
         function getCurrentTier() {
             try { return localStorage.getItem('cryptokit_premium_tier') || 'free'; } catch(e) { return 'free'; }
         }
 
+        /* ═══════════════════════════════════════════════════════
+           1. THEME TOGGLE LABELS
+        ═══════════════════════════════════════════════════════ */
         function applyTierLabels() {
             var tier = getCurrentTier();
             var theme = document.documentElement.getAttribute('data-theme') || 'normal';
+
             var modeIcon   = document.getElementById('modeIcon');
             var modeLabel  = document.getElementById('modeLabel');
             var optNTitle  = document.getElementById('optNormalTitle');
@@ -1364,11 +1551,23 @@
 
             var labels;
             if (tier === 'pro') {
-                labels = { nIcon: '👑', nTitle: 'Premium Mode', nDesc: 'Golden professional theme', nBtn: 'Premium', hIcon: '⚜️', hTitle: 'Elite Mode', hDesc: 'Golden matrix rain', hBtn: 'Elite', mobN: '👑 Premium Mode', mobH: '⚜️ Elite Mode' };
+                labels = {
+                    nIcon: '👑', nTitle: 'Premium Mode', nDesc: 'Golden professional theme', nBtn: 'Premium',
+                    hIcon: '⚜️', hTitle: 'Elite Mode',    hDesc: 'Golden matrix rain',       hBtn: 'Elite',
+                    mobN: '👑 Premium Mode', mobH: '⚜️ Elite Mode'
+                };
             } else if (tier === 'enterprise') {
-                labels = { nIcon: '🌌', nTitle: 'Premium Mode', nDesc: 'Quantum professional theme', nBtn: 'Premium', hIcon: '🔮', hTitle: 'Elite Mode', hDesc: 'Quantum matrix rain', hBtn: 'Elite', mobN: '🌌 Premium Mode', mobH: '🔮 Elite Mode' };
+                labels = {
+                    nIcon: '🌌', nTitle: 'Premium Mode', nDesc: 'Quantum professional theme', nBtn: 'Premium',
+                    hIcon: '🔮', hTitle: 'Elite Mode',    hDesc: 'Quantum matrix rain',       hBtn: 'Elite',
+                    mobN: '🌌 Premium Mode', mobH: '🔮 Elite Mode'
+                };
             } else {
-                labels = { nIcon: '☀️', nTitle: 'Normal Mode', nDesc: 'Clean & professional', nBtn: 'Normal', hIcon: '💀', hTitle: 'Hacker Mode', hDesc: 'Matrix & hacker vibes', hBtn: 'Hacker', mobN: '☀️ Normal Mode', mobH: '💀 Hacker Mode' };
+                labels = {
+                    nIcon: '☀️', nTitle: 'Normal Mode', nDesc: 'Clean & professional', nBtn: 'Normal',
+                    hIcon: '💀', hTitle: 'Hacker Mode', hDesc: 'Matrix & hacker vibes', hBtn: 'Hacker',
+                    mobN: '☀️ Normal Mode', mobH: '💀 Hacker Mode'
+                };
             }
 
             if (optNIcon)  optNIcon.textContent  = labels.nIcon;
@@ -1380,48 +1579,68 @@
             if (mobN)      mobN.textContent      = labels.mobN;
             if (mobH)      mobH.textContent      = labels.mobH;
 
-            if (theme === 'hacker') { if (modeIcon) modeIcon.textContent = labels.hIcon; if (modeLabel) modeLabel.textContent = labels.hBtn; }
-            else { if (modeIcon) modeIcon.textContent = labels.nIcon; if (modeLabel) modeLabel.textContent = labels.nBtn; }
+            if (theme === 'hacker') {
+                if (modeIcon)  modeIcon.textContent  = labels.hIcon;
+                if (modeLabel) modeLabel.textContent = labels.hBtn;
+            } else {
+                if (modeIcon)  modeIcon.textContent  = labels.nIcon;
+                if (modeLabel) modeLabel.textContent = labels.nBtn;
+            }
 
             var cn = document.getElementById('checkNormal'), ch = document.getElementById('checkHacker');
             if (cn) cn.style.display = (theme === 'hacker') ? 'none' : '';
             if (ch) ch.style.display = (theme === 'hacker') ? '' : 'none';
         }
 
+        /* ═══════════════════════════════════════════════════════
+           2. VERSION LABEL
+        ═══════════════════════════════════════════════════════ */
         function applyVersionLabel() {
             var tier = getCurrentTier();
             var heroVer = document.getElementById('heroVersionText');
             var footVer = document.getElementById('footerVersionText');
+            var termTitle = document.getElementById('terminalTitle');
+            /* only rename the Mac (zsh) terminal — leave the Windows cmd.exe title alone */
+            var osMacBtn = document.getElementById('osMac');
+            if (osMacBtn && !osMacBtn.classList.contains('active')) termTitle = null;
+
             if (tier === 'pro') {
                 if (heroVer) heroVer.innerHTML = 'v2.0 Pro Cipher — Advanced Arsenal Unlocked';
                 if (footVer) footVer.innerHTML = '&copy; 2026 CryptoKit <strong style="color:#f59e0b;">v2.0 Pro Cipher</strong>. MIT License. Made with ❤️';
-                document.title = 'CryptoKit v2.0 Pro Cipher';
+                if (termTitle) termTitle.textContent = 'cryptokit v2.0-pro ~ zsh';
+                document.title = 'CryptoKit v2.0 Pro Cipher — Advanced Cryptography Arsenal';
             } else if (tier === 'enterprise') {
                 if (heroVer) heroVer.innerHTML = 'v3.0 Quantum — Elite Labs Fully Unlocked';
-                if (footVer) footVer.innerHTML = '&copy; 2026 CryptoKit <strong style="background:linear-gradient(135deg,#3b82f6,#8b5cf6,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">v3.0 Quantum</strong>. MIT License. Made with ❤️';
-                document.title = 'CryptoKit v3.0 Quantum';
+                if (footVer) footVer.innerHTML = '&copy; 2026 CryptoKit <strong style="color:#a78bfa;">v3.0 Quantum</strong>. MIT License. Made with ❤️';
+                if (termTitle) termTitle.textContent = 'cryptokit v3.0-quantum ~ zsh';
+                document.title = 'CryptoKit v3.0 Quantum — Elite Cryptography Labs';
             } else {
                 if (heroVer) heroVer.innerHTML = 'v1.0 Now Live — Open Source &amp; Free';
                 if (footVer) footVer.innerHTML = '&copy; 2026 CryptoKit. MIT License. Made with ❤️';
+                if (termTitle) termTitle.textContent = 'cryptokit ~ zsh';
                 document.title = 'CryptoKit - Your Complete Cryptography Toolkit';
             }
         }
 
+        /* ═══════════════════════════════════════════════════════
+           3. CRYPTOBOT ELITE
+        ═══════════════════════════════════════════════════════ */
         function applyBotIdentity() {
             var tier = getCurrentTier();
-            var aiName = document.getElementById('aiName');
+            var aiName   = document.getElementById('aiName');
             var aiAvatar = document.getElementById('aiAvatar');
             var aiStatus = document.getElementById('aiStatusText');
-            var fabIcon = document.getElementById('fabIcon');
-            var aiFab = document.getElementById('aiFab');
-            var mobAsst = document.getElementById('mobileAssistantLink');
+            var fabIcon  = document.getElementById('fabIcon');
+            var aiFab    = document.getElementById('aiFab');
+            var mobAsst  = document.getElementById('mobileAssistantLink');
+
             if (tier === 'pro' || tier === 'enterprise') {
                 if (aiName) aiName.innerHTML = 'CryptoBot <span class="ai-elite-badge">Elite</span>';
                 if (aiAvatar) aiAvatar.textContent = '🤖';
                 if (aiStatus) aiStatus.textContent = 'Online · Elite Engine';
                 if (fabIcon) fabIcon.textContent = '🤖';
                 if (aiFab) aiFab.title = 'Ask CryptoBot Elite';
-                if (mobAsst) mobAsst.innerHTML = '<i class="fas fa-robot" style="width:20px;"></i> Assistant <span style="font-size:10px;font-weight:700;color:' + (tier === 'enterprise' ? '#8b5cf6' : '#f59e0b') + ';margin-left:4px;">ELITE</span>';
+                if (mobAsst) mobAsst.innerHTML = '<i class="fas fa-robot" style="width:20px;"></i> Assistant <span style="font-size:10px;font-weight:700;color:' + (tier === 'enterprise' ? '#a78bfa' : '#f59e0b') + ';margin-left:4px;">ELITE</span>';
                 window.cryptobotName = 'CryptoBot Elite';
             } else {
                 if (aiName) aiName.textContent = 'CryptoBot';
@@ -1434,9 +1653,14 @@
             }
         }
 
+        /* ═══════════════════════════════════════════════════════
+           PREMIUM UNLOCK SYSTEM
+        ═══════════════════════════════════════════════════════ */
         function unlockPremiumTools() {
             var savedTier = getCurrentTier();
+
             document.documentElement.classList.remove('premium-active', 'enterprise-active');
+
             document.querySelectorAll('#proToolsSection .premium-tool-card:not(.coming-soon)').forEach(function(card) {
                 card.classList.add('locked');
                 card.setAttribute('href', 'pricing.html');
@@ -1449,6 +1673,7 @@
                 var cta = card.querySelector('.premium-tool-cta');
                 if (cta) cta.innerHTML = '<i class="fas fa-lock"></i> Unlock with Quantum';
             });
+
             if (savedTier === 'pro' || savedTier === 'enterprise') {
                 document.documentElement.classList.add('premium-active');
                 document.querySelectorAll('#proToolsSection .premium-tool-card:not(.coming-soon)').forEach(function(card) {
@@ -1462,6 +1687,7 @@
                     if (cta) cta.innerHTML = '<i class="fas fa-play"></i> Use Now';
                 });
             }
+
             if (savedTier === 'enterprise') {
                 document.documentElement.classList.remove('premium-active');
                 document.documentElement.classList.add('enterprise-active');
@@ -1474,9 +1700,11 @@
                     if (cta) cta.innerHTML = '<i class="fas fa-play"></i> Use Now';
                 });
             }
-            var navCta = document.getElementById('navPremiumBtn');
-            var heroBtn = document.getElementById('heroPremiumBtn');
+
+            var navCta     = document.getElementById('navPremiumBtn');
+            var heroBtn    = document.getElementById('heroPremiumBtn');
             var mobileLink = document.getElementById('mobilePremiumLink');
+
             if (savedTier === 'pro') {
                 if (navCta)     { navCta.innerHTML = '✨ Pro Active';  navCta.href = '#proToolsSection'; }
                 if (heroBtn)    { heroBtn.innerHTML = '<i class="fas fa-star"></i> Pro Active'; heroBtn.href = '#proToolsSection'; }
@@ -1490,6 +1718,7 @@
                 if (heroBtn)    { heroBtn.innerHTML = '<i class="fas fa-crown"></i> Go Premium'; heroBtn.href = 'pricing.html'; }
                 if (mobileLink) { mobileLink.innerHTML = '👑 Go Premium'; mobileLink.href = 'pricing.html'; }
             }
+
             applyGoldenMatrix(savedTier);
             applyTierLabels();
             applyVersionLabel();
@@ -1507,11 +1736,16 @@
             if (typeof window.setMatrixColor === 'function') window.setMatrixColor(window.matrixRainColor);
         }
 
+        /* ═══════════════════════════════════════
+           DOMContentLoaded
+        ═══════════════════════════════════════ */
         document.addEventListener('DOMContentLoaded', function () {
             var closeBtn = document.getElementById('mobileDevPopupCloseBtn');
             if (closeBtn) closeBtn.addEventListener('click', function(e) { e.stopPropagation(); var p = document.getElementById('mobileDevPopup'); if (p) { p.classList.remove('show'); document.body.style.overflow = ''; } });
+
             var popupOv = document.getElementById('mobileDevPopup');
             if (popupOv) popupOv.addEventListener('click', function(e) { if (e.target === popupOv) { popupOv.classList.remove('show'); document.body.style.overflow = ''; } });
+
             updateMobileThemeDots();
             syncAuthUI(true);
             unlockPremiumTools();
@@ -1521,5 +1755,140 @@
         window.addEventListener('focus', function() { unlockPremiumTools(); });
     </script>
 
-</body>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         ★ QUANTUM ELITE DARK — controller  (keep this AFTER the scripts above)
+         • Quantum Elite users get "🌙 Elite Dark" instead of Matrix rain
+         • Dark is a layer on top of the normal theme, so script.js,
+           the terminal, CryptoBot etc. keep working untouched
+         • Choice is saved in localStorage → 'cryptokit-elite-dark'
+         ═══════════════════════════════════════════════════════════════════ -->
+    <script>
+        (function () {
+            'use strict';
+            var KEY  = 'cryptokit-elite-dark';
+            var root = document.documentElement;
+            var busy = false, hackerTimer = null;
+
+            var DARK_MSGS = [
+                '&gt; ENGAGING QUANTUM DARK MODE...',
+                '&gt; DIMMING PHOTON EMITTERS...',
+                '&gt; LOADING MIDNIGHT VIOLET PALETTE...',
+                '&gt; ELITE DARK ONLINE. 🌙'
+            ];
+            var LIGHT_MSGS = [
+                '&gt; LEAVING ELITE DARK...',
+                '&gt; RESTORING PREMIUM LIGHT INTERFACE...',
+                '&gt; DONE. WELCOME BACK. ✓'
+            ];
+
+            function read(k)     { try { return localStorage.getItem(k); } catch (e) { return null; } }
+            function write(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+            function isElite()   { return read('cryptokit_premium_tier') === 'enterprise' || root.classList.contains('enterprise-active'); }
+            function wantsDark() { return read(KEY) === '1'; }
+            function isHacker()  { return root.getAttribute('data-theme') === 'hacker'; }
+
+            /* Browser UI colour on mobile while dark */
+            function setMetaColor(on) {
+                var m = document.getElementById('qdThemeColor');
+                if (on) {
+                    if (!m) { m = document.createElement('meta'); m.name = 'theme-color'; m.id = 'qdThemeColor'; document.head.appendChild(m); }
+                    m.content = '#07070f';
+                } else if (m) { m.parentNode.removeChild(m); }
+            }
+
+            /* Add / remove the dark layer from tier + saved choice */
+            function apply() {
+                var on = isElite() && wantsDark() && !isHacker();
+                if (root.classList.contains('theme-dark') !== on) root.classList.toggle('theme-dark', on);
+                setMetaColor(on);
+            }
+
+            function closeDropdown() {
+                var dd = document.getElementById('modeDropdown'), ar = document.getElementById('modeArrow');
+                if (dd) dd.classList.remove('open', 'active');
+                if (ar) ar.classList.remove('open');
+            }
+
+            /* Same typewriter overlay style as the existing theme switch */
+            function playTransition(msgs, done) {
+                var ov = document.getElementById('themeOverlay'), tx = document.getElementById('transitionText');
+                var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                if (!ov || !tx || reduce) { done(); return; }
+                ov.classList.add('active', 'qd-transition');
+                tx.innerHTML = '';
+                var i = 0;
+                (function next() {
+                    if (i < msgs.length) {
+                        tx.innerHTML += (i ? '<br>' : '') + msgs[i++];
+                        setTimeout(next, 230);
+                    } else {
+                        setTimeout(function () {
+                            done();
+                            setTimeout(function () { ov.classList.remove('active', 'qd-transition'); }, 300);
+                        }, 380);
+                    }
+                })();
+            }
+
+            /* Leave Matrix mode through script.js so the rain is stopped properly */
+            function leaveHacker() {
+                if (typeof selectMode === 'function') selectMode('normal');
+                else root.setAttribute('data-theme', 'normal');
+            }
+
+            function set(on) {
+                on = !!on;
+                closeDropdown();
+                if (on && !isElite()) return;                          // Elite Dark = Quantum Elite perk
+                write(KEY, on ? '1' : '0');
+                if (isHacker()) { if (on) leaveHacker(); return; }     // dark is applied once normal is back
+                if (busy || root.classList.contains('theme-dark') === on) { apply(); return; }
+                busy = true;
+                playTransition(on ? DARK_MSGS : LIGHT_MSGS, function () {
+                    busy = false;
+                    apply();
+                    if (typeof applyTierLabels === 'function') applyTierLabels();
+                    if (typeof updateMobileThemeDots === 'function') updateMobileThemeDots();
+                });
+            }
+
+            /* React to tier changes (unlockPremiumTools) and theme changes (script.js) */
+            function onRootChange() {
+                if (isElite() && isHacker()) {
+                    /* Quantum Elite has no Matrix rain → hop back to normal + Elite Dark */
+                    if (!hackerTimer) {
+                        write(KEY, '1');
+                        hackerTimer = setTimeout(function () {
+                            hackerTimer = null;
+                            if (isElite() && isHacker()) leaveHacker();
+                        }, 450);
+                    }
+                    return;
+                }
+                apply();
+            }
+
+            if (window.MutationObserver) {
+                new MutationObserver(onRootChange).observe(root, { attributes: true, attributeFilter: ['class', 'data-theme'] });
+            }
+            window.addEventListener('storage', function (e) {
+                if (e.key === KEY || e.key === 'cryptokit_premium_tier') apply();
+            });
+            document.addEventListener('DOMContentLoaded', onRootChange);
+
+            /* Public API (used by the theme menu buttons) */
+            window.CKEliteDark = {
+                set: set,
+                toggle: function () { set(!root.classList.contains('theme-dark')); },
+                isOn: function () { return root.classList.contains('theme-dark'); },
+                isElite: isElite,
+                apply: apply
+            };
+
+            onRootChange();
+        })();
+    </script>
+
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a4af795878cc867b',t:'MTc5MjA3NDEyNg=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
