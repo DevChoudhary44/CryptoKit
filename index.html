@@ -737,10 +737,16 @@
         html.theme-dark[data-theme] .auth-link-muted, html.theme-dark[data-theme] .auth-switch-text a { color: #a78bfa; }
 
     </style>
-    <style id="pro-cipher-dark">
+       <style id="pro-cipher-dark">
     /* Pro Cipher: black-and-gold dark theme.
-       Activate by adding class="pro-dark" to <html>. */
+       Activate by adding class="pro-dark" to <html>.
 
+       ★ FIXED (navbar white bug): the Pro Dark navbar rules now use
+         html.pro-dark[data-theme] .navbar (0,3,1) and
+         html.premium-active.pro-dark[data-theme="normal"] .navbar (0,4,1),
+         so they always outrank the white "premium-active" navbar gradient
+         (0,3,1) that used to paint the bar white at the top of the page
+         and hide the nav links. */
     html.pro-dark {
         color-scheme: dark;
         --bg-primary: #090909;
@@ -782,13 +788,23 @@
         color: #fff;
     }
 
-    /* Navigation */
-    html.pro-dark .navbar,
-    html.pro-dark .navbar.scrolled {
+    /* ── Navigation ──────────────────────────────────────────────────────
+       ★ FIXED: higher specificity + background-image:none so no white
+       gradient can leak through at any scroll position. */
+    html.pro-dark[data-theme] .navbar,
+    html.pro-dark[data-theme] .navbar.scrolled,
+    html.premium-active.pro-dark[data-theme="normal"] .navbar,
+    html.premium-active.pro-dark[data-theme="normal"] .navbar.scrolled {
         background: rgba(9,9,9,.92) !important;
+        background-image: none !important;
         border-bottom: 1px solid #342b16 !important;
         backdrop-filter: blur(18px);
         -webkit-backdrop-filter: blur(18px);
+    }
+
+    html.pro-dark[data-theme] .navbar.scrolled,
+    html.premium-active.pro-dark[data-theme="normal"] .navbar.scrolled {
+        box-shadow: 0 12px 30px -18px rgba(0,0,0,.9) !important;
     }
 
     html.pro-dark .nav-logo-icon {
@@ -797,16 +813,45 @@
     }
 
     html.pro-dark .nav-logo-icon svg { color: #090909 !important; }
-    html.pro-dark .nav-logo-text,
-    html.pro-dark .nav-links a { color: #f8f5eb !important; }
 
-    html.pro-dark .nav-links a:hover { color: #f5d76e !important; }
+    /* ★ FIXED: logo text keeps the blue gradient fill in style.css, which
+       left it blue on a dark bar. Force the cream Pro Dark colour. */
+    html.pro-dark[data-theme] .nav-logo-text {
+        background: none !important;
+        color: #f8f5eb !important;
+        -webkit-text-fill-color: #f8f5eb !important;
+    }
+
+    /* ★ FIXED: higher specificity so the cream links stay readable on the
+       black bar (the [data-theme="normal"] rule used to win). */
+    html.pro-dark[data-theme] .nav-links a {
+        color: #f8f5eb !important;
+    }
+
+    html.pro-dark[data-theme] .nav-links a:hover {
+        color: #f5d76e !important;
+    }
 
     html.pro-dark .mode-selector .mode-btn,
     html.pro-dark .btn-nav-auth {
         background: #11100d !important;
         color: #f8f5eb !important;
         border: 1px solid #423519 !important;
+    }
+
+    /* ★ FIXED: the [data-theme="normal"] .btn-nav-auth.is-logout rule
+       (0,3,0) used to beat html.pro-dark .btn-nav-auth (0,2,1) and left a
+       white/pink Logout pill on the dark navbar. */
+    html.pro-dark[data-theme] .btn-nav-auth.is-logout {
+        background: rgba(239, 68, 68, .12) !important;
+        border: 1px solid rgba(248, 113, 113, .45) !important;
+        color: #fca5a5 !important;
+    }
+
+    html.pro-dark[data-theme] .btn-nav-auth.is-logout:hover {
+        background: rgba(239, 68, 68, .22) !important;
+        border-color: #f87171 !important;
+        color: #fecaca !important;
     }
 
     html.pro-dark .mode-dropdown {
@@ -992,6 +1037,32 @@
         color: #f5d76e !important;
     }
 
+    /* ★ FIXED: the [data-theme="normal"] .mobile-menu a#mobileAuthBtn rule
+       has an ID (1,2,1) and used to win, leaving an indigo button in the
+       black & gold menu. */
+    html.pro-dark .mobile-menu a#mobileAuthBtn {
+        background: linear-gradient(135deg, #8a6410, #b8860b) !important;
+        color: #fff !important;
+        box-shadow: 0 8px 20px -8px rgba(212,160,23,.5) !important;
+    }
+
+    html.pro-dark .mobile-menu a#mobileAuthBtn:hover {
+        background: linear-gradient(135deg, #b8860b, #d4a017) !important;
+    }
+
+    html.pro-dark .mobile-menu a#mobileAuthBtn.is-logout {
+        background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+        color: #fff !important;
+        box-shadow: 0 8px 20px -8px rgba(239,68,68,.5) !important;
+    }
+
+    /* ★ FIXED: active theme row in the mobile submenu keeps the violet
+       tint from the light theme — switch it to gold. */
+    html.pro-dark .mobile-theme-submenu a.active-theme {
+        color: #f5d76e !important;
+        background: rgba(212,160,23,.10) !important;
+    }
+
     html.pro-dark .ai-chat-window,
     html.pro-dark .ai-input-area,
     html.pro-dark .ai-categories {
@@ -1034,298 +1105,9 @@
             transition-duration: .01ms !important;
         }
     }
-
-    /* Pro Cipher black-and-gold dark theme
-   Enabled when JavaScript adds the .pro-dark class to <html>. */
-html.pro-dark {
-    color-scheme: dark;
-    --bg-primary: #090909;
-    --bg-secondary: #11100d;
-    --bg-card: #11100d;
-    --bg-card-hover: #19160f;
-    --card-bg: #11100d;
-    --primary: #d4a017;
-    --primary-glow: rgba(212,160,23,.28);
-    --secondary: #f5d76e;
-    --accent: #f5c542;
-    --success: #86efac;
-    --text-primary: #f8f5eb;
-    --text-secondary: #c9c1ad;
-    --text-muted: #8c8575;
-    --border: #342b16;
-    --border-hover: #d4a017;
-    --glass: #17140e;
-    --glass-border: #342b16;
-    --shadow: 0 14px 34px -22px rgba(0,0,0,.9);
-    --shadow-hover: 0 22px 44px -22px rgba(212,160,23,.28);
-    --tag-bg: #17140e;
-    --tag-border: #342b16;
-    --input-bg: #17140e;
-}
-
-html.pro-dark body,
-html.pro-dark .auth-screen {
-    color: #f8f5eb !important;
-    background:
-        radial-gradient(900px 420px at 15% -10%, rgba(212,160,23,.09), transparent 60%),
-        radial-gradient(900px 420px at 100% 0%, rgba(245,215,110,.06), transparent 55%),
-        #090909 !important;
-}
-
-html.pro-dark ::selection {
-    background: rgba(212,160,23,.35);
-    color: #fff;
-}
-
-/* Navbar */
-html.pro-dark .navbar,
-html.pro-dark .navbar.scrolled {
-    background: rgba(9,9,9,.92) !important;
-    border-bottom: 1px solid #342b16 !important;
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-}
-
-html.pro-dark .nav-logo-icon {
-    background: linear-gradient(135deg,#8a6410,#f5d76e,#b8860b) !important;
-}
-
-html.pro-dark .nav-logo-icon svg { color: #090909 !important; }
-html.pro-dark .nav-logo-text,
-html.pro-dark .nav-links a { color: #f8f5eb !important; }
-html.pro-dark .nav-links a:hover { color: #f5d76e !important; }
-
-html.pro-dark .mode-selector .mode-btn,
-html.pro-dark .btn-nav-auth {
-    background: #11100d !important;
-    color: #f8f5eb !important;
-    border: 1px solid #423519 !important;
-}
-
-html.pro-dark .mode-dropdown {
-    background: #11100d !important;
-    border: 1px solid #423519 !important;
-}
-
-html.pro-dark .mode-option:hover { background: #211a0c !important; }
-
-/* Headings, hero, and labels */
-html.pro-dark .hero-title,
-html.pro-dark .section-title,
-html.pro-dark .feature-title,
-html.pro-dark .step-title,
-html.pro-dark .demo-header h2,
-html.pro-dark .feedback-form-title,
-html.pro-dark .cta-container h2 {
-    color: #f8f5eb !important;
-}
-
-html.pro-dark .gradient-text {
-    background: linear-gradient(90deg,#b8860b,#f5d76e,#d4a017) !important;
-    -webkit-background-clip: text !important;
-    background-clip: text !important;
-    -webkit-text-fill-color: transparent !important;
-}
-
-html.pro-dark .hero-subtitle,
-html.pro-dark .trust-item,
-html.pro-dark .section-subtitle,
-html.pro-dark .feature-desc,
-html.pro-dark .step-desc,
-html.pro-dark .stat-label,
-html.pro-dark .tool-desc,
-html.pro-dark .premium-tool-desc,
-html.pro-dark .review-text,
-html.pro-dark .cta-container p {
-    color: #c9c1ad !important;
-}
-
-html.pro-dark .hero-badge,
-html.pro-dark .section-badge {
-    background: #17140e !important;
-    color: #f5d76e !important;
-    border: 1px solid #5a4515 !important;
-}
-
-html.pro-dark .hero-badge .dot {
-    background: #f5c542 !important;
-    box-shadow: 0 0 10px rgba(245,197,66,.65) !important;
-}
-
-/* Cards */
-html.pro-dark .tool-card,
-html.pro-dark .premium-tool-card,
-html.pro-dark .feature-card,
-html.pro-dark .stat-card,
-html.pro-dark .review-card,
-html.pro-dark .demo-container,
-html.pro-dark .feedback-form-wrapper,
-html.pro-dark .cta-container {
-    background: #11100d !important;
-    color: #f8f5eb !important;
-    border: 1px solid #342b16 !important;
-    box-shadow: 0 14px 34px -22px rgba(0,0,0,.9) !important;
-}
-
-html.pro-dark .tool-card:hover,
-html.pro-dark .premium-tool-card:hover,
-html.pro-dark .feature-card:hover,
-html.pro-dark .stat-card:hover,
-html.pro-dark .review-card:hover {
-    border-color: #d4a017 !important;
-    box-shadow: 0 18px 40px -20px rgba(212,160,23,.28) !important;
-}
-
-html.pro-dark .tool-card::before,
-html.pro-dark .premium-tool-card::before {
-    background: linear-gradient(90deg,#8a6410,#f5d76e,#b8860b) !important;
-}
-
-html.pro-dark .tool-name,
-html.pro-dark .premium-tool-name { color: #f8f5eb !important; }
-
-html.pro-dark .tool-icon,
-html.pro-dark .premium-tool-icon,
-html.pro-dark .step-number,
-html.pro-dark .why-list li .check {
-    background: #211a0c !important;
-    color: #f5d76e !important;
-    border: 1px solid #5a4515 !important;
-}
-
-html.pro-dark .tag,
-html.pro-dark .premium-tool-tags .ptag,
-html.pro-dark .premium-tool-tags .qtag {
-    background: #19160f !important;
-    color: #e4d5a5 !important;
-    border: 1px solid #423519 !important;
-}
-
-/* Buttons */
-html.pro-dark .btn-primary,
-html.pro-dark .btn-nav-cta,
-html.pro-dark .tool-cta.use-now-btn,
-html.pro-dark .premium-tool-cta,
-html.pro-dark .ai-fab,
-html.pro-dark .mobile-dev-popup-close {
-    background: linear-gradient(135deg,#b8860b,#f5d76e) !important;
-    color: #171208 !important;
-    border-color: transparent !important;
-    box-shadow: 0 8px 22px -10px rgba(212,160,23,.55) !important;
-}
-
-html.pro-dark .btn-secondary,
-html.pro-dark .btn-copy {
-    background: #17140e !important;
-    color: #f8f5eb !important;
-    border: 1px solid #423519 !important;
-}
-
-/* Inputs and demo */
-html.pro-dark .demo-input,
-html.pro-dark .demo-select,
-html.pro-dark .feedback-input,
-html.pro-dark .feedback-textarea,
-html.pro-dark .ai-input,
-html.pro-dark .auth-input {
-    background: #17140e !important;
-    color: #f8f5eb !important;
-    border: 1px solid #423519 !important;
-}
-
-html.pro-dark input::placeholder,
-html.pro-dark textarea::placeholder { color: #8c8575 !important; }
-
-html.pro-dark .demo-result,
-html.pro-dark .ai-messages {
-    background: #080808 !important;
-    border: 1px solid #342b16 !important;
-}
-
-html.pro-dark .demo-result-text { color: #f5d76e !important; }
-
-/* Terminal */
-html.pro-dark .hero-terminal {
-    background: #050505 !important;
-    border: 1px solid #423519 !important;
-    box-shadow: 0 30px 70px -30px rgba(212,160,23,.22) !important;
-}
-
-html.pro-dark .terminal-header {
-    background: #11100d !important;
-    border-bottom: 1px solid #342b16 !important;
-}
-
-html.pro-dark .term-prompt,
-html.pro-dark .term-cursor { color: #f5d76e !important; }
-
-html.pro-dark .term-out { color: #c9c1ad !important; }
-
-html.pro-dark #terminalBody::-webkit-scrollbar-thumb {
-    background: rgba(212,160,23,.65);
-    background-clip: content-box;
-}
-
-/* Mobile menu, assistant, and footer */
-html.pro-dark .mobile-menu,
-html.pro-dark .mobile-menu-header {
-    background: #0c0b09 !important;
-    border-color: #342b16 !important;
-}
-
-html.pro-dark .mobile-menu .mobile-menu-body a {
-    color: #f8f5eb !important;
-    border-bottom-color: #342b16 !important;
-}
-
-html.pro-dark .mobile-menu .mobile-menu-body a:hover,
-html.pro-dark .mobile-menu .mobile-menu-body a:active {
-    background: rgba(212,160,23,.10) !important;
-    color: #f5d76e !important;
-}
-
-html.pro-dark .ai-chat-window,
-html.pro-dark .ai-input-area,
-html.pro-dark .ai-categories {
-    background: #11100d !important;
-    border-color: #342b16 !important;
-}
-
-html.pro-dark .ai-chat-header,
-html.pro-dark .ai-msg-content.user,
-html.pro-dark .ai-send-btn {
-    background: linear-gradient(135deg,#8a6410,#b8860b) !important;
-    color: #fff !important;
-}
-
-html.pro-dark .footer {
-    background: #080808 !important;
-    border-top: 1px solid #342b16 !important;
-}
-
-html.pro-dark .footer-brand p,
-html.pro-dark .footer-col ul li a,
-html.pro-dark .footer-bottom p,
-html.pro-dark .footer-bottom-links a {
-    color: #c9c1ad !important;
-}
-
-html.pro-dark .mobile-dev-popup-box,
-html.pro-dark .auth-card {
-    background: #11100d !important;
-    border-color: #5a4515 !important;
-}
-</style>
-
-    <!-- ★ PRO CIPHER FIX: Elite (Matrix rain) is removed for Pro users.
-         Only Normal (light) and Pro Dark (gold & black) remain in the theme menu. -->
-    <style id="pro-no-matrix">
-        html.tier-pro #optHackerOption,
-        html.tier-pro #mobileHackerOption,
-        html.tier-pro #checkHacker { display: none !important; }
-        html.tier-pro #matrix-canvas,
-        html.tier-pro .scanlines { display: none !important; }
     </style>
+
+    
 </head>
 <body>
 
