@@ -5,18 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>CryptoKit - Your Complete Cryptography Toolkit</title>
 
-    <!-- ★ QUANTUM ELITE DARK — early boot: applies the saved dark theme before the page paints (no white flash) -->
+    <!-- ★ EARLY BOOT: applies the saved theme before the page paints (no white flash) -->
     <script>
         (function () {
             try {
-                if (localStorage.getItem('cryptokit_premium_tier') !== 'enterprise') return;
+                var tier = localStorage.getItem('cryptokit_premium_tier');
+                var root = document.documentElement;
+
+                /* ★ PRO CIPHER: Elite (Matrix rain) is removed. Saved Matrix choices move to Normal.
+                   Optional gold & black Pro Dark is restored before paint. */
+                if (tier === 'pro') {
+                    root.classList.add('tier-pro');
+                    if (localStorage.getItem('cryptokit-theme') === 'hacker') {
+                        localStorage.setItem('cryptokit-theme', 'normal');
+                    }
+                    if (localStorage.getItem('cryptokit-pro-dark') === '1') {
+                        root.classList.add('pro-dark');
+                    }
+                    return;
+                }
+
+                if (tier !== 'enterprise') return;
                 /* Matrix rain (hacker mode) no longer exists in Quantum Elite → move those users to Elite Dark */
                 if (localStorage.getItem('cryptokit-theme') === 'hacker') {
                     localStorage.setItem('cryptokit-theme', 'normal');
                     localStorage.setItem('cryptokit-elite-dark', '1');
                 }
                 if (localStorage.getItem('cryptokit-elite-dark') === '1') {
-                    document.documentElement.classList.add('theme-dark');
+                    root.classList.add('theme-dark');
                 }
             } catch (e) {}
         })();
@@ -28,6 +44,7 @@
     <link rel="stylesheet" href="auth.css">
 
     <style>
+
         .fade-up { opacity: 1 !important; transform: translateY(0) !important; transition: opacity 0.6s ease, transform 0.6s ease; }
         .fade-up.hidden { opacity: 0 !important; transform: translateY(30px) !important; }
         .js-loaded .fade-up:not(.visible) { opacity: 0; transform: translateY(30px); }
@@ -718,6 +735,596 @@
         html.theme-dark[data-theme] .auth-input { background: #131326; border: 1px solid #242442; color: #f1f1fb; }
         html.theme-dark[data-theme] .auth-input:focus { border-color: #7c3aed; box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.22); }
         html.theme-dark[data-theme] .auth-link-muted, html.theme-dark[data-theme] .auth-switch-text a { color: #a78bfa; }
+
+    </style>
+    <style id="pro-cipher-dark">
+    /* Pro Cipher: black-and-gold dark theme.
+       Activate by adding class="pro-dark" to <html>. */
+
+    html.pro-dark {
+        color-scheme: dark;
+        --bg-primary: #090909;
+        --bg-secondary: #11100d;
+        --bg-card: #11100d;
+        --bg-card-hover: #19160f;
+        --card-bg: #11100d;
+        --primary: #d4a017;
+        --primary-glow: rgba(212, 160, 23, .28);
+        --secondary: #f5d76e;
+        --accent: #f5c542;
+        --success: #86efac;
+        --text-primary: #f8f5eb;
+        --text-secondary: #c9c1ad;
+        --text-muted: #8c8575;
+        --border: #342b16;
+        --border-hover: #d4a017;
+        --glass: #17140e;
+        --glass-border: #342b16;
+        --shadow: 0 14px 34px -22px rgba(0, 0, 0, .9);
+        --shadow-hover: 0 22px 44px -22px rgba(212, 160, 23, .28);
+        --tag-bg: #17140e;
+        --tag-border: #342b16;
+        --input-bg: #17140e;
+        --scrollbar: #d4a017;
+    }
+
+    html.pro-dark body,
+    html.pro-dark .auth-screen {
+        color: #f8f5eb !important;
+        background:
+            radial-gradient(900px 420px at 15% -10%, rgba(212,160,23,.09), transparent 60%),
+            radial-gradient(900px 420px at 100% 0%, rgba(245,215,110,.06), transparent 55%),
+            #090909 !important;
+    }
+
+    html.pro-dark ::selection {
+        background: rgba(212,160,23,.35);
+        color: #fff;
+    }
+
+    /* Navigation */
+    html.pro-dark .navbar,
+    html.pro-dark .navbar.scrolled {
+        background: rgba(9,9,9,.92) !important;
+        border-bottom: 1px solid #342b16 !important;
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+    }
+
+    html.pro-dark .nav-logo-icon {
+        background: linear-gradient(135deg, #8a6410, #f5d76e, #b8860b) !important;
+        box-shadow: 0 6px 18px rgba(212,160,23,.25);
+    }
+
+    html.pro-dark .nav-logo-icon svg { color: #090909 !important; }
+    html.pro-dark .nav-logo-text,
+    html.pro-dark .nav-links a { color: #f8f5eb !important; }
+
+    html.pro-dark .nav-links a:hover { color: #f5d76e !important; }
+
+    html.pro-dark .mode-selector .mode-btn,
+    html.pro-dark .btn-nav-auth {
+        background: #11100d !important;
+        color: #f8f5eb !important;
+        border: 1px solid #423519 !important;
+    }
+
+    html.pro-dark .mode-dropdown {
+        background: #11100d !important;
+        border: 1px solid #423519 !important;
+    }
+
+    html.pro-dark .mode-option:hover { background: #211a0c !important; }
+
+    /* Hero and headings */
+    html.pro-dark .hero-title,
+    html.pro-dark .section-title,
+    html.pro-dark .feature-title,
+    html.pro-dark .step-title,
+    html.pro-dark .demo-header h2,
+    html.pro-dark .feedback-form-title,
+    html.pro-dark .cta-container h2 {
+        color: #f8f5eb !important;
+    }
+
+    html.pro-dark .gradient-text {
+        background: linear-gradient(90deg, #b8860b, #f5d76e, #d4a017) !important;
+        -webkit-background-clip: text !important;
+        background-clip: text !important;
+        -webkit-text-fill-color: transparent !important;
+    }
+
+    html.pro-dark .hero-subtitle,
+    html.pro-dark .trust-item,
+    html.pro-dark .section-subtitle,
+    html.pro-dark .feature-desc,
+    html.pro-dark .step-desc,
+    html.pro-dark .stat-label,
+    html.pro-dark .tool-desc,
+    html.pro-dark .premium-tool-desc,
+    html.pro-dark .review-text,
+    html.pro-dark .cta-container p {
+        color: #c9c1ad !important;
+    }
+
+    html.pro-dark .hero-badge,
+    html.pro-dark .section-badge {
+        background: #17140e !important;
+        color: #f5d76e !important;
+        border: 1px solid #5a4515 !important;
+    }
+
+    html.pro-dark .hero-badge .dot {
+        background: #f5c542 !important;
+        box-shadow: 0 0 10px rgba(245,197,66,.65) !important;
+    }
+
+    /* Cards */
+    html.pro-dark .tool-card,
+    html.pro-dark .premium-tool-card,
+    html.pro-dark .feature-card,
+    html.pro-dark .stat-card,
+    html.pro-dark .review-card,
+    html.pro-dark .demo-container,
+    html.pro-dark .feedback-form-wrapper,
+    html.pro-dark .cta-container {
+        background: #11100d !important;
+        color: #f8f5eb !important;
+        border: 1px solid #342b16 !important;
+        box-shadow: 0 14px 34px -22px rgba(0,0,0,.9) !important;
+    }
+
+    html.pro-dark .tool-card:hover,
+    html.pro-dark .premium-tool-card:hover,
+    html.pro-dark .feature-card:hover,
+    html.pro-dark .stat-card:hover,
+    html.pro-dark .review-card:hover {
+        border-color: #d4a017 !important;
+        box-shadow: 0 18px 40px -20px rgba(212,160,23,.28) !important;
+    }
+
+    html.pro-dark .tool-card::before,
+    html.pro-dark .premium-tool-card::before {
+        background: linear-gradient(90deg, #8a6410, #f5d76e, #b8860b) !important;
+    }
+
+    html.pro-dark .tool-name,
+    html.pro-dark .premium-tool-name { color: #f8f5eb !important; }
+
+    html.pro-dark .tool-icon,
+    html.pro-dark .premium-tool-icon,
+    html.pro-dark .step-number,
+    html.pro-dark .why-list li .check {
+        background: #211a0c !important;
+        color: #f5d76e !important;
+        border: 1px solid #5a4515 !important;
+    }
+
+    html.pro-dark .tag,
+    html.pro-dark .premium-tool-tags .ptag,
+    html.pro-dark .premium-tool-tags .qtag {
+        background: #19160f !important;
+        color: #e4d5a5 !important;
+        border: 1px solid #423519 !important;
+    }
+
+    /* Buttons */
+    html.pro-dark .btn-primary,
+    html.pro-dark .btn-nav-cta,
+    html.pro-dark .tool-cta.use-now-btn,
+    html.pro-dark .premium-tool-cta,
+    html.pro-dark .ai-fab,
+    html.pro-dark .mobile-dev-popup-close {
+        background: linear-gradient(135deg, #b8860b, #f5d76e) !important;
+        color: #171208 !important;
+        border-color: transparent !important;
+        box-shadow: 0 8px 22px -10px rgba(212,160,23,.55) !important;
+    }
+
+    html.pro-dark .btn-secondary,
+    html.pro-dark .btn-copy {
+        background: #17140e !important;
+        color: #f8f5eb !important;
+        border: 1px solid #423519 !important;
+    }
+
+    /* Inputs and demo */
+    html.pro-dark .demo-input,
+    html.pro-dark .demo-select,
+    html.pro-dark .feedback-input,
+    html.pro-dark .feedback-textarea,
+    html.pro-dark .ai-input,
+    html.pro-dark .auth-input {
+        background: #17140e !important;
+        color: #f8f5eb !important;
+        border: 1px solid #423519 !important;
+    }
+
+    html.pro-dark input::placeholder,
+    html.pro-dark textarea::placeholder {
+        color: #8c8575 !important;
+    }
+
+    html.pro-dark .demo-result,
+    html.pro-dark .ai-messages {
+        background: #080808 !important;
+        border: 1px solid #342b16 !important;
+    }
+
+    html.pro-dark .demo-result-text { color: #f5d76e !important; }
+
+    /* Terminal */
+    html.pro-dark .hero-terminal {
+        background: #050505 !important;
+        border: 1px solid #423519 !important;
+        box-shadow: 0 30px 70px -30px rgba(212,160,23,.22) !important;
+    }
+
+    html.pro-dark .terminal-header {
+        background: #11100d !important;
+        border-bottom: 1px solid #342b16 !important;
+    }
+
+    html.pro-dark .term-prompt,
+    html.pro-dark .term-cursor { color: #f5d76e !important; }
+
+    html.pro-dark .term-out { color: #c9c1ad !important; }
+    html.pro-dark #terminalBody::-webkit-scrollbar-thumb {
+        background: rgba(212,160,23,.65);
+        background-clip: content-box;
+    }
+
+    /* Mobile menu, chat, and footer */
+    html.pro-dark .mobile-menu,
+    html.pro-dark .mobile-menu-header {
+        background: #0c0b09 !important;
+        border-color: #342b16 !important;
+    }
+
+    html.pro-dark .mobile-menu .mobile-menu-body a {
+        color: #f8f5eb !important;
+        border-bottom-color: #342b16 !important;
+    }
+
+    html.pro-dark .mobile-menu .mobile-menu-body a:hover,
+    html.pro-dark .mobile-menu .mobile-menu-body a:active {
+        background: rgba(212,160,23,.10) !important;
+        color: #f5d76e !important;
+    }
+
+    html.pro-dark .ai-chat-window,
+    html.pro-dark .ai-input-area,
+    html.pro-dark .ai-categories {
+        background: #11100d !important;
+        border-color: #342b16 !important;
+    }
+
+    html.pro-dark .ai-chat-header,
+    html.pro-dark .ai-msg-content.user,
+    html.pro-dark .ai-send-btn {
+        background: linear-gradient(135deg, #8a6410, #b8860b) !important;
+        color: #fff !important;
+    }
+
+    html.pro-dark .footer {
+        background: #080808 !important;
+        border-top: 1px solid #342b16 !important;
+    }
+
+    html.pro-dark .footer-brand p,
+    html.pro-dark .footer-col ul li a,
+    html.pro-dark .footer-bottom p,
+    html.pro-dark .footer-bottom-links a {
+        color: #c9c1ad !important;
+    }
+
+    html.pro-dark .mobile-dev-popup-box,
+    html.pro-dark .auth-card {
+        background: #11100d !important;
+        border-color: #5a4515 !important;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        html.pro-dark *,
+        html.pro-dark *::before,
+        html.pro-dark *::after {
+            scroll-behavior: auto !important;
+            animation-duration: .01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: .01ms !important;
+        }
+    }
+
+    /* Pro Cipher black-and-gold dark theme
+   Enabled when JavaScript adds the .pro-dark class to <html>. */
+html.pro-dark {
+    color-scheme: dark;
+    --bg-primary: #090909;
+    --bg-secondary: #11100d;
+    --bg-card: #11100d;
+    --bg-card-hover: #19160f;
+    --card-bg: #11100d;
+    --primary: #d4a017;
+    --primary-glow: rgba(212,160,23,.28);
+    --secondary: #f5d76e;
+    --accent: #f5c542;
+    --success: #86efac;
+    --text-primary: #f8f5eb;
+    --text-secondary: #c9c1ad;
+    --text-muted: #8c8575;
+    --border: #342b16;
+    --border-hover: #d4a017;
+    --glass: #17140e;
+    --glass-border: #342b16;
+    --shadow: 0 14px 34px -22px rgba(0,0,0,.9);
+    --shadow-hover: 0 22px 44px -22px rgba(212,160,23,.28);
+    --tag-bg: #17140e;
+    --tag-border: #342b16;
+    --input-bg: #17140e;
+}
+
+html.pro-dark body,
+html.pro-dark .auth-screen {
+    color: #f8f5eb !important;
+    background:
+        radial-gradient(900px 420px at 15% -10%, rgba(212,160,23,.09), transparent 60%),
+        radial-gradient(900px 420px at 100% 0%, rgba(245,215,110,.06), transparent 55%),
+        #090909 !important;
+}
+
+html.pro-dark ::selection {
+    background: rgba(212,160,23,.35);
+    color: #fff;
+}
+
+/* Navbar */
+html.pro-dark .navbar,
+html.pro-dark .navbar.scrolled {
+    background: rgba(9,9,9,.92) !important;
+    border-bottom: 1px solid #342b16 !important;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+}
+
+html.pro-dark .nav-logo-icon {
+    background: linear-gradient(135deg,#8a6410,#f5d76e,#b8860b) !important;
+}
+
+html.pro-dark .nav-logo-icon svg { color: #090909 !important; }
+html.pro-dark .nav-logo-text,
+html.pro-dark .nav-links a { color: #f8f5eb !important; }
+html.pro-dark .nav-links a:hover { color: #f5d76e !important; }
+
+html.pro-dark .mode-selector .mode-btn,
+html.pro-dark .btn-nav-auth {
+    background: #11100d !important;
+    color: #f8f5eb !important;
+    border: 1px solid #423519 !important;
+}
+
+html.pro-dark .mode-dropdown {
+    background: #11100d !important;
+    border: 1px solid #423519 !important;
+}
+
+html.pro-dark .mode-option:hover { background: #211a0c !important; }
+
+/* Headings, hero, and labels */
+html.pro-dark .hero-title,
+html.pro-dark .section-title,
+html.pro-dark .feature-title,
+html.pro-dark .step-title,
+html.pro-dark .demo-header h2,
+html.pro-dark .feedback-form-title,
+html.pro-dark .cta-container h2 {
+    color: #f8f5eb !important;
+}
+
+html.pro-dark .gradient-text {
+    background: linear-gradient(90deg,#b8860b,#f5d76e,#d4a017) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+}
+
+html.pro-dark .hero-subtitle,
+html.pro-dark .trust-item,
+html.pro-dark .section-subtitle,
+html.pro-dark .feature-desc,
+html.pro-dark .step-desc,
+html.pro-dark .stat-label,
+html.pro-dark .tool-desc,
+html.pro-dark .premium-tool-desc,
+html.pro-dark .review-text,
+html.pro-dark .cta-container p {
+    color: #c9c1ad !important;
+}
+
+html.pro-dark .hero-badge,
+html.pro-dark .section-badge {
+    background: #17140e !important;
+    color: #f5d76e !important;
+    border: 1px solid #5a4515 !important;
+}
+
+html.pro-dark .hero-badge .dot {
+    background: #f5c542 !important;
+    box-shadow: 0 0 10px rgba(245,197,66,.65) !important;
+}
+
+/* Cards */
+html.pro-dark .tool-card,
+html.pro-dark .premium-tool-card,
+html.pro-dark .feature-card,
+html.pro-dark .stat-card,
+html.pro-dark .review-card,
+html.pro-dark .demo-container,
+html.pro-dark .feedback-form-wrapper,
+html.pro-dark .cta-container {
+    background: #11100d !important;
+    color: #f8f5eb !important;
+    border: 1px solid #342b16 !important;
+    box-shadow: 0 14px 34px -22px rgba(0,0,0,.9) !important;
+}
+
+html.pro-dark .tool-card:hover,
+html.pro-dark .premium-tool-card:hover,
+html.pro-dark .feature-card:hover,
+html.pro-dark .stat-card:hover,
+html.pro-dark .review-card:hover {
+    border-color: #d4a017 !important;
+    box-shadow: 0 18px 40px -20px rgba(212,160,23,.28) !important;
+}
+
+html.pro-dark .tool-card::before,
+html.pro-dark .premium-tool-card::before {
+    background: linear-gradient(90deg,#8a6410,#f5d76e,#b8860b) !important;
+}
+
+html.pro-dark .tool-name,
+html.pro-dark .premium-tool-name { color: #f8f5eb !important; }
+
+html.pro-dark .tool-icon,
+html.pro-dark .premium-tool-icon,
+html.pro-dark .step-number,
+html.pro-dark .why-list li .check {
+    background: #211a0c !important;
+    color: #f5d76e !important;
+    border: 1px solid #5a4515 !important;
+}
+
+html.pro-dark .tag,
+html.pro-dark .premium-tool-tags .ptag,
+html.pro-dark .premium-tool-tags .qtag {
+    background: #19160f !important;
+    color: #e4d5a5 !important;
+    border: 1px solid #423519 !important;
+}
+
+/* Buttons */
+html.pro-dark .btn-primary,
+html.pro-dark .btn-nav-cta,
+html.pro-dark .tool-cta.use-now-btn,
+html.pro-dark .premium-tool-cta,
+html.pro-dark .ai-fab,
+html.pro-dark .mobile-dev-popup-close {
+    background: linear-gradient(135deg,#b8860b,#f5d76e) !important;
+    color: #171208 !important;
+    border-color: transparent !important;
+    box-shadow: 0 8px 22px -10px rgba(212,160,23,.55) !important;
+}
+
+html.pro-dark .btn-secondary,
+html.pro-dark .btn-copy {
+    background: #17140e !important;
+    color: #f8f5eb !important;
+    border: 1px solid #423519 !important;
+}
+
+/* Inputs and demo */
+html.pro-dark .demo-input,
+html.pro-dark .demo-select,
+html.pro-dark .feedback-input,
+html.pro-dark .feedback-textarea,
+html.pro-dark .ai-input,
+html.pro-dark .auth-input {
+    background: #17140e !important;
+    color: #f8f5eb !important;
+    border: 1px solid #423519 !important;
+}
+
+html.pro-dark input::placeholder,
+html.pro-dark textarea::placeholder { color: #8c8575 !important; }
+
+html.pro-dark .demo-result,
+html.pro-dark .ai-messages {
+    background: #080808 !important;
+    border: 1px solid #342b16 !important;
+}
+
+html.pro-dark .demo-result-text { color: #f5d76e !important; }
+
+/* Terminal */
+html.pro-dark .hero-terminal {
+    background: #050505 !important;
+    border: 1px solid #423519 !important;
+    box-shadow: 0 30px 70px -30px rgba(212,160,23,.22) !important;
+}
+
+html.pro-dark .terminal-header {
+    background: #11100d !important;
+    border-bottom: 1px solid #342b16 !important;
+}
+
+html.pro-dark .term-prompt,
+html.pro-dark .term-cursor { color: #f5d76e !important; }
+
+html.pro-dark .term-out { color: #c9c1ad !important; }
+
+html.pro-dark #terminalBody::-webkit-scrollbar-thumb {
+    background: rgba(212,160,23,.65);
+    background-clip: content-box;
+}
+
+/* Mobile menu, assistant, and footer */
+html.pro-dark .mobile-menu,
+html.pro-dark .mobile-menu-header {
+    background: #0c0b09 !important;
+    border-color: #342b16 !important;
+}
+
+html.pro-dark .mobile-menu .mobile-menu-body a {
+    color: #f8f5eb !important;
+    border-bottom-color: #342b16 !important;
+}
+
+html.pro-dark .mobile-menu .mobile-menu-body a:hover,
+html.pro-dark .mobile-menu .mobile-menu-body a:active {
+    background: rgba(212,160,23,.10) !important;
+    color: #f5d76e !important;
+}
+
+html.pro-dark .ai-chat-window,
+html.pro-dark .ai-input-area,
+html.pro-dark .ai-categories {
+    background: #11100d !important;
+    border-color: #342b16 !important;
+}
+
+html.pro-dark .ai-chat-header,
+html.pro-dark .ai-msg-content.user,
+html.pro-dark .ai-send-btn {
+    background: linear-gradient(135deg,#8a6410,#b8860b) !important;
+    color: #fff !important;
+}
+
+html.pro-dark .footer {
+    background: #080808 !important;
+    border-top: 1px solid #342b16 !important;
+}
+
+html.pro-dark .footer-brand p,
+html.pro-dark .footer-col ul li a,
+html.pro-dark .footer-bottom p,
+html.pro-dark .footer-bottom-links a {
+    color: #c9c1ad !important;
+}
+
+html.pro-dark .mobile-dev-popup-box,
+html.pro-dark .auth-card {
+    background: #11100d !important;
+    border-color: #5a4515 !important;
+}
+</style>
+
+    <!-- ★ PRO CIPHER FIX: Elite (Matrix rain) is removed for Pro users.
+         Only Normal (light) and Pro Dark (gold & black) remain in the theme menu. -->
+    <style id="pro-no-matrix">
+        html.tier-pro #optHackerOption,
+        html.tier-pro #mobileHackerOption,
+        html.tier-pro #checkHacker { display: none !important; }
+        html.tier-pro #matrix-canvas,
+        html.tier-pro .scanlines { display: none !important; }
     </style>
 </head>
 <body>
@@ -813,18 +1420,19 @@
                     <i class="fas fa-chevron-down mode-arrow" id="modeArrow"></i>
                 </button>
                 <div class="mode-dropdown" id="modeDropdown">
-                    <div class="mode-option" id="optNormalOption" onclick="if(window.CKEliteDark)CKEliteDark.set(false);if(typeof selectMode==='function')selectMode('normal');if(typeof applyTierLabels==='function')setTimeout(applyTierLabels,50);">
+                    <!-- ★ PRO CIPHER FIX: Normal option also turns off Pro Dark -->
+                    <div class="mode-option" id="optNormalOption" onclick="if(window.CKEliteDark)CKEliteDark.set(false);if(window.CKProDark)CKProDark.set(false);if(typeof selectMode==='function')selectMode('normal');if(typeof applyTierLabels==='function')setTimeout(applyTierLabels,50);">
                         <span class="mode-option-icon" id="optNormalIcon">☀️</span>
                         <div><div class="mode-option-title" id="optNormalTitle">Normal Mode</div><div class="mode-option-desc" id="optNormalDesc">Clean &amp; professional</div></div>
                         <i class="fas fa-check mode-check" id="checkNormal"></i>
                     </div>
-                    <!-- Hacker / Matrix-rain mode — hidden automatically for Quantum Elite -->
+                    <!-- Hacker / Matrix-rain mode — hidden automatically for Quantum Elite and Pro Cipher -->
                     <div class="mode-option" id="optHackerOption" onclick="if(window.CKEliteDark&&CKEliteDark.isElite()){CKEliteDark.set(true);}else{if(typeof selectMode==='function')selectMode('hacker');if(typeof applyTierLabels==='function')setTimeout(applyTierLabels,50);}">
                         <span class="mode-option-icon" id="optHackerIcon">💀</span>
                         <div><div class="mode-option-title" id="optHackerTitle">Hacker Mode</div><div class="mode-option-desc" id="optHackerDesc">Matrix &amp; hacker vibes</div></div>
                         <i class="fas fa-check mode-check" id="checkHacker" style="display:none;"></i>
                     </div>
-                    <!-- ★ NEW: Elite Dark — Quantum Elite only (replaces Matrix rain) -->
+                    <!-- ★ Elite Dark — Quantum Elite only (replaces Matrix rain) -->
                     <div class="mode-option" id="optDarkOption" onclick="if(window.CKEliteDark)CKEliteDark.set(true);">
                         <span class="mode-option-icon">🌙</span>
                         <div><div class="mode-option-title">Elite Dark</div><div class="mode-option-desc">Midnight violet theme</div></div>
@@ -885,9 +1493,10 @@
                 <i class="fas fa-chevron-down theme-arrow" id="mobileThemeArrow"></i>
             </a>
             <div class="mobile-theme-submenu" id="mobileThemeSubmenu">
-                <a href="#" id="mobileNormalOption" onclick="event.preventDefault();if(window.CKEliteDark)CKEliteDark.set(false);if(typeof mobileSwitchTheme==='function')mobileSwitchTheme('normal');"><span id="mobNormalLabel">☀️ Normal Mode</span> <span class="theme-active-dot" id="normalDot" style="display:none;"></span></a>
+                <!-- ★ PRO CIPHER FIX: Normal option also turns off Pro Dark -->
+                <a href="#" id="mobileNormalOption" onclick="event.preventDefault();if(window.CKEliteDark)CKEliteDark.set(false);if(window.CKProDark)CKProDark.set(false);if(typeof mobileSwitchTheme==='function')mobileSwitchTheme('normal');"><span id="mobNormalLabel">☀️ Normal Mode</span> <span class="theme-active-dot" id="normalDot" style="display:none;"></span></a>
                 <a href="#" id="mobileHackerOption" onclick="event.preventDefault();if(window.CKEliteDark&&CKEliteDark.isElite()){CKEliteDark.set(true);if(typeof closeMobileMenu==='function')setTimeout(closeMobileMenu,350);}else if(typeof mobileSwitchTheme==='function'){mobileSwitchTheme('hacker');}"><span id="mobHackerLabel">💀 Hacker Mode</span> <span class="theme-active-dot" id="hackerDot" style="display:none;"></span></a>
-                <!-- ★ NEW: Elite Dark — Quantum Elite only (replaces Matrix rain) -->
+                <!-- ★ Elite Dark — Quantum Elite only (replaces Matrix rain) -->
                 <a href="#" id="mobileDarkOption" onclick="event.preventDefault();if(window.CKEliteDark)CKEliteDark.set(true);if(typeof closeMobileMenu==='function')setTimeout(closeMobileMenu,350);"><span>🌙 Elite Dark Mode</span> <span class="theme-active-dot" id="darkDot" style="display:none;"></span></a>
                 <a href="#" id="mobileDevOption" onclick="event.preventDefault();showMobileDevPopup();"><span>💻 Terminal Mode</span></a>
             </div>
@@ -898,7 +1507,9 @@
         <div class="mobile-dev-popup-box">
             <span class="mobile-dev-popup-icon">🖥️</span>
             <div class="mobile-dev-popup-title">Desktop Only Feature</div>
-            <p class="mobile-dev-popup-msg"><strong>Terminal Mode</strong> is optimized for larger screens.<br><br>Please visit on a <strong>desktop or laptop</strong>.</p>
+            <p class="mobile-dev-popup-msg"><strong>Terminal Mode</strong> is optimized for larger screens.
+
+Please visit on a <strong>desktop or laptop</strong>.</p>
             <button class="mobile-dev-popup-close" id="mobileDevPopupCloseBtn">Got it! 👍</button>
         </div>
     </div>
@@ -1476,17 +2087,33 @@
             updateMobileThemeDots();
             setTimeout(function() { closeMobileMenu(); }, 350);
         }
+
+        /* ★ PRO CIPHER FIX: mobile dots now understand Pro Dark (gold & black) */
         function updateMobileThemeDots() {
-            var t = document.documentElement.getAttribute('data-theme') || 'normal';
-            var dark = document.documentElement.classList.contains('theme-dark');   /* ★ Quantum Elite Dark */
+            var root = document.documentElement;
+            var t = root.getAttribute('data-theme') || 'normal';
+            var dark = root.classList.contains('theme-dark');       /* ★ Quantum Elite Dark */
+            var proDark = root.classList.contains('pro-dark');      /* ★ Pro Cipher Dark */
+
             var nd = document.getElementById('normalDot'), hd = document.getElementById('hackerDot'), dd = document.getElementById('darkDot');
+            var pd = document.getElementById('proDarkDot');
             var nl = document.getElementById('mobileNormalOption'), hl = document.getElementById('mobileHackerOption'), dl = document.getElementById('mobileDarkOption');
-            if (nd) nd.style.display = 'none'; if (hd) hd.style.display = 'none'; if (dd) dd.style.display = 'none';
-            if (nl) nl.classList.remove('active-theme'); if (hl) hl.classList.remove('active-theme'); if (dl) dl.classList.remove('active-theme');
-            if (t === 'hacker') { if (hd) hd.style.display = 'inline-block'; if (hl) hl.classList.add('active-theme'); }
-            else if (dark) { if (dd) dd.style.display = 'inline-block'; if (dl) dl.classList.add('active-theme'); }
-            else { if (nd) nd.style.display = 'inline-block'; if (nl) nl.classList.add('active-theme'); }
+            var pl = document.getElementById('mobileProDarkOption');
+
+            [nd, hd, dd, pd].forEach(function (el) { if (el) el.style.display = 'none'; });
+            [nl, hl, dl, pl].forEach(function (el) { if (el) el.classList.remove('active-theme'); });
+
+            if (t === 'hacker') {
+                if (hd) hd.style.display = 'inline-block'; if (hl) hl.classList.add('active-theme');
+            } else if (proDark) {
+                if (pd) pd.style.display = 'inline-block'; if (pl) pl.classList.add('active-theme');
+            } else if (dark) {
+                if (dd) dd.style.display = 'inline-block'; if (dl) dl.classList.add('active-theme');
+            } else {
+                if (nd) nd.style.display = 'inline-block'; if (nl) nl.classList.add('active-theme');
+            }
         }
+
         function showMobileDevPopup() {
             closeMobileMenu();
             var p = document.getElementById('mobileDevPopup');
@@ -1536,7 +2163,9 @@
         ═══════════════════════════════════════════════════════ */
         function applyTierLabels() {
             var tier = getCurrentTier();
-            var theme = document.documentElement.getAttribute('data-theme') || 'normal';
+            var root = document.documentElement;
+            var theme = root.getAttribute('data-theme') || 'normal';
+            var proDark = root.classList.contains('pro-dark');   /* ★ Pro Cipher Dark active */
 
             var modeIcon   = document.getElementById('modeIcon');
             var modeLabel  = document.getElementById('modeLabel');
@@ -1551,10 +2180,12 @@
 
             var labels;
             if (tier === 'pro') {
+                /* ★ PRO CIPHER FIX: no Elite / Matrix entry. Hacker labels stay blank
+                   because the option is hidden for Pro (see style#pro-no-matrix). */
                 labels = {
                     nIcon: '👑', nTitle: 'Premium Mode', nDesc: 'Golden professional theme', nBtn: 'Premium',
-                    hIcon: '⚜️', hTitle: 'Elite Mode',    hDesc: 'Golden matrix rain',       hBtn: 'Elite',
-                    mobN: '👑 Premium Mode', mobH: '⚜️ Elite Mode'
+                    hIcon: '',   hTitle: '',             hDesc: '',                         hBtn: '',
+                    mobN: '👑 Premium Mode', mobH: ''
                 };
             } else if (tier === 'enterprise') {
                 labels = {
@@ -1579,7 +2210,11 @@
             if (mobN)      mobN.textContent      = labels.mobN;
             if (mobH)      mobH.textContent      = labels.mobH;
 
-            if (theme === 'hacker') {
+            /* Top-bar button: Pro Dark shows 🌙 Dark, otherwise the usual Normal / Hacker label */
+            if (proDark) {
+                if (modeIcon)  modeIcon.textContent  = '🌙';
+                if (modeLabel) modeLabel.textContent = 'Dark';
+            } else if (theme === 'hacker') {
                 if (modeIcon)  modeIcon.textContent  = labels.hIcon;
                 if (modeLabel) modeLabel.textContent = labels.hBtn;
             } else {
@@ -1588,7 +2223,7 @@
             }
 
             var cn = document.getElementById('checkNormal'), ch = document.getElementById('checkHacker');
-            if (cn) cn.style.display = (theme === 'hacker') ? 'none' : '';
+            if (cn) cn.style.display = (theme === 'hacker' || proDark) ? 'none' : '';
             if (ch) ch.style.display = (theme === 'hacker') ? '' : 'none';
         }
 
@@ -1820,6 +2455,7 @@
                 var i = 0;
                 (function next() {
                     if (i < msgs.length) {
+                        /* ★ FIX: was a multi-line string literal (syntax error) — now a proper <br> */
                         tx.innerHTML += (i ? '<br>' : '') + msgs[i++];
                         setTimeout(next, 230);
                     } else {
@@ -1890,5 +2526,199 @@
         })();
     </script>
 
+    <!-- ═══════════════════════════════════════════════════════════════════
+         ★ PRO CIPHER DARK — controller (gold & black)
+         ═══════════════════════════════════════════════════════════════════ -->
+    <script>
+        /* CryptoKit Pro Cipher Dark Theme */
+        (function () {
+            'use strict';
+
+            var TIER_KEY = 'cryptokit_premium_tier';
+            var THEME_KEY = 'cryptokit-pro-dark';
+            var root = document.documentElement;
+
+            function storageGet(key) {
+                try { return localStorage.getItem(key); } catch (e) { return null; }
+            }
+
+            function storageSet(key, value) {
+                try { localStorage.setItem(key, value); } catch (e) {}
+            }
+
+            function isPro() {
+                return storageGet(TIER_KEY) === 'pro';
+            }
+
+            function apply() {
+                var enabled = isPro() && storageGet(THEME_KEY) === '1';
+                root.classList.toggle('pro-dark', enabled);
+
+                var check = document.getElementById('checkProDark');
+                if (check) check.style.display = enabled ? '' : 'none';
+
+                var dot = document.getElementById('proDarkDot');
+                if (dot) dot.style.display = enabled ? 'inline-block' : 'none';
+
+                var meta = document.getElementById('proDarkThemeColor');
+                if (enabled) {
+                    if (!meta) {
+                        meta = document.createElement('meta');
+                        meta.id = 'proDarkThemeColor';
+                        meta.name = 'theme-color';
+                        document.head.appendChild(meta);
+                    }
+                    meta.content = '#090909';
+                } else if (meta) {
+                    meta.remove();
+                }
+
+                return enabled;
+            }
+
+            function set(enabled) {
+                enabled = Boolean(enabled);
+
+                // Only Pro Cipher users can enable this theme.
+                if (enabled && !isPro()) {
+                    apply();
+                    return false;
+                }
+
+                storageSet(THEME_KEY, enabled ? '1' : '0');
+                apply();
+
+                if (typeof window.applyTierLabels === 'function') window.applyTierLabels();
+                if (typeof window.updateMobileThemeDots === 'function') window.updateMobileThemeDots();
+
+                return true;
+            }
+
+            function makeMenuItem(id, checkId, label, description, isMobile) {
+                var item = document.createElement(isMobile ? 'a' : 'div');
+                item.id = id;
+                item.className = isMobile ? '' : 'mode-option';
+
+                if (isMobile) {
+                    item.href = '#';
+                    item.innerHTML =
+                        '<span>🌙 ' + label + '</span>' +
+                        '<span class="theme-active-dot" id="' + checkId + '" style="display:none;"></span>';
+                    item.addEventListener('click', function (event) {
+                        event.preventDefault();
+                        set(true);                                        // ★ explicit: always turns Pro Dark ON
+                        if (typeof window.closeMobileMenu === 'function') setTimeout(window.closeMobileMenu, 350);
+                    });
+                } else {
+                    item.innerHTML =
+                        '<span class="mode-option-icon">🌙</span>' +
+                        '<div><div class="mode-option-title">' + label + '</div>' +
+                        '<div class="mode-option-desc">' + description + '</div></div>' +
+                        '<i class="fas fa-check mode-check" id="' + checkId + '" style="display:none;"></i>';
+                    item.addEventListener('click', function () {
+                        set(true);                                        // ★ explicit: always turns Pro Dark ON
+                    });
+                }
+
+                return item;
+            }
+
+            function addMenuOptions() {
+                var desktopMenu = document.getElementById('modeDropdown');
+                if (desktopMenu && !document.getElementById('optProDarkOption')) {
+                    var desktopItem = makeMenuItem('optProDarkOption', 'checkProDark', 'Pro Dark', 'Black and gold Pro Cipher theme', false);
+                    var hackerOption = document.getElementById('optHackerOption');
+                    if (hackerOption && hackerOption.parentNode === desktopMenu) {
+                        hackerOption.insertAdjacentElement('afterend', desktopItem);
+                    } else {
+                        desktopMenu.appendChild(desktopItem);
+                    }
+                }
+
+                var mobileMenu = document.getElementById('mobileThemeSubmenu');
+                if (mobileMenu && !document.getElementById('mobileProDarkOption')) {
+                    var mobileItem = makeMenuItem('mobileProDarkOption', 'proDarkDot', 'Pro Dark Mode', '', true);
+                    var mobileHacker = document.getElementById('mobileHackerOption');
+                    if (mobileHacker && mobileHacker.parentNode === mobileMenu) {
+                        mobileHacker.insertAdjacentElement('afterend', mobileItem);
+                    } else {
+                        mobileMenu.appendChild(mobileItem);
+                    }
+                    mobileItem.classList.add('mobile-theme-submenu-option');
+                }
+
+                // Only Pro users see the Pro Dark option.
+                var desktopPro = document.getElementById('optProDarkOption');
+                var mobilePro = document.getElementById('mobileProDarkOption');
+                if (desktopPro) desktopPro.style.display = isPro() ? '' : 'none';
+                if (mobilePro) mobilePro.style.display = isPro() ? '' : 'none';
+
+                apply();
+                if (typeof window.applyTierLabels === 'function') window.applyTierLabels();
+                if (typeof window.updateMobileThemeDots === 'function') window.updateMobileThemeDots();
+            }
+
+            window.CKProDark = {
+                set: set,
+                toggle: function () { return set(!root.classList.contains('pro-dark')); },
+                isOn: function () { return root.classList.contains('pro-dark'); },
+                isPro: isPro,
+                apply: apply
+            };
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', addMenuOptions);
+            } else {
+                addMenuOptions();
+            }
+
+            window.addEventListener('focus', addMenuOptions);
+            window.addEventListener('storage', function (event) {
+                if (!event.key || event.key === TIER_KEY || event.key === THEME_KEY) addMenuOptions();
+            });
+        })();
+    </script>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         ★ PRO CIPHER — ELITE (MATRIX RAIN) REMOVED
+         Pro users can only use Normal (light) or Pro Dark (gold & black).
+         If a Pro user still has Matrix saved as their theme, it is moved to Normal.
+         ═══════════════════════════════════════════════════════════════════ -->
+    <script>
+        (function () {
+            'use strict';
+            var root = document.documentElement;
+
+            function tier() {
+                try { return localStorage.getItem('cryptokit_premium_tier') || 'free'; } catch (e) { return 'free'; }
+            }
+
+            function enforce() {
+                var isPro = tier() === 'pro';
+                root.classList.toggle('tier-pro', isPro);
+                if (!isPro) return;
+
+                if (root.getAttribute('data-theme') === 'hacker') {
+                    try { localStorage.setItem('cryptokit-theme', 'normal'); } catch (e) {}
+                    if (typeof window.selectMode === 'function') window.selectMode('normal');
+                    else root.setAttribute('data-theme', 'normal');
+                }
+                if (typeof window.applyTierLabels === 'function') window.applyTierLabels();
+            }
+
+            if (window.MutationObserver) {
+                new MutationObserver(enforce).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+            }
+            document.addEventListener('DOMContentLoaded', enforce);
+            window.addEventListener('load', enforce);
+            window.addEventListener('focus', enforce);
+            window.addEventListener('storage', function (e) {
+                if (!e.key || e.key === 'cryptokit_premium_tier' || e.key === 'cryptokit-theme') enforce();
+            });
+            enforce();
+        })();
+    </script>
+
 <script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a4af795878cc867b',t:'MTc5MjA3NDEyNg=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+
 </html>
