@@ -1,0 +1,1002 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f7f8ff">
+  <title>System Status | CryptoKit</title>
+  <meta name="description" content="View CryptoKit service status, component availability, and incident updates.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <style>
+    :root {
+      --ck-blue: #5967ff;
+      --ck-cyan: #09b8df;
+      --ck-purple: #8057ff;
+      --ck-text: #4e5b75;
+      --ck-heading: #17233c;
+      --ck-page: #f7f8ff;
+      --ck-card: #ffffff;
+      --ck-border: #e4e5ff;
+      --ck-green: #159957;
+      --ck-green-bg: #e9f9ef;
+      --ck-orange: #dc8b25;
+      --ck-red: #dc4545;
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 110px;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      color: var(--ck-text);
+      background: var(--ck-page);
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; }
+
+    /* HEADER */
+    .ck-header {
+      min-height: 82px;
+      padding: 0 2.5%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      background: rgba(255,255,255,.96);
+      border-bottom: 1px solid #edf0ff;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(14px);
+    }
+
+    .ck-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .ck-logo {
+      width: 46px;
+      height: 46px;
+      border-radius: 13px;
+      display: grid;
+      place-items: center;
+      color: white;
+      font-size: 25px;
+      background: linear-gradient(135deg, #6964ff, #00b9e9);
+      box-shadow: 0 6px 16px #6964ff2b;
+    }
+
+    .ck-brand-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -.7px;
+      color: #388af5;
+    }
+
+    .ck-nav {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 38px;
+    }
+
+    .ck-nav a {
+      padding: 9px 0;
+      color: #4d5870;
+      font-size: 16px;
+      font-weight: 500;
+      position: relative;
+      white-space: nowrap;
+    }
+
+    .ck-nav a:hover,
+    .ck-nav a.active { color: #695cff; }
+
+    .ck-nav a.active::after {
+      content: "";
+      height: 2px;
+      position: absolute;
+      bottom: 2px;
+      left: 0;
+      right: 0;
+      background: linear-gradient(90deg, #795cff, #00b9e9);
+    }
+
+    .ck-theme-wrap { position: relative; flex-shrink: 0; }
+
+    .ck-theme-button {
+      border: 1px solid #e2e0ff;
+      border-radius: 16px;
+      padding: 12px 17px;
+      color: #4d5870;
+      background: #f5f3ff;
+      font: 600 14px 'Inter', sans-serif;
+      cursor: pointer;
+    }
+
+    .ck-theme-button i { color: #f3a53a; margin-right: 8px; }
+
+    .ck-theme-menu {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: calc(100% + 8px);
+      width: 155px;
+      padding: 7px;
+      border: 1px solid var(--ck-border);
+      border-radius: 13px;
+      background: white;
+      box-shadow: 0 12px 35px #28335c1a;
+    }
+
+    .ck-theme-menu.open { display: block; }
+
+    .ck-theme-menu button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      border: 0;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--ck-text);
+      text-align: left;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .ck-theme-menu button:hover { background: #f1efff; }
+
+    /* HERO */
+    .status-hero {
+      padding: 72px 20px 65px;
+      text-align: center;
+      background:
+        radial-gradient(ellipse at 8% 65%, #d8f0ffb5, transparent 38%),
+        radial-gradient(ellipse at 94% 8%, #dfdcffb5, transparent 43%),
+        linear-gradient(120deg, #f0f5ff, #f0efff);
+    }
+
+    .status-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 10px 20px;
+      border: 1px solid #dedaff;
+      border-radius: 30px;
+      color: #6c5dff;
+      background: #eae9ffb8;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 2px;
+    }
+
+    .status-hero h1 {
+      margin: 27px 0 17px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(38px, 5vw, 60px);
+      line-height: 1.15;
+      letter-spacing: -1.8px;
+      color: #5967ff;
+      background: linear-gradient(90deg, #665fff, #08afd9);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .status-hero p {
+      max-width: 700px;
+      margin: 0 auto;
+      font-size: 18px;
+      line-height: 1.8;
+    }
+
+    .status-last-updated {
+      margin-top: 20px;
+      font-family: 'JetBrains Mono', monospace;
+      color: #71809e;
+      font-size: 13px;
+    }
+
+    /* PAGE LAYOUT */
+    .status-main {
+      width: min(1050px, calc(100% - 40px));
+      margin: -20px auto 90px;
+      position: relative;
+    }
+
+    .overall-card {
+      padding: 27px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      border: 1px solid #c8efd7;
+      border-radius: 20px;
+      background: #f0fff5;
+      box-shadow: 0 12px 35px #6674aa0a;
+    }
+
+    .overall-left {
+      display: flex;
+      align-items: center;
+      gap: 17px;
+    }
+
+    .overall-icon {
+      width: 54px;
+      height: 54px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      background: #d8f8e4;
+      color: var(--ck-green);
+      font-size: 25px;
+      flex-shrink: 0;
+    }
+
+    .overall-card h2 {
+      margin: 0 0 7px;
+      color: #126b3d;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 22px;
+    }
+
+    .overall-card p { margin: 0; font-size: 14px; line-height: 1.7; }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      padding: 9px 13px;
+      border-radius: 30px;
+      background: #dcf8e7;
+      color: #16834a;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: currentColor;
+      display: inline-block;
+    }
+
+    .status-section { margin-top: 38px; }
+
+    .section-heading {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 18px;
+    }
+
+    .section-heading h2 {
+      margin: 0 0 7px;
+      color: var(--ck-heading);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 25px;
+    }
+
+    .section-heading p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .component-list {
+      overflow: hidden;
+      border: 1px solid #e8e9ff;
+      border-radius: 18px;
+      background: var(--ck-card);
+      box-shadow: 0 12px 40px #6674aa0a;
+    }
+
+    .component-row {
+      min-height: 88px;
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      border-bottom: 1px solid #eeeefe;
+    }
+
+    .component-row:last-child { border-bottom: 0; }
+
+    .component-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .component-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 13px;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      background: #f0efff;
+      color: #6d5cff;
+      font-size: 18px;
+    }
+
+    .component-info h3 {
+      margin: 0 0 6px;
+      color: var(--ck-heading);
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .component-info p {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .component-state {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      white-space: nowrap;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ck-green);
+    }
+
+    .state-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .status-demo-note {
+      padding: 14px 17px;
+      margin-top: 14px;
+      border: 1px solid #e5e2ff;
+      border-radius: 12px;
+      background: #f6f4ff;
+      color: #66568f;
+      font-size: 12px;
+      line-height: 1.8;
+    }
+
+    /* UPTIME DEMO */
+    .uptime-card {
+      padding: 26px;
+      border: 1px solid #e8e9ff;
+      border-radius: 18px;
+      background: var(--ck-card);
+      box-shadow: 0 12px 40px #6674aa0a;
+    }
+
+    .uptime-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .uptime-top h3 {
+      margin: 0 0 7px;
+      color: var(--ck-heading);
+      font-size: 16px;
+    }
+
+    .uptime-top p { margin: 0; font-size: 13px; line-height: 1.7; }
+
+    .uptime-number {
+      color: #16834a;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 27px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .uptime-bars {
+      display: grid;
+      grid-template-columns: repeat(60, minmax(2px, 1fr));
+      gap: 4px;
+      margin: 25px 0 12px;
+    }
+
+    .uptime-bar {
+      height: 34px;
+      border-radius: 4px;
+      background: #39c87b;
+    }
+
+    .uptime-bar:hover { opacity: .65; }
+
+    .uptime-legend {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      color: #74809a;
+      font-size: 12px;
+    }
+
+    /* INCIDENTS */
+    .incident-card {
+      padding: 28px;
+      border: 1px solid #e8e9ff;
+      border-radius: 18px;
+      background: var(--ck-card);
+      text-align: center;
+    }
+
+    .incident-icon {
+      width: 60px;
+      height: 60px;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 17px;
+      border-radius: 18px;
+      background: #e9f9ef;
+      color: #159957;
+      font-size: 26px;
+    }
+
+    .incident-card h3 {
+      margin: 0 0 8px;
+      color: var(--ck-heading);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 20px;
+    }
+
+    .incident-card p { margin: 0; font-size: 14px; line-height: 1.8; }
+
+    .refresh-button {
+      padding: 12px 17px;
+      border: 1px solid #e0ddff;
+      border-radius: 12px;
+      background: #f5f3ff;
+      color: #695cff;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .refresh-button:hover { background: #eae7ff; }
+    .refresh-button i { margin-right: 7px; }
+
+    /* FOOTER */
+    .ck-footer {
+      background: #f7f8ff;
+      padding: 88px 3% 0;
+      border-top: 1px solid #eeefff;
+    }
+
+    .ck-footer-grid {
+      display: grid;
+      grid-template-columns: 1.55fr .8fr .8fr .8fr;
+      gap: 55px;
+      padding-bottom: 70px;
+    }
+
+    .ck-footer-brand .ck-logo {
+      width: 57px;
+      height: 57px;
+      font-size: 29px;
+      border-radius: 15px;
+    }
+
+    .ck-footer-brand .ck-brand-name {
+      display: block;
+      margin-top: 8px;
+      font-size: 29px;
+    }
+
+    .ck-footer-description {
+      max-width: 340px;
+      margin: 32px 0;
+      font-size: 18px;
+      line-height: 1.95;
+    }
+
+    .ck-socials { display: flex; gap: 18px; }
+
+    .ck-socials a {
+      width: 54px;
+      height: 54px;
+      display: grid;
+      place-items: center;
+      border: 1px solid #dfddff;
+      border-radius: 13px;
+      background: #f1f0ff;
+      color: #4f5b72;
+      font-size: 21px;
+      transition: .2s ease;
+    }
+
+    .ck-socials a:hover {
+      color: white;
+      background: linear-gradient(135deg, #6964ff, #08b8e0);
+      transform: translateY(-3px);
+    }
+
+    .ck-footer-column h3 {
+      margin: 5px 0 32px;
+      color: #111a2d;
+      font-size: 21px;
+      font-weight: 600;
+    }
+
+    .ck-footer-column a {
+      display: block;
+      width: fit-content;
+      margin-bottom: 26px;
+      color: #45536c;
+      font-size: 18px;
+      line-height: 1.5;
+    }
+
+    .ck-footer-column a:hover { color: #685eff; }
+
+    .ck-footer-bottom {
+      min-height: 94px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      border-top: 1px solid #e1e3ff;
+      color: #71809e;
+      font-size: 16px;
+    }
+
+    .ck-footer-bottom-links { display: flex; gap: 24px; }
+    .ck-footer-bottom a:hover { color: #685eff; }
+
+    .ck-top {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      z-index: 900;
+      width: 66px;
+      height: 66px;
+      display: grid;
+      place-items: center;
+      border: 0;
+      border-radius: 20px;
+      background: #8057ff;
+      color: white;
+      box-shadow: 0 8px 24px #8057ff35;
+      font-size: 27px;
+      cursor: pointer;
+    }
+
+    .ck-top:hover { background: #6546e7; }
+
+    /* HACKER THEME */
+    body.hacker-theme {
+      --ck-page: #07110e;
+      --ck-card: #0d1b16;
+      --ck-text: #b8d8ca;
+      --ck-heading: #e0fff0;
+      --ck-border: #214536;
+    }
+
+    body.hacker-theme .ck-header,
+    body.hacker-theme .ck-footer {
+      background: #09140f;
+      border-color: #203c30;
+    }
+
+    body.hacker-theme .ck-nav a,
+    body.hacker-theme .ck-theme-button,
+    body.hacker-theme .ck-footer-column a,
+    body.hacker-theme .ck-footer-bottom { color: #b8d8ca; }
+
+    body.hacker-theme .status-hero {
+      background: radial-gradient(ellipse at 50% 0%, #123c2b, #07110e 75%);
+    }
+
+    body.hacker-theme .component-list,
+    body.hacker-theme .uptime-card,
+    body.hacker-theme .incident-card { border-color: #214536; }
+
+    body.hacker-theme .component-row { border-color: #214536; }
+    body.hacker-theme .component-icon { background: #17382a; color: #65e6a2; }
+    body.hacker-theme .status-demo-note { background: #10251b; border-color: #214536; color: #b8d8ca; }
+    body.hacker-theme .ck-footer-column h3 { color: #e0fff0; }
+    body.hacker-theme .ck-theme-menu { background: #0d1b16; border-color: #214536; }
+    body.hacker-theme .ck-theme-menu button { color: #b8d8ca; }
+
+    @media (max-width: 900px) {
+      .ck-header { flex-wrap: wrap; padding: 15px 4%; }
+      .ck-nav { order: 3; width: 100%; gap: 25px; overflow-x: auto; }
+      .ck-footer-grid { grid-template-columns: 1fr 1fr; gap: 45px; }
+      .ck-footer-description { margin: 20px 0; }
+    }
+
+    @media (max-width: 560px) {
+      .ck-brand-name { font-size: 21px; }
+      .ck-logo { width: 40px; height: 40px; }
+      .ck-header { gap: 12px; }
+      .ck-nav { gap: 22px; justify-content: flex-start; }
+      .ck-nav a { font-size: 14px; }
+      .ck-theme-button { padding: 10px; }
+      .status-hero { padding: 55px 18px 48px; }
+      .status-hero p { font-size: 16px; }
+      .status-main { width: calc(100% - 26px); margin-bottom: 60px; }
+      .overall-card { padding: 21px; align-items: flex-start; flex-direction: column; }
+      .overall-card h2 { font-size: 19px; }
+      .section-heading { align-items: flex-start; flex-direction: column; }
+      .component-row { padding: 17px 14px; gap: 12px; }
+      .component-info { gap: 10px; }
+      .component-icon { width: 38px; height: 38px; }
+      .component-info h3 { font-size: 13px; }
+      .component-info p { font-size: 11px; }
+      .component-state { font-size: 11px; }
+      .uptime-card { padding: 19px; }
+      .uptime-bars { gap: 2px; }
+      .uptime-bar { height: 25px; }
+      .uptime-number { font-size: 22px; }
+      .ck-footer { padding: 55px 6% 0; }
+      .ck-footer-grid { grid-template-columns: 1fr 1fr; gap: 35px 20px; padding-bottom: 35px; }
+      .ck-footer-brand { grid-column: 1 / -1; }
+      .ck-footer-column h3 { font-size: 17px; margin-bottom: 20px; }
+      .ck-footer-column a { font-size: 14px; margin-bottom: 17px; }
+      .ck-footer-description { font-size: 16px; }
+      .ck-socials a { width: 44px; height: 44px; }
+      .ck-footer-bottom { padding: 22px 0; align-items: flex-start; flex-direction: column; font-size: 13px; }
+      .ck-top { width: 50px; height: 50px; border-radius: 15px; right: 14px; bottom: 14px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header class="ck-header">
+    <a class="ck-brand" href="index.html" aria-label="CryptoKit Home">
+      <span class="ck-logo"><i class="fa-solid fa-shield-halved"></i></span>
+      <span class="ck-brand-name">CryptoKit</span>
+    </a>
+
+    <nav class="ck-nav" aria-label="Main navigation">
+      <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+      <a href="Privacy Policy.html">Privacy</a>
+      <a href="Terms.html">Terms</a>
+      <a href="Support.html">Support</a>
+    </nav>
+
+    <div class="ck-theme-wrap">
+      <button class="ck-theme-button" id="themeButton" aria-expanded="false">
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+        <span id="themeLabel">Normal</span>
+        <i class="fa-solid fa-caret-down" style="margin:0 0 0 7px;color:inherit"></i>
+      </button>
+      <div class="ck-theme-menu" id="themeMenu">
+        <button type="button" data-theme="normal">✨ Normal</button>
+        <button type="button" data-theme="hacker">⌘ Hacker</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="status-hero">
+    <div class="status-eyebrow"><i class="fa-solid fa-satellite-dish"></i> SYSTEM MONITORING</div>
+    <h1>System Status</h1>
+    <p>Check the status of CryptoKit services and explore service updates in one place.</p>
+    <div class="status-last-updated">
+      <i class="fa-regular fa-clock"></i>
+      Last page refresh: <span id="lastUpdated">Loading...</span>
+    </div>
+  </section>
+
+  <main class="status-main">
+
+    <!-- OVERALL STATUS -->
+    <section class="overall-card" aria-live="polite">
+      <div class="overall-left">
+        <div class="overall-icon"><i class="fa-solid fa-check"></i></div>
+        <div>
+          <h2>Service status overview</h2>
+          <p id="overallDescription">Demo status indicators are displayed below. Live monitoring is not connected.</p>
+        </div>
+      </div>
+      <span class="status-badge">
+        <span class="status-dot"></span>
+        DEMO STATUS
+      </span>
+    </section>
+
+    <!-- COMPONENTS -->
+    <section class="status-section">
+      <div class="section-heading">
+        <div>
+          <h2><i class="fa-solid fa-server" style="color:#6c5dff"></i> Service Components</h2>
+          <p>Overview of the main areas of the CryptoKit platform.</p>
+        </div>
+        <button class="refresh-button" id="refreshStatus" type="button">
+          <i class="fa-solid fa-rotate"></i> Refresh page data
+        </button>
+      </div>
+
+      <div class="component-list">
+        <div class="component-row">
+          <div class="component-info">
+            <div class="component-icon"><i class="fa-solid fa-globe"></i></div>
+            <div>
+              <h3>Website &amp; Frontend</h3>
+              <p>Pages and user interface</p>
+            </div>
+          </div>
+          <span class="component-state"><span class="state-dot"></span> Demo</span>
+        </div>
+
+        <div class="component-row">
+          <div class="component-info">
+            <div class="component-icon"><i class="fa-solid fa-lock"></i></div>
+            <div>
+              <h3>Cryptography Tools</h3>
+              <p>Encryption and utility interfaces</p>
+            </div>
+          </div>
+          <span class="component-state"><span class="state-dot"></span> Demo</span>
+        </div>
+
+        <div class="component-row">
+          <div class="component-info">
+            <div class="component-icon"><i class="fa-solid fa-key"></i></div>
+            <div>
+              <h3>Authentication</h3>
+              <p>Login and account access</p>
+            </div>
+          </div>
+          <span class="component-state"><span class="state-dot"></span> Demo</span>
+        </div>
+
+        <div class="component-row">
+          <div class="component-info">
+            <div class="component-icon"><i class="fa-solid fa-database"></i></div>
+            <div>
+              <h3>Backend &amp; Database</h3>
+              <p>Application APIs and data services</p>
+            </div>
+          </div>
+          <span class="component-state"><span class="state-dot"></span> Not verified</span>
+        </div>
+
+        <div class="component-row">
+          <div class="component-info">
+            <div class="component-icon"><i class="fa-solid fa-code"></i></div>
+            <div>
+              <h3>Public API</h3>
+              <p>API endpoints and integrations</p>
+            </div>
+          </div>
+          <span class="component-state"><span class="state-dot"></span> Not verified</span>
+        </div>
+      </div>
+
+      <div class="status-demo-note">
+        <i class="fa-solid fa-circle-info"></i>
+        <strong>Demo mode:</strong> these labels are interface placeholders, not confirmed health checks. A component showing “Demo” does not mean that its live service has been tested.
+      </div>
+    </section>
+
+    <!-- UPTIME -->
+    <section class="status-section">
+      <div class="section-heading">
+        <div>
+          <h2><i class="fa-solid fa-chart-line" style="color:#6c5dff"></i> Availability History</h2>
+          <p>Example availability timeline for the status page design.</p>
+        </div>
+      </div>
+
+      <div class="uptime-card">
+        <div class="uptime-top">
+          <div>
+            <h3>Website availability</h3>
+            <p>Illustrative timeline — not measured uptime</p>
+          </div>
+          <div class="uptime-number">—</div>
+        </div>
+
+        <div class="uptime-bars" id="uptimeBars" aria-label="Illustrative availability timeline"></div>
+
+        <div class="uptime-legend">
+          <span>60 sample intervals</span>
+          <span>Live metrics unavailable</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- INCIDENT HISTORY -->
+    <section class="status-section">
+      <div class="section-heading">
+        <div>
+          <h2><i class="fa-solid fa-clock-rotate-left" style="color:#6c5dff"></i> Incident History</h2>
+          <p>Service announcements and maintenance updates.</p>
+        </div>
+      </div>
+
+      <div class="incident-card">
+        <div class="incident-icon"><i class="fa-solid fa-clipboard-check"></i></div>
+        <h3>No incident records configured</h3>
+        <p>Incident history will appear here when a monitoring or incident-management system is connected.</p>
+      </div>
+    </section>
+
+    <!-- MAINTENANCE -->
+    <section class="status-section">
+      <div class="section-heading">
+        <div>
+          <h2><i class="fa-solid fa-calendar-check" style="color:#6c5dff"></i> Scheduled Maintenance</h2>
+          <p>Planned maintenance announcements.</p>
+        </div>
+      </div>
+
+      <div class="incident-card">
+        <div class="incident-icon"><i class="fa-regular fa-calendar"></i></div>
+        <h3>No maintenance schedule configured</h3>
+        <p>Scheduled maintenance information will be published here when available.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="ck-footer">
+    <div class="ck-footer-grid">
+
+      <div class="ck-footer-brand">
+        <a href="index.html" aria-label="CryptoKit Home">
+          <span class="ck-logo"><i class="fa-solid fa-shield-halved"></i></span>
+          <span class="ck-brand-name">CryptoKit</span>
+        </a>
+        <p class="ck-footer-description">
+          Advanced cryptography tools for developers and security professionals.
+        </p>
+        <div class="ck-socials">
+          <a href="https://github.com/CryptoKit-Team/OurCryptoKit" aria-label="GitHub" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-github"></i></a>
+        </div>
+      </div>
+
+      <div class="ck-footer-column">
+        <h3>Legal</h3>
+        <a href="Privacy Policy.html">Privacy Policy</a>
+        <a href="Terms.html">Terms of Service</a>
+        <a href="cookie-policy.html">Cookie Policy</a>
+        <a href="dmca.html">DMCA</a>
+      </div>
+
+      <div class="ck-footer-column">
+        <h3>Support</h3>
+        <a href="Support.html">Help Center</a>
+        <a href="Support.html">Contact Us</a>
+        <a href="api-reference.html">API Reference</a>
+        <a href="system-status.html" aria-current="page">System Status</a>
+      </div>
+
+      <div class="ck-footer-column">
+        <h3>Connect</h3>
+        <a href="https://github.com/CryptoKit-Team/OurCryptoKit" target="_blank" rel="noopener noreferrer">GitHub</a>
+      </div>
+
+    </div>
+
+    <div class="ck-footer-bottom">
+      <span>© <span id="currentYear">2026</span> CryptoKit. All rights reserved.</span>
+      <div class="ck-footer-bottom-links">
+        <a href="privacy-policy.html">Privacy</a>
+        <a href="Terms.html">Terms</a>
+        <a href="cookie-policy.html">Cookies</a>
+      </div>
+    </div>
+  </footer>
+
+  <button class="ck-top" id="backToTop" type="button" aria-label="Back to top" title="Back to top">
+    <i class="fa-solid fa-arrow-up"></i>
+  </button>
+
+  <script>
+    // Theme dropdown
+    const themeButton = document.getElementById('themeButton');
+    const themeMenu = document.getElementById('themeMenu');
+    const themeLabel = document.getElementById('themeLabel');
+
+    themeButton.addEventListener('click', () => {
+      const open = themeMenu.classList.toggle('open');
+      themeButton.setAttribute('aria-expanded', String(open));
+    });
+
+    themeMenu.querySelectorAll('[data-theme]').forEach(button => {
+      button.addEventListener('click', () => {
+        const selectedTheme = button.dataset.theme;
+        document.body.classList.toggle('hacker-theme', selectedTheme === 'hacker');
+        themeLabel.textContent = selectedTheme === 'hacker' ? 'Hacker' : 'Normal';
+        themeMenu.classList.remove('open');
+        themeButton.setAttribute('aria-expanded', 'false');
+
+        try {
+          localStorage.setItem('cryptokit-page-theme', selectedTheme);
+        } catch (error) {}
+      });
+    });
+
+    document.addEventListener('click', event => {
+      if (!event.target.closest('.ck-theme-wrap')) {
+        themeMenu.classList.remove('open');
+        themeButton.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    try {
+      if (localStorage.getItem('cryptokit-page-theme') === 'hacker') {
+        document.body.classList.add('hacker-theme');
+        themeLabel.textContent = 'Hacker';
+      }
+    } catch (error) {}
+
+    // Render neutral sample bars; they do not represent real uptime.
+    const uptimeBars = document.getElementById('uptimeBars');
+    for (let i = 0; i < 60; i++) {
+      const bar = document.createElement('span');
+      bar.className = 'uptime-bar';
+      bar.title = 'Sample interval ' + (i + 1) + ' — no live measurement';
+      bar.setAttribute('aria-hidden', 'true');
+      uptimeBars.appendChild(bar);
+    }
+
+    // Update the page refresh timestamp only.
+    function updatePageTimestamp() {
+      document.getElementById('lastUpdated').textContent =
+        new Date().toLocaleString(undefined, {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit'
+        });
+    }
+
+    document.getElementById('refreshStatus').addEventListener('click', event => {
+      const button = event.currentTarget;
+      const original = button.innerHTML;
+      button.disabled = true;
+      button.innerHTML = '<i class="fa-solid fa-rotate fa-spin"></i> Refreshing...';
+
+      updatePageTimestamp();
+
+      setTimeout(() => {
+        button.disabled = false;
+        button.innerHTML = original;
+      }, 500);
+    });
+
+    updatePageTimestamp();
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+    document.getElementById('backToTop').addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
