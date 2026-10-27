@@ -75,8 +75,16 @@ html { scroll-behavior: smooth; scroll-padding-top: 100px; }
 body { font-family: 'Inter', sans-serif; background: var(--bg-primary); color: var(--text-primary); overflow-x: hidden; line-height: 1.6; transition: background-color 0.5s, color 0.5s; }
 a { text-decoration: none; }
 
+/* ═══ ACCESSIBILITY: FOCUS STYLES ═══ */
+a:focus-visible, button:focus-visible, input:focus-visible, .mode-option:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 3px;
+    border-radius: 6px;
+}
+
 [data-theme="hacker"] body, [data-theme="hacker"] p, [data-theme="hacker"] span,
-[data-theme="hacker"] a, [data-theme="hacker"] li, [data-theme="hacker"] button { font-family: 'Share Tech Mono', 'JetBrains Mono', monospace !important; }
+[data-theme="hacker"] a, [data-theme="hacker"] li, [data-theme="hacker"] button,
+[data-theme="hacker"] label, [data-theme="hacker"] td, [data-theme="hacker"] th { font-family: 'Share Tech Mono', 'JetBrains Mono', monospace !important; }
 [data-theme="hacker"] h1, [data-theme="hacker"] h2, [data-theme="hacker"] h3, [data-theme="hacker"] h4 { font-family: 'Share Tech Mono', monospace !important; letter-spacing: 2px; }
 
 ::-webkit-scrollbar { width: 5px; }
@@ -96,8 +104,20 @@ a { text-decoration: none; }
 .bg-shape-2 { width: 400px; height: 400px; background: #00B4D8; bottom: 10%; left: -100px; animation: floatShape 10s ease-in-out infinite reverse; }
 @keyframes floatShape { 0%, 100% { transform: translate(0) scale(1); } 50% { transform: translate(20px, -20px) scale(1.05); } }
 
-[data-theme="hacker"] .glitch { position: relative; animation: glitch 3s infinite; }
-[data-theme="hacker"] .glitch::before, [data-theme="hacker"] .glitch::after { content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; background: transparent; }
+/* ═══ GLITCH EFFECT - FIXED (matches Terms page) ═══ */
+[data-theme="hacker"] .glitch { position: relative; display: inline-block; animation: glitch 3s infinite; }
+[data-theme="hacker"] .glitch::before, [data-theme="hacker"] .glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    -webkit-background-clip: initial;
+    -webkit-text-fill-color: initial;
+    pointer-events: none;
+}
 [data-theme="hacker"] .glitch::before { color: #00FFFF; animation: glitch-1 3s infinite; clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%); }
 [data-theme="hacker"] .glitch::after { color: #FF0040; animation: glitch-2 3s infinite; clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%); }
 @keyframes glitch { 0%, 90%, 100% { transform: translate(0); } 92% { transform: translate(-2px, 1px); } 94% { transform: translate(2px, -1px); } }
@@ -280,11 +300,13 @@ a { text-decoration: none; }
 [data-theme="hacker"] .footer { background: #000; }
 .footer-container { max-width: 1200px; margin: 0 auto; }
 .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
-.footer-brand p { font-size: 14px; color: var(--text-secondary); margin: 16px 0 20px; line-height: 1.7; max-width: 240px; }
+.footer-brand-logo { display: flex; align-items: center; gap: 10px; color: var(--text-primary); margin-bottom: 16px; }
+.footer-brand p { font-size: 14px; color: var(--text-secondary); margin: 0 0 20px; line-height: 1.7; max-width: 240px; }
 .footer-social { display: flex; gap: 12px; }
 .social-btn { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; cursor: pointer; transition: all 0.3s; border: none; }
 [data-theme="normal"] .social-btn { background: var(--glass); border: 1px solid var(--glass-border); color: var(--text-secondary); }
 [data-theme="hacker"] .social-btn { background: transparent; border: 1px solid rgba(0, 255, 65, 0.2); color: var(--text-secondary); }
+.social-btn:hover { border-color: var(--primary); color: var(--primary); transform: translateY(-2px); }
 .footer-col h4 { font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 600; color: var(--text-primary); margin-bottom: 16px; }
 .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
 .footer-col ul li a { color: var(--text-secondary); font-size: 14px; transition: color 0.3s; }
@@ -313,10 +335,20 @@ html[data-theme="hacker"] .mode-btn { background: rgba(255, 16, 240, 0.08) !impo
 html[data-theme="hacker"] .policy-card h2 { color: var(--primary) !important; text-shadow: 0 0 8px var(--primary-glow); }
 html[data-theme="hacker"] .policy-card h3 { color: #B8FFB8 !important; }
 html[data-theme="hacker"] .policy-card p, html[data-theme="hacker"] .policy-card li { color: #B8FFB8 !important; }
+html[data-theme="hacker"] .cookie-table td { color: #B8FFB8 !important; }
 html[data-theme="hacker"] .footer { background: rgba(3, 5, 3, 0.95) !important; }
 html[data-theme="hacker"] .footer h4 { color: var(--primary) !important; }
 html[data-theme="hacker"] .footer a { color: #B8FFB8 !important; }
 html[data-theme="hacker"] .footer button { color: #B8FFB8 !important; }
+
+/* ═══ REDUCED MOTION ACCESSIBILITY ═══ */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
 
 @media (max-width: 768px) {
     .nav-links { display: none; }
@@ -333,15 +365,15 @@ html[data-theme="hacker"] .footer button { color: #B8FFB8 !important; }
     </style>
 </head>
 <body>
-    <canvas id="matrix-canvas"></canvas>
-    <div class="scanlines"></div>
-    <div class="bg-shapes"><div class="bg-shape bg-shape-1"></div><div class="bg-shape bg-shape-2"></div></div>
-    <div class="theme-transition-overlay" id="themeOverlay"><div class="transition-text">> INITIATING HACKER PROTOCOL...<br>> ACCESS GRANTED_</div></div>
+    <canvas id="matrix-canvas" aria-hidden="true"></canvas>
+    <div class="scanlines" aria-hidden="true"></div>
+    <div class="bg-shapes" aria-hidden="true"><div class="bg-shape bg-shape-1"></div><div class="bg-shape bg-shape-2"></div></div>
+    <div class="theme-transition-overlay" id="themeOverlay" aria-hidden="true"><div class="transition-text">> INITIATING HACKER PROTOCOL...<br>> ACCESS GRANTED_</div></div>
 
-    <nav class="navbar" id="navbar">
-        <a href="index.html" class="nav-logo">
+    <nav class="navbar" id="navbar" aria-label="Main navigation">
+        <a href="index.html" class="nav-logo" aria-label="CryptoKit Home">
             <div class="nav-logo-icon">
-                <svg viewBox="0 0 40 40" width="28" height="28" fill="none">
+                <svg viewBox="0 0 40 40" width="28" height="28" fill="none" aria-hidden="true">
                     <rect x="2" y="2" width="36" height="36" rx="8" stroke="currentColor" stroke-width="2.5"/>
                     <path d="M20 8L20 14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
                     <rect x="12" y="14" width="16" height="18" rx="3" stroke="currentColor" stroke-width="2.5"/>
@@ -352,59 +384,59 @@ html[data-theme="hacker"] .footer button { color: #B8FFB8 !important; }
             <span class="nav-logo-text">CryptoKit</span>
         </a>
         <ul class="nav-links">
-            <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
-            <li><a href="Privacy Policy.html">Privacy</a></li>
-            <li><a href="Terms.html">Terms</a></li>
-            <li><a href="Support.html">Support</a></li>
-            <li><a href="cookie-policy.html" class="active">Cookies</a></li>
+            <li><a href="index.html"><i class="fas fa-home" aria-hidden="true"></i> Home</a></li>
+            <li><a href="privacy-policy.html">Privacy</a></li>
+            <li><a href="terms.html">Terms</a></li>
+            <li><a href="support.html">Support</a></li>
+            <li><a href="cookie-policy.html" class="active" aria-current="page">Cookies</a></li>
         </ul>
         <div class="nav-actions">
             <div class="mode-selector">
-                <button class="mode-btn" onclick="toggleModeDropdown()">
+                <button class="mode-btn" onclick="toggleModeDropdown()" aria-label="Toggle theme mode" aria-expanded="false" id="modeBtn">
                     <span id="modeIcon">✨</span>
                     <span class="mode-label" id="modeLabel">Normal</span>
-                    <span class="mode-arrow" id="modeArrow">▼</span>
+                    <span class="mode-arrow" id="modeArrow" aria-hidden="true">▼</span>
                 </button>
-                <div class="mode-dropdown" id="modeDropdown">
-                    <div class="mode-option active" id="optNormal" onclick="setTheme('normal')">
-                        <div class="mode-option-icon">✨</div>
+                <div class="mode-dropdown" id="modeDropdown" role="menu">
+                    <div class="mode-option active" id="optNormal" onclick="setTheme('normal')" role="menuitem" tabindex="0">
+                        <div class="mode-option-icon" aria-hidden="true">✨</div>
                         <div><div class="mode-option-title">Normal Mode</div><div class="mode-option-desc">Clean & professional</div></div>
-                        <span class="mode-check">✓</span>
+                        <span class="mode-check" aria-hidden="true">✓</span>
                     </div>
-                    <div class="mode-option" id="optHacker" onclick="setTheme('hacker')">
-                        <div class="mode-option-icon">💀</div>
+                    <div class="mode-option" id="optHacker" onclick="setTheme('hacker')" role="menuitem" tabindex="0">
+                        <div class="mode-option-icon" aria-hidden="true">💀</div>
                         <div><div class="mode-option-title">Hacker Mode</div><div class="mode-option-desc">Matrix cyberpunk</div></div>
-                        <span class="mode-check">✓</span>
+                        <span class="mode-check" aria-hidden="true">✓</span>
                     </div>
                 </div>
             </div>
-            <button class="hamburger" onclick="document.getElementById('mobileMenu').classList.toggle('open')"><span></span><span></span><span></span></button>
+            <button class="hamburger" onclick="toggleMobileMenu()" aria-label="Toggle mobile menu" aria-expanded="false" id="hamburgerBtn"><span></span><span></span><span></span></button>
         </div>
     </nav>
 
     <div class="mobile-menu" id="mobileMenu">
-        <a href="index.html"><i class="fas fa-home"></i> Home</a>
-        <a href="Privacy Policy.html">Privacy Policy</a>
-        <a href="Terms.html">Terms of Service</a>
-        <a href="Support.html">Support Center</a>
-        <a href="cookie-policy.html">Cookie Policy</a>
+        <a href="index.html" onclick="closeMobileMenu()"><i class="fas fa-home" aria-hidden="true"></i> Home</a>
+        <a href="privacy-policy.html" onclick="closeMobileMenu()">Privacy Policy</a>
+        <a href="terms.html" onclick="closeMobileMenu()">Terms of Service</a>
+        <a href="support.html" onclick="closeMobileMenu()">Support Center</a>
+        <a href="cookie-policy.html" onclick="closeMobileMenu()">Cookie Policy</a>
     </div>
 
     <section class="page-hero">
         <div class="section-badge">🍪 COOKIE TRANSPARENCY</div>
-        <h1 class="page-title glitch" data-text="Cookie Policy"><span class="gradient-text">Cookie Policy</span></h1>
+        <h1 class="page-title"><span class="glitch gradient-text" data-text="Cookie Policy">Cookie Policy</span></h1>
         <p class="page-subtitle">Learn how CryptoKit uses cookies and similar technologies to support your experience and improve our platform.</p>
         <div class="last-updated">Last Updated: October 16, 2026 | v1.0</div>
     </section>
 
     <div class="content-wrapper">
         <div class="agreement-banner">
-            <div class="icon">🍪</div>
+            <div class="icon" aria-hidden="true">🍪</div>
             <div><p><strong>Privacy matters at CryptoKit.</strong> This page explains what cookies are, how they may be used, and the choices available to you. Your essential storage remains functional while non-essential technologies only run with your consent.</p></div>
         </div>
 
         <div class="toc">
-            <h3><i class="fas fa-list"></i> Table of Contents</h3>
+            <h3><i class="fas fa-list" aria-hidden="true"></i> Table of Contents</h3>
             <ol>
                 <li><a href="#c1">What Are Cookies?</a></li>
                 <li><a href="#c2">Types of Cookies</a></li>
@@ -453,9 +485,9 @@ html[data-theme="hacker"] .footer button { color: #B8FFB8 !important; }
             <h2><span class="section-number">4</span> Third-Party Services</h2>
             <p>Some website features may rely on third-party providers. Only services actually integrated on the deployed website are listed below:</p>
             <div class="cookie-table-wrap">
-                <table class="cookie-table">
+                <table class="cookie-table" aria-label="Third-party services and their cookie usage">
                     <thead>
-                        <tr><th>Service</th><th>Purpose</th><th>Sets Cookies?</th></tr>
+                        <tr><th scope="col">Service</th><th scope="col">Purpose</th><th scope="col">Sets Cookies?</th></tr>
                     </thead>
                     <tbody>
                         <tr><td>Google Fonts</td><td>Web typography delivery</td><td>No</td></tr>
@@ -481,34 +513,36 @@ html[data-theme="hacker"] .footer button { color: #B8FFB8 !important; }
             <h2><span class="section-number">6</span> Cookie Preferences</h2>
             <p>Choose which optional categories you would like to allow. Essential storage is always on because the site cannot function without it. Your choices are stored locally in this browser.</p>
 
-            <div class="cookie-prefs">
-                <label class="cookie-option">
-                    <input type="checkbox" checked disabled>
+            <div class="cookie-prefs" role="group" aria-labelledby="cookie-prefs-heading">
+                <span id="cookie-prefs-heading" class="visually-hidden">Cookie preference options</span>
+
+                <label class="cookie-option" for="essentialCookies">
+                    <input type="checkbox" id="essentialCookies" checked disabled aria-describedby="essential-desc">
                     <div class="cookie-option-content">
                         <div class="cookie-option-title">Essential <span class="cookie-tag required">Required</span></div>
-                        <div class="cookie-option-desc">Required for basic functionality, security, and remembering your consent choice. Cannot be disabled.</div>
+                        <div class="cookie-option-desc" id="essential-desc">Required for basic functionality, security, and remembering your consent choice. Cannot be disabled.</div>
                     </div>
                 </label>
 
-                <label class="cookie-option">
-                    <input type="checkbox" id="preferenceCookies">
+                <label class="cookie-option" for="preferenceCookies">
+                    <input type="checkbox" id="preferenceCookies" aria-describedby="preference-desc">
                     <div class="cookie-option-content">
                         <div class="cookie-option-title">Preferences <span class="cookie-tag optional">Optional</span></div>
-                        <div class="cookie-option-desc">Allows the site to remember optional interface preferences such as your selected theme.</div>
+                        <div class="cookie-option-desc" id="preference-desc">Allows the site to remember optional interface preferences such as your selected theme.</div>
                     </div>
                 </label>
 
-                <label class="cookie-option">
-                    <input type="checkbox" id="analyticsCookies">
+                <label class="cookie-option" for="analyticsCookies">
+                    <input type="checkbox" id="analyticsCookies" aria-describedby="analytics-desc">
                     <div class="cookie-option-content">
                         <div class="cookie-option-title">Analytics <span class="cookie-tag optional">Optional</span></div>
-                        <div class="cookie-option-desc">Allows analytics technologies if configured on the deployed website. Helps us understand usage and improve the platform.</div>
+                        <div class="cookie-option-desc" id="analytics-desc">Allows analytics technologies if configured on the deployed website. Helps us understand usage and improve the platform.</div>
                     </div>
                 </label>
 
                 <div class="save-prefs-wrap">
                     <button class="save-prefs-btn" id="savePreferences" type="button">
-                        <i class="fas fa-check"></i> Save Preferences
+                        <i class="fas fa-check" aria-hidden="true"></i> Save Preferences
                     </button>
                     <span class="save-status" id="preferenceMessage" role="status" aria-live="polite"></span>
                 </div>
@@ -548,9 +582,9 @@ html[data-theme="hacker"] .footer button { color: #B8FFB8 !important; }
             <ul>
                 <li><strong>Email:</strong> <span class="code-text">privacy@cryptokit.com</span></li>
                 <li><strong>Address:</strong> CryptoKit Inc., Jaipur, Rajasthan, India</li>
-                <li><strong>Support:</strong> <a href="Support.html" style="color: var(--primary);">Contact Form</a></li>
+                <li><strong>Support:</strong> <a href="support.html" style="color: var(--primary);">Contact Form</a></li>
             </ul>
-            <p>Please also review our <a href="Privacy Policy.html" style="color: var(--primary); font-weight: 600;">Privacy Policy</a> and <a href="Terms.html" style="color: var(--primary); font-weight: 600;">Terms of Service</a> for related information.</p>
+            <p>Please also review our <a href="privacy-policy.html" style="color: var(--primary); font-weight: 600;">Privacy Policy</a> and <a href="terms.html" style="color: var(--primary); font-weight: 600;">Terms of Service</a> for related information.</p>
         </div>
     </div>
 
@@ -558,83 +592,206 @@ html[data-theme="hacker"] .footer button { color: #B8FFB8 !important; }
         <div class="footer-container">
             <div class="footer-top">
                 <div class="footer-brand">
-                    <div class="nav-logo-icon">
-                        <svg viewBox="0 0 40 40" width="28" height="28" fill="none">
-                            <rect x="2" y="2" width="36" height="36" rx="8" stroke="currentColor" stroke-width="2.5"/>
-                            <path d="M20 8L20 14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-                            <rect x="12" y="14" width="16" height="18" rx="3" stroke="currentColor" stroke-width="2.5"/>
-                            <circle cx="20" cy="23" r="3" stroke="currentColor" stroke-width="2"/>
-                            <path d="M20 26L20 28" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                        </svg>
-                    </div>
-                    <span class="nav-logo-text">CryptoKit</span>
+                    <a href="index.html" class="footer-brand-logo" aria-label="CryptoKit Home">
+                        <div class="nav-logo-icon">
+                            <svg viewBox="0 0 40 40" width="28" height="28" fill="none" aria-hidden="true">
+                                <rect x="2" y="2" width="36" height="36" rx="8" stroke="currentColor" stroke-width="2.5"/>
+                                <path d="M20 8L20 14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                                <rect x="12" y="14" width="16" height="18" rx="3" stroke="currentColor" stroke-width="2.5"/>
+                                <circle cx="20" cy="23" r="3" stroke="currentColor" stroke-width="2"/>
+                                <path d="M20 26L20 28" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <span class="nav-logo-text">CryptoKit</span>
+                    </a>
                     <p>Advanced cryptography tools for developers and security professionals.</p>
                     <div class="footer-social">
-                        <button class="social-btn"><i class="fab fa-github"></i></button>
-                        <button class="social-btn"><i class="fab fa-twitter"></i></button>
-                        <button class="social-btn"><i class="fab fa-discord"></i></button>
+                        <button class="social-btn" aria-label="GitHub"><i class="fab fa-github" aria-hidden="true"></i></button>
+                        <button class="social-btn" aria-label="Twitter"><i class="fab fa-twitter" aria-hidden="true"></i></button>
+                        <button class="social-btn" aria-label="Discord"><i class="fab fa-discord" aria-hidden="true"></i></button>
                     </div>
                 </div>
                 <div class="footer-col"><h4>Legal</h4><ul>
-                    <li><a href="Privacy Policy.html">Privacy Policy</a></li>
-                    <li><a href="Terms.html">Terms of Service</a></li>
+                    <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                    <li><a href="terms.html">Terms of Service</a></li>
                     <li><a href="cookie-policy.html">Cookie Policy</a></li>
-                    <li><button type="button" onclick="document.getElementById('c6').scrollIntoView({behavior:'smooth'})">Cookie Settings</button></li>
+                    <li><button type="button" aria-label="Open cookie settings" onclick="document.getElementById('c6').scrollIntoView({behavior:'smooth'})">Cookie Settings</button></li>
                 </ul></div>
                 <div class="footer-col"><h4>Support</h4><ul>
-                    <li><a href="Support.html">Help Center</a></li>
-                    <li><a href="Support.html">Contact Us</a></li>
+                    <li><a href="support.html">Help Center</a></li>
+                    <li><a href="support.html">Contact Us</a></li>
                 </ul></div>
                 <div class="footer-col"><h4>Connect</h4><ul>
-                    <li><a href="GitHub.html">GitHub</a></li>
-                    <li><a href="Twitter.html">Twitter / X</a></li>
-                    <li><a href="Discord.html">Discord</a></li>
+                    <li><a href="github.html">GitHub</a></li>
+                    <li><a href="twitter.html">Twitter / X</a></li>
+                    <li><a href="discord.html">Discord</a></li>
                 </ul></div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; <span id="currentYear">2026</span> CryptoKit. All rights reserved.</p>
+                <p>&copy; <span id="currentYear"></span> CryptoKit. All rights reserved.</p>
                 <div class="footer-bottom-links">
-                    <a href="Privacy Policy.html">Privacy</a>
-                    <a href="Terms.html">Terms</a>
+                    <a href="privacy-policy.html">Privacy</a>
+                    <a href="terms.html">Terms</a>
                     <a href="cookie-policy.html">Cookies</a>
                 </div>
             </div>
         </div>
     </footer>
 
-    <button class="scroll-top" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-arrow-up"></i></button>
+    <button class="scroll-top" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Scroll to top"><i class="fas fa-arrow-up" aria-hidden="true"></i></button>
 
     <script>
-    // Matrix rain
-    const canvas=document.getElementById('matrix-canvas'),ctx=canvas.getContext('2d');canvas.width=window.innerWidth;canvas.height=window.innerHeight;const chars='01アイウエオカキクケコ',fontSize=14,columns=Math.floor(canvas.width/fontSize),drops=Array(columns).fill(1);function drawMatrix(){ctx.fillStyle='rgba(0,0,0,0.05)';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.fillStyle='#00FF41';ctx.font=fontSize+'px monospace';for(let i=0;i<drops.length;i++){ctx.fillText(chars[Math.floor(Math.random()*chars.length)],i*fontSize,drops[i]*fontSize);if(drops[i]*fontSize>canvas.height&&Math.random()>0.975)drops[i]=0;drops[i]++}}setInterval(drawMatrix,50);window.addEventListener('resize',()=>{canvas.width=window.innerWidth;canvas.height=window.innerHeight});
+    /* ═══ MATRIX CANVAS - Only runs in Hacker Mode (Performance Fix) ═══ */
+    const canvas = document.getElementById('matrix-canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const chars = '01アイウエオカキクケコ';
+    const fontSize = 14;
+    let columns = Math.floor(canvas.width / fontSize);
+    let drops = Array(columns).fill(1);
+    let matrixInterval = null;
 
-    // Navbar + scroll-top
-    window.addEventListener('scroll',()=>{document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>50);document.getElementById('scrollTopBtn').classList.toggle('visible',window.scrollY>300)});
+    function drawMatrix() {
+        ctx.fillStyle = 'rgba(0,0,0,0.05)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#00FF41';
+        ctx.font = fontSize + 'px monospace';
+        for (let i = 0; i < drops.length; i++) {
+            ctx.fillText(chars[Math.floor(Math.random() * chars.length)], i * fontSize, drops[i] * fontSize);
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+            drops[i]++;
+        }
+    }
 
-    // Mode dropdown
-    function toggleModeDropdown(){document.getElementById('modeDropdown').classList.toggle('open');document.getElementById('modeArrow').classList.toggle('open')}
-    document.addEventListener('click',e=>{if(!e.target.closest('.mode-selector')){document.getElementById('modeDropdown').classList.remove('open');document.getElementById('modeArrow').classList.remove('open')}});
+    function startMatrix() {
+        if (!matrixInterval) matrixInterval = setInterval(drawMatrix, 50);
+    }
+    function stopMatrix() {
+        if (matrixInterval) {
+            clearInterval(matrixInterval);
+            matrixInterval = null;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+    }
 
-    // Theme switcher (shared key 'theme' — same as Terms page)
-    function setTheme(t){const o=document.getElementById('themeOverlay');if(t==='hacker'){o.classList.add('active');setTimeout(()=>{document.documentElement.setAttribute('data-theme','hacker');document.getElementById('modeIcon').textContent='💀';document.getElementById('modeLabel').textContent='Hacker';document.getElementById('optNormal').classList.remove('active');document.getElementById('optHacker').classList.add('active');localStorage.setItem('theme','hacker')},500);setTimeout(()=>o.classList.remove('active'),1500)}else{document.documentElement.setAttribute('data-theme','normal');document.getElementById('modeIcon').textContent='✨';document.getElementById('modeLabel').textContent='Normal';document.getElementById('optNormal').classList.add('active');document.getElementById('optHacker').classList.remove('active');localStorage.setItem('theme','normal')}document.getElementById('modeDropdown').classList.remove('open');document.getElementById('modeArrow').classList.remove('open')}
-    (function(){const s=localStorage.getItem('theme');if(s==='hacker'){document.documentElement.setAttribute('data-theme','hacker');document.getElementById('modeIcon').textContent='💀';document.getElementById('modeLabel').textContent='Hacker';document.getElementById('optNormal').classList.remove('active');document.getElementById('optHacker').classList.add('active')}})();
+    window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        columns = Math.floor(canvas.width / fontSize);
+        drops = Array(columns).fill(1);
+    });
 
-    // Smooth-scroll TOC
-    document.querySelectorAll('.toc a').forEach(l=>{l.addEventListener('click',function(e){e.preventDefault();document.querySelector(this.getAttribute('href'))?.scrollIntoView({behavior:'smooth'})})});
+    /* ═══ NAVBAR SCROLL ═══ */
+    window.addEventListener('scroll', () => {
+        document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+        document.getElementById('scrollTopBtn').classList.toggle('visible', window.scrollY > 300);
+    });
 
-    // ─── Cookie Preferences ────────────────────
+    /* ═══ MODE DROPDOWN ═══ */
+    function toggleModeDropdown() {
+        const dropdown = document.getElementById('modeDropdown');
+        const arrow = document.getElementById('modeArrow');
+        const btn = document.getElementById('modeBtn');
+        const isOpen = dropdown.classList.toggle('open');
+        arrow.classList.toggle('open');
+        btn.setAttribute('aria-expanded', isOpen);
+    }
+
+    document.addEventListener('click', e => {
+        if (!e.target.closest('.mode-selector')) {
+            document.getElementById('modeDropdown').classList.remove('open');
+            document.getElementById('modeArrow').classList.remove('open');
+            document.getElementById('modeBtn').setAttribute('aria-expanded', 'false');
+        }
+    });
+
+    /* ═══ THEME SWITCHING (with Matrix start/stop) ═══ */
+    function setTheme(t) {
+        const o = document.getElementById('themeOverlay');
+        if (t === 'hacker') {
+            o.classList.add('active');
+            setTimeout(() => {
+                document.documentElement.setAttribute('data-theme', 'hacker');
+                document.getElementById('modeIcon').textContent = '💀';
+                document.getElementById('modeLabel').textContent = 'Hacker';
+                document.getElementById('optNormal').classList.remove('active');
+                document.getElementById('optHacker').classList.add('active');
+                localStorage.setItem('theme', 'hacker');
+                startMatrix();
+            }, 500);
+            setTimeout(() => o.classList.remove('active'), 1500);
+        } else {
+            document.documentElement.setAttribute('data-theme', 'normal');
+            document.getElementById('modeIcon').textContent = '✨';
+            document.getElementById('modeLabel').textContent = 'Normal';
+            document.getElementById('optNormal').classList.add('active');
+            document.getElementById('optHacker').classList.remove('active');
+            localStorage.setItem('theme', 'normal');
+            stopMatrix();
+        }
+        document.getElementById('modeDropdown').classList.remove('open');
+        document.getElementById('modeArrow').classList.remove('open');
+        document.getElementById('modeBtn').setAttribute('aria-expanded', 'false');
+    }
+
+    /* ═══ RESTORE SAVED THEME ═══ */
+    (function() {
+        const s = localStorage.getItem('theme');
+        if (s === 'hacker') {
+            document.documentElement.setAttribute('data-theme', 'hacker');
+            document.getElementById('modeIcon').textContent = '💀';
+            document.getElementById('modeLabel').textContent = 'Hacker';
+            document.getElementById('optNormal').classList.remove('active');
+            document.getElementById('optHacker').classList.add('active');
+            startMatrix();
+        }
+    })();
+
+    /* ═══ MOBILE MENU (Auto-close on link click) ═══ */
+    function toggleMobileMenu() {
+        const menu = document.getElementById('mobileMenu');
+        const btn = document.getElementById('hamburgerBtn');
+        const isOpen = menu.classList.toggle('open');
+        btn.setAttribute('aria-expanded', isOpen);
+    }
+    function closeMobileMenu() {
+        document.getElementById('mobileMenu').classList.remove('open');
+        document.getElementById('hamburgerBtn').setAttribute('aria-expanded', 'false');
+    }
+
+    /* ═══ TOC SMOOTH SCROLL ═══ */
+    document.querySelectorAll('.toc a').forEach(l => {
+        l.addEventListener('click', function(e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href'))?.scrollIntoView({ behavior: 'smooth' });
+        });
+    });
+
+    /* ═══ KEYBOARD SUPPORT FOR MODE OPTIONS ═══ */
+    document.querySelectorAll('.mode-option').forEach(opt => {
+        opt.addEventListener('keydown', e => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                opt.click();
+            }
+        });
+    });
+
+    /* ═══ COOKIE PREFERENCES ═══ */
     const preferenceCookies = document.getElementById('preferenceCookies');
-    const analyticsCookies  = document.getElementById('analyticsCookies');
+    const analyticsCookies = document.getElementById('analyticsCookies');
     const preferenceMessage = document.getElementById('preferenceMessage');
     const PREFS_KEY = 'cryptokit_cookie_preferences_v1';
 
+    // Load saved preferences
     try {
         const saved = JSON.parse(localStorage.getItem(PREFS_KEY) || 'null');
         if (saved) {
             preferenceCookies.checked = Boolean(saved.preferences);
-            analyticsCookies.checked  = Boolean(saved.analytics);
+            analyticsCookies.checked = Boolean(saved.analytics);
         }
-    } catch (e) {}
+    } catch (e) { /* Silently handle parse errors */ }
 
     document.getElementById('savePreferences').addEventListener('click', () => {
         const prefs = {
@@ -647,7 +804,7 @@ html[data-theme="hacker"] .footer button { color: #B8FFB8 !important; }
             localStorage.setItem(PREFS_KEY, JSON.stringify(prefs));
             preferenceMessage.textContent = '✓ Preferences saved in this browser.';
             preferenceMessage.className = 'save-status success';
-            // Hook: when analytics scripts are integrated, gate them on prefs.analytics here.
+            // Hook: gate analytics scripts on prefs.analytics here
             window.dispatchEvent(new CustomEvent('ck:cookie-prefs-updated', { detail: prefs }));
         } catch (e) {
             preferenceMessage.textContent = '✗ Unable to save preferences.';
@@ -656,6 +813,7 @@ html[data-theme="hacker"] .footer button { color: #B8FFB8 !important; }
         setTimeout(() => { preferenceMessage.textContent = ''; }, 4000);
     });
 
+    /* ═══ DYNAMIC YEAR ═══ */
     document.getElementById('currentYear').textContent = new Date().getFullYear();
     </script>
 </body>

@@ -1,960 +1,1538 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#f7f8ff">
+  <meta name="theme-color" content="#0a0e27">
   <title>System Status | CryptoKit</title>
   <meta name="description" content="View CryptoKit service status, component availability, and incident updates.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
-    :root {
-      --ck-blue: #5967ff;
-      --ck-cyan: #09b8df;
-      --ck-purple: #8057ff;
-      --ck-text: #4e5b75;
-      --ck-heading: #17233c;
-      --ck-page: #f7f8ff;
-      --ck-card: #ffffff;
-      --ck-border: #e4e5ff;
-      --ck-green: #159957;
-      --ck-green-bg: #e9f9ef;
-      --ck-orange: #dc8b25;
-      --ck-red: #dc4545;
+    /* ============ THEME TOKENS ============ */
+    [data-theme="normal"] {
+      --primary: #6366f1;
+      --secondary: #8b5cf6;
+      --accent: #06b6d4;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --bg: #0a0e27;
+      --bg-alt: #0f1538;
+      --panel: rgba(255,255,255,0.03);
+      --panel-solid: #11173a;
+      --text: #e2e8f0;
+      --text-dim: #94a3b8;
+      --border: rgba(255,255,255,0.08);
+      --glass: rgba(255,255,255,0.04);
+      --shadow: 0 20px 60px rgba(0,0,0,0.4);
+      --scrollbar-track: #0a0e27;
+      --scrollbar-thumb: #6366f1;
     }
 
-    * { box-sizing: border-box; }
+    [data-theme="hacker"] {
+      --primary: #00ff41;
+      --secondary: #39ff14;
+      --accent: #00ffff;
+      --success: #00ff41;
+      --warning: #ffb000;
+      --danger: #ff0040;
+      --green-dark: #003b00;
+      --green-mid: #008f11;
+      --green-bright: #00ff41;
+      --green-glow: #39ff14;
+      --accent-red: #ff0040;
+      --accent-amber: #ffb000;
+      --accent-cyan: #00ffff;
+      --accent-magenta: #ff00ff;
+      --accent-yellow: #ffff00;
+      --accent-purple: #bf00ff;
+      --accent-orange: #ff8c00;
+      --hacker-bg: #030503;
+      --hacker-panel: #0A140A;
+      --hacker-terminal: #0D1B0D;
+      --bg: var(--hacker-bg);
+      --bg-alt: #050a05;
+      --panel: rgba(0,255,65,0.03);
+      --panel-solid: var(--hacker-panel);
+      --text: #c8ffd4;
+      --text-dim: #6bbf7a;
+      --border: rgba(0,255,65,0.2);
+      --glass: rgba(0,255,65,0.04);
+      --shadow: 0 20px 60px rgba(0,255,65,0.1);
+      --scrollbar-track: var(--hacker-bg);
+      --scrollbar-thumb: var(--green-bright);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     html {
       scroll-behavior: smooth;
-      scroll-padding-top: 110px;
+      scroll-padding-top: 100px;
     }
 
     body {
-      margin: 0;
-      font-family: 'Inter', sans-serif;
-      color: var(--ck-text);
-      background: var(--ck-page);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+      min-height: 100vh;
+      transition: background 0.5s ease, color 0.5s ease;
     }
 
-    a { color: inherit; text-decoration: none; }
-    button { font-family: inherit; }
-
-    /* HEADER */
-    .ck-header {
-      min-height: 82px;
-      padding: 0 2.5%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 24px;
-      background: rgba(255,255,255,.96);
-      border-bottom: 1px solid #edf0ff;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      backdrop-filter: blur(14px);
+    [data-theme="hacker"] body,
+    [data-theme="hacker"] p,
+    [data-theme="hacker"] span,
+    [data-theme="hacker"] a,
+    [data-theme="hacker"] li,
+    [data-theme="hacker"] button,
+    [data-theme="hacker"] input,
+    [data-theme="hacker"] textarea,
+    [data-theme="hacker"] select,
+    [data-theme="hacker"] label,
+    [data-theme="hacker"] td,
+    [data-theme="hacker"] th {
+      font-family: 'Share Tech Mono', 'JetBrains Mono', monospace;
     }
 
-    .ck-brand {
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      flex-shrink: 0;
+    a, button, input, .mode-option {
+      outline: none;
     }
 
-    .ck-logo {
-      width: 46px;
-      height: 46px;
-      border-radius: 13px;
-      display: grid;
-      place-items: center;
-      color: white;
-      font-size: 25px;
-      background: linear-gradient(135deg, #6964ff, #00b9e9);
-      box-shadow: 0 6px 16px #6964ff2b;
+    a:focus-visible,
+    button:focus-visible,
+    input:focus-visible,
+    .mode-option:focus-visible {
+      outline: 2px solid var(--primary);
+      outline-offset: 3px;
+      border-radius: 6px;
     }
 
-    .ck-brand-name {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 24px;
-      font-weight: 700;
-      letter-spacing: -.7px;
-      color: #388af5;
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: var(--scrollbar-track); }
+    ::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 3px; }
+
+    /* ============ MATRIX CANVAS ============ */
+    #matrix-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      opacity: 0.15;
+      pointer-events: none;
+      display: none;
+    }
+    [data-theme="hacker"] #matrix-canvas { display: block; }
+
+    .scanlines {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background: repeating-linear-gradient(0deg, rgba(0,255,65,0.03) 0, rgba(0,255,65,0.03) 1px, transparent 1px, transparent 3px);
+      display: none;
+    }
+    [data-theme="hacker"] .scanlines { display: block; }
+
+    /* ============ BG SHAPES ============ */
+    .bg-shapes {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .bg-shape-1, .bg-shape-2, .bg-shape-3 {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.3;
+    }
+    .bg-shape-1 {
+      width: 400px; height: 400px;
+      background: var(--primary);
+      top: -100px; left: -100px;
+      animation: floatShape 8s ease-in-out infinite;
+    }
+    .bg-shape-2 {
+      width: 350px; height: 350px;
+      background: var(--secondary);
+      top: 40%; right: -100px;
+      animation: floatShape 10s ease-in-out infinite reverse;
+    }
+    .bg-shape-3 {
+      width: 300px; height: 300px;
+      background: var(--accent);
+      bottom: -50px; left: 30%;
+      animation: floatShape 6s ease-in-out infinite;
+    }
+    @keyframes floatShape {
+      0%,100% { transform: translate(0,0) scale(1); }
+      50% { transform: translate(30px,-30px) scale(1.1); }
     }
 
-    .ck-nav {
+    /* ============ GLITCH EFFECT ============ */
+    .glitch {
+      position: relative;
+      display: inline-block;
+    }
+    [data-theme="hacker"] .glitch::before,
+    [data-theme="hacker"] .glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      background: transparent;
+      -webkit-background-clip: initial;
+      background-clip: initial;
+      -webkit-text-fill-color: initial;
+    }
+    [data-theme="hacker"] .glitch::before {
+      left: 2px;
+      text-shadow: -2px 0 var(--accent-red);
+      animation: glitch-anim-1 2s infinite linear alternate-reverse;
+      color: var(--accent-cyan);
+    }
+    [data-theme="hacker"] .glitch::after {
+      left: -2px;
+      text-shadow: -2px 0 var(--accent-magenta);
+      animation: glitch-anim-2 3s infinite linear alternate-reverse;
+      color: var(--green-bright);
+    }
+    @keyframes glitch-anim-1 {
+      0%,100% { clip-path: inset(0 0 95% 0); }
+      20% { clip-path: inset(30% 0 50% 0); }
+      40% { clip-path: inset(60% 0 10% 0); }
+      60% { clip-path: inset(20% 0 70% 0); }
+      80% { clip-path: inset(80% 0 2% 0); }
+    }
+    @keyframes glitch-anim-2 {
+      0%,100% { clip-path: inset(90% 0 3% 0); }
+      20% { clip-path: inset(10% 0 80% 0); }
+      40% { clip-path: inset(50% 0 30% 0); }
+      60% { clip-path: inset(70% 0 15% 0); }
+      80% { clip-path: inset(5% 0 85% 0); }
+    }
+
+    @keyframes borderPulse {
+      0%,100% { border-color: var(--border); }
+      50% { border-color: var(--primary); box-shadow: 0 0 20px rgba(0,255,65,0.2); }
+    }
+
+    /* ============ THEME TRANSITION OVERLAY ============ */
+    .theme-transition-overlay {
+      position: fixed;
+      inset: 0;
+      background: #000;
+      z-index: 9999;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.4s ease;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 38px;
+    }
+    .theme-transition-overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .transition-text {
+      font-family: 'Share Tech Mono', monospace;
+      color: var(--green-bright);
+      font-size: 1.2rem;
+      text-shadow: 0 0 10px var(--green-bright);
     }
 
-    .ck-nav a {
-      padding: 9px 0;
-      color: #4d5870;
-      font-size: 16px;
-      font-weight: 500;
+    /* ============ MODE SELECTOR ============ */
+    .mode-selector {
       position: relative;
-      white-space: nowrap;
+    }
+    .mode-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 18px;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--text);
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+    .mode-btn:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+    }
+    .mode-dropdown {
+      position: absolute;
+      top: calc(100% + 10px);
+      right: 0;
+      background: var(--panel-solid);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 8px;
+      min-width: 180px;
+      box-shadow: var(--shadow);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: all 0.3s ease;
+      z-index: 1001;
+    }
+    .mode-dropdown.active {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+      animation: dropIn 0.3s ease;
+    }
+    @keyframes dropIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .mode-option {
+      padding: 10px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text);
+      transition: background 0.2s ease;
+      font-size: 0.9rem;
+    }
+    .mode-option:hover,
+    .mode-option:focus-visible {
+      background: var(--glass);
     }
 
-    .ck-nav a:hover,
-    .ck-nav a.active { color: #695cff; }
-
-    .ck-nav a.active::after {
-      content: "";
-      height: 2px;
-      position: absolute;
-      bottom: 2px;
+    /* ============ NAVBAR ============ */
+    .navbar {
+      position: fixed;
+      top: 0;
       left: 0;
       right: 0;
-      background: linear-gradient(90deg, #795cff, #00b9e9);
+      height: 70px;
+      background: rgba(10,14,39,0.8);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      z-index: 1000;
+      transition: background 0.5s ease;
     }
-
-    .ck-theme-wrap { position: relative; flex-shrink: 0; }
-
-    .ck-theme-button {
-      border: 1px solid #e2e0ff;
-      border-radius: 16px;
-      padding: 12px 17px;
-      color: #4d5870;
-      background: #f5f3ff;
-      font: 600 14px 'Inter', sans-serif;
-      cursor: pointer;
+    [data-theme="hacker"] .navbar {
+      background: rgba(3,5,3,0.9);
+      border-bottom-color: var(--border);
     }
-
-    .ck-theme-button i { color: #f3a53a; margin-right: 8px; }
-
-    .ck-theme-menu {
-      display: none;
-      position: absolute;
-      right: 0;
-      top: calc(100% + 8px);
-      width: 155px;
-      padding: 7px;
-      border: 1px solid var(--ck-border);
-      border-radius: 13px;
-      background: white;
-      box-shadow: 0 12px 35px #28335c1a;
-    }
-
-    .ck-theme-menu.open { display: block; }
-
-    .ck-theme-menu button {
-      display: block;
-      width: 100%;
-      padding: 10px;
-      border: 0;
-      border-radius: 8px;
-      background: transparent;
-      color: var(--ck-text);
-      text-align: left;
-      cursor: pointer;
-      font-size: 14px;
-    }
-
-    .ck-theme-menu button:hover { background: #f1efff; }
-
-    /* HERO */
-    .status-hero {
-      padding: 72px 20px 65px;
-      text-align: center;
-      background:
-        radial-gradient(ellipse at 8% 65%, #d8f0ffb5, transparent 38%),
-        radial-gradient(ellipse at 94% 8%, #dfdcffb5, transparent 43%),
-        linear-gradient(120deg, #f0f5ff, #f0efff);
-    }
-
-    .status-eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 9px;
-      padding: 10px 20px;
-      border: 1px solid #dedaff;
-      border-radius: 30px;
-      color: #6c5dff;
-      background: #eae9ffb8;
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 2px;
-    }
-
-    .status-hero h1 {
-      margin: 27px 0 17px;
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(38px, 5vw, 60px);
-      line-height: 1.15;
-      letter-spacing: -1.8px;
-      color: #5967ff;
-      background: linear-gradient(90deg, #665fff, #08afd9);
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .status-hero p {
-      max-width: 700px;
+    .nav-container {
+      max-width: 1400px;
+      height: 100%;
       margin: 0 auto;
-      font-size: 18px;
-      line-height: 1.8;
+      padding: 0 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
-
-    .status-last-updated {
-      margin-top: 20px;
-      font-family: 'JetBrains Mono', monospace;
-      color: #71809e;
-      font-size: 13px;
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      font-size: 1.3rem;
+      color: var(--text);
+      text-decoration: none;
     }
-
-    /* PAGE LAYOUT */
-    .status-main {
-      width: min(1050px, calc(100% - 40px));
-      margin: -20px auto 90px;
+    .nav-logo-icon {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+    }
+    .nav-logo-text {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    [data-theme="hacker"] .nav-logo-text {
+      background: linear-gradient(135deg, var(--green-bright), var(--accent-cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .nav-links {
+      display: flex;
+      gap: 30px;
+      list-style: none;
+      align-items: center;
+    }
+    .nav-links a {
+      color: var(--text-dim);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: color 0.3s ease;
       position: relative;
     }
+    .nav-links a:hover,
+    .nav-links a[aria-current="page"] { color: var(--text); }
+    .nav-links a[aria-current="page"]::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      border-radius: 2px;
+    }
+    .nav-right { display: flex; align-items: center; gap: 20px; }
 
-    .overall-card {
-      padding: 27px 30px;
-      display: flex;
-      justify-content: space-between;
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+    }
+    .hamburger span {
+      width: 25px;
+      height: 2px;
+      background: var(--text);
+      transition: all 0.3s ease;
+    }
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 70px;
+      left: 0;
+      right: 0;
+      background: var(--panel-solid);
+      border-bottom: 1px solid var(--border);
+      padding: 20px;
+      flex-direction: column;
+      gap: 15px;
+      z-index: 999;
+    }
+    .mobile-menu.active { display: flex; }
+    .mobile-menu a {
+      color: var(--text);
+      text-decoration: none;
+      padding: 10px;
+      border-radius: 8px;
+      transition: background 0.2s ease;
+    }
+    .mobile-menu a:hover { background: var(--glass); }
+
+    /* ============ PAGE HERO ============ */
+    .page-hero {
+      padding: 150px 40px 60px;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+    .section-badge {
+      display: inline-flex;
       align-items: center;
-      gap: 20px;
-      border: 1px solid #c8efd7;
+      gap: 8px;
+      padding: 8px 16px;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      margin-bottom: 20px;
+      backdrop-filter: blur(10px);
+    }
+    .page-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 20px;
+      letter-spacing: -1px;
+    }
+    .gradient-text {
+      background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    [data-theme="hacker"] .gradient-text {
+      background: linear-gradient(135deg, var(--green-bright), var(--accent-cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .page-subtitle {
+      font-size: 1.15rem;
+      color: var(--text-dim);
+      max-width: 700px;
+      margin: 0 auto 25px;
+      line-height: 1.7;
+    }
+    .last-updated {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      padding: 8px 14px;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+    [data-theme="hacker"] .last-updated {
+      font-family: 'Share Tech Mono', monospace;
+    }
+
+    /* ============ CONTENT ============ */
+    .content-wrapper {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 20px 40px 100px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .policy-card {
+      background: var(--glass);
+      border: 1px solid var(--border);
       border-radius: 20px;
-      background: #f0fff5;
-      box-shadow: 0 12px 35px #6674aa0a;
+      padding: 32px;
+      margin-bottom: 28px;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+    }
+    .policy-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+    }
+    [data-theme="hacker"] .policy-card {
+      animation: borderPulse 3s ease-in-out infinite;
+    }
+    [data-theme="hacker"] .policy-card:hover {
+      animation: none;
     }
 
-    .overall-left {
+    .policy-card h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.6rem;
+      margin-bottom: 10px;
+      color: var(--text);
       display: flex;
       align-items: center;
-      gap: 17px;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    [data-theme="hacker"] .policy-card h2 {
+      color: var(--green-bright);
+      text-shadow: 0 0 10px rgba(0,255,65,0.3);
+    }
+    .policy-card > p {
+      color: var(--text-dim);
+      margin-bottom: 20px;
+      line-height: 1.75;
+    }
+    [data-theme="hacker"] .policy-card > p {
+      color: var(--text);
     }
 
-    .overall-icon {
-      width: 54px;
-      height: 54px;
-      border-radius: 16px;
-      display: grid;
-      place-items: center;
-      background: #d8f8e4;
-      color: var(--ck-green);
-      font-size: 25px;
+    .section-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: #fff;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 700;
       flex-shrink: 0;
     }
-
-    .overall-card h2 {
-      margin: 0 0 7px;
-      color: #126b3d;
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 22px;
+    [data-theme="hacker"] .section-number {
+      background: var(--green-bright);
+      color: var(--hacker-bg);
     }
 
-    .overall-card p { margin: 0; font-size: 14px; line-height: 1.7; }
+    .section-heading-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
 
+    /* ============ STATUS BADGE ============ */
     .status-badge {
       display: inline-flex;
       align-items: center;
       gap: 8px;
+      padding: 8px 14px;
+      border-radius: 100px;
+      background: rgba(16,185,129,0.15);
+      border: 1px solid rgba(16,185,129,0.3);
+      color: var(--success);
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
       white-space: nowrap;
-      padding: 9px 13px;
-      border-radius: 30px;
-      background: #dcf8e7;
-      color: #16834a;
-      font-size: 12px;
-      font-weight: 700;
     }
-
+    [data-theme="hacker"] .status-badge {
+      background: rgba(0,255,65,0.1);
+      border-color: var(--green-bright);
+      color: var(--green-bright);
+    }
     .status-dot {
       width: 8px;
       height: 8px;
       border-radius: 50%;
       background: currentColor;
-      display: inline-block;
+      box-shadow: 0 0 8px currentColor;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%,100% { opacity: 1; }
+      50% { opacity: 0.4; }
     }
 
-    .status-section { margin-top: 38px; }
-
-    .section-heading {
+    .overall-card {
       display: flex;
-      align-items: flex-end;
       justify-content: space-between;
-      gap: 15px;
-      margin-bottom: 18px;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
     }
-
-    .section-heading h2 {
-      margin: 0 0 7px;
-      color: var(--ck-heading);
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 25px;
+    .overall-left {
+      display: flex;
+      align-items: center;
+      gap: 18px;
     }
-
-    .section-heading p {
+    .overall-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: rgba(16,185,129,0.15);
+      color: var(--success);
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+    [data-theme="hacker"] .overall-icon {
+      background: rgba(0,255,65,0.1);
+      color: var(--green-bright);
+    }
+    .overall-card h2 {
+      font-size: 1.4rem;
+      margin: 0 0 6px;
+    }
+    .overall-card .overall-desc {
       margin: 0;
-      font-size: 14px;
-      line-height: 1.7;
+      font-size: 0.95rem;
+      color: var(--text-dim);
     }
 
+    /* ============ COMPONENT LIST ============ */
     .component-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      border: 1px solid var(--border);
+      border-radius: 14px;
       overflow: hidden;
-      border: 1px solid #e8e9ff;
-      border-radius: 18px;
-      background: var(--ck-card);
-      box-shadow: 0 12px 40px #6674aa0a;
     }
-
     .component-row {
-      min-height: 88px;
-      padding: 20px 24px;
+      padding: 18px 22px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 20px;
-      border-bottom: 1px solid #eeeefe;
+      border-bottom: 1px solid var(--border);
+      background: var(--glass);
+      transition: background 0.2s ease;
     }
-
     .component-row:last-child { border-bottom: 0; }
+    .component-row:hover { background: var(--panel); }
 
     .component-info {
       display: flex;
       align-items: center;
-      gap: 15px;
+      gap: 14px;
     }
-
     .component-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 13px;
+      width: 42px;
+      height: 42px;
+      border-radius: 11px;
       display: grid;
       place-items: center;
+      background: rgba(99,102,241,0.15);
+      color: var(--primary);
+      font-size: 1rem;
       flex-shrink: 0;
-      background: #f0efff;
-      color: #6d5cff;
-      font-size: 18px;
     }
-
+    [data-theme="hacker"] .component-icon {
+      background: rgba(0,255,65,0.1);
+      color: var(--green-bright);
+    }
     .component-info h3 {
-      margin: 0 0 6px;
-      color: var(--ck-heading);
-      font-size: 15px;
+      margin: 0 0 4px;
+      font-size: 0.95rem;
       font-weight: 600;
+      color: var(--text);
     }
-
     .component-info p {
       margin: 0;
-      font-size: 13px;
-      line-height: 1.6;
+      font-size: 0.85rem;
+      color: var(--text-dim);
     }
-
     .component-state {
       display: inline-flex;
       align-items: center;
       gap: 7px;
-      white-space: nowrap;
-      font-size: 13px;
+      font-size: 0.85rem;
       font-weight: 600;
-      color: var(--ck-green);
+      color: var(--success);
+      white-space: nowrap;
     }
+    [data-theme="hacker"] .component-state { color: var(--green-bright); }
 
     .state-dot {
       width: 8px;
       height: 8px;
       border-radius: 50%;
       background: currentColor;
+      box-shadow: 0 0 6px currentColor;
     }
 
-    .status-demo-note {
-      padding: 14px 17px;
-      margin-top: 14px;
-      border: 1px solid #e5e2ff;
+    /* ============ INFO / WARNING BOXES ============ */
+    .highlight-box, .warning-box, .info-box {
+      padding: 16px 18px;
       border-radius: 12px;
-      background: #f6f4ff;
-      color: #66568f;
-      font-size: 12px;
-      line-height: 1.8;
+      margin-top: 18px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 0.9rem;
+      line-height: 1.7;
+    }
+    .highlight-box {
+      background: rgba(99,102,241,0.1);
+      border-left: 3px solid var(--primary);
+      color: var(--text);
+    }
+    .warning-box {
+      background: rgba(245,158,11,0.1);
+      border-left: 3px solid var(--warning);
+      color: var(--text);
+    }
+    .info-box {
+      background: rgba(6,182,212,0.1);
+      border-left: 3px solid var(--accent);
+      color: var(--text);
+    }
+    [data-theme="hacker"] .highlight-box {
+      background: rgba(0,255,65,0.05);
+      border-left-color: var(--green-bright);
+    }
+    [data-theme="hacker"] .warning-box {
+      background: rgba(255,176,0,0.05);
+      border-left-color: var(--accent-amber);
+    }
+    [data-theme="hacker"] .info-box {
+      background: rgba(0,255,255,0.05);
+      border-left-color: var(--accent-cyan);
     }
 
-    /* UPTIME DEMO */
-    .uptime-card {
-      padding: 26px;
-      border: 1px solid #e8e9ff;
-      border-radius: 18px;
-      background: var(--ck-card);
-      box-shadow: 0 12px 40px #6674aa0a;
+    .code-text {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      padding: 2px 6px;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--primary);
+    }
+    [data-theme="hacker"] .code-text {
+      font-family: 'Share Tech Mono', monospace;
+      color: var(--green-bright);
     }
 
+    .refresh-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+    }
+    .refresh-button:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      transform: translateY(-2px);
+    }
+    .refresh-button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* ============ UPTIME ============ */
     .uptime-top {
       display: flex;
       justify-content: space-between;
-      gap: 16px;
       align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
     }
-
     .uptime-top h3 {
-      margin: 0 0 7px;
-      color: var(--ck-heading);
-      font-size: 16px;
+      margin: 0 0 6px;
+      font-size: 1.05rem;
+      color: var(--text);
     }
-
-    .uptime-top p { margin: 0; font-size: 13px; line-height: 1.7; }
-
+    .uptime-top .uptime-desc {
+      margin: 0;
+      font-size: 0.9rem;
+      color: var(--text-dim);
+    }
     .uptime-number {
-      color: #16834a;
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 27px;
+      font-size: 1.8rem;
       font-weight: 700;
+      color: var(--success);
       white-space: nowrap;
     }
-
+    [data-theme="hacker"] .uptime-number {
+      font-family: 'Share Tech Mono', monospace;
+      color: var(--green-bright);
+    }
     .uptime-bars {
       display: grid;
       grid-template-columns: repeat(60, minmax(2px, 1fr));
       gap: 4px;
-      margin: 25px 0 12px;
+      margin-bottom: 14px;
     }
-
     .uptime-bar {
-      height: 34px;
-      border-radius: 4px;
-      background: #39c87b;
+      height: 32px;
+      border-radius: 3px;
+      background: var(--success);
+      opacity: 0.75;
+      transition: opacity 0.2s ease;
     }
-
-    .uptime-bar:hover { opacity: .65; }
-
+    [data-theme="hacker"] .uptime-bar {
+      background: var(--green-bright);
+      box-shadow: 0 0 4px var(--green-bright);
+    }
+    .uptime-bar:hover { opacity: 1; }
     .uptime-legend {
       display: flex;
       justify-content: space-between;
       gap: 12px;
-      color: #74809a;
-      font-size: 12px;
+      font-size: 0.8rem;
+      color: var(--text-dim);
     }
 
-    /* INCIDENTS */
-    .incident-card {
-      padding: 28px;
-      border: 1px solid #e8e9ff;
-      border-radius: 18px;
-      background: var(--ck-card);
+    /* ============ INCIDENT ============ */
+    .incident-empty {
       text-align: center;
+      padding: 20px;
     }
-
-    .incident-icon {
-      width: 60px;
-      height: 60px;
-      display: grid;
-      place-items: center;
-      margin: 0 auto 17px;
+    .incident-icon-big {
+      width: 64px;
+      height: 64px;
       border-radius: 18px;
-      background: #e9f9ef;
-      color: #159957;
-      font-size: 26px;
-    }
-
-    .incident-card h3 {
-      margin: 0 0 8px;
-      color: var(--ck-heading);
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 20px;
-    }
-
-    .incident-card p { margin: 0; font-size: 14px; line-height: 1.8; }
-
-    .refresh-button {
-      padding: 12px 17px;
-      border: 1px solid #e0ddff;
-      border-radius: 12px;
-      background: #f5f3ff;
-      color: #695cff;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-
-    .refresh-button:hover { background: #eae7ff; }
-    .refresh-button i { margin-right: 7px; }
-
-    /* FOOTER */
-    .ck-footer {
-      background: #f7f8ff;
-      padding: 88px 3% 0;
-      border-top: 1px solid #eeefff;
-    }
-
-    .ck-footer-grid {
-      display: grid;
-      grid-template-columns: 1.55fr .8fr .8fr .8fr;
-      gap: 55px;
-      padding-bottom: 70px;
-    }
-
-    .ck-footer-brand .ck-logo {
-      width: 57px;
-      height: 57px;
-      font-size: 29px;
-      border-radius: 15px;
-    }
-
-    .ck-footer-brand .ck-brand-name {
-      display: block;
-      margin-top: 8px;
-      font-size: 29px;
-    }
-
-    .ck-footer-description {
-      max-width: 340px;
-      margin: 32px 0;
-      font-size: 18px;
-      line-height: 1.95;
-    }
-
-    .ck-socials { display: flex; gap: 18px; }
-
-    .ck-socials a {
-      width: 54px;
-      height: 54px;
       display: grid;
       place-items: center;
-      border: 1px solid #dfddff;
-      border-radius: 13px;
-      background: #f1f0ff;
-      color: #4f5b72;
-      font-size: 21px;
-      transition: .2s ease;
+      background: rgba(16,185,129,0.15);
+      color: var(--success);
+      font-size: 1.6rem;
+      margin: 0 auto 16px;
+    }
+    [data-theme="hacker"] .incident-icon-big {
+      background: rgba(0,255,65,0.1);
+      color: var(--green-bright);
+    }
+    .incident-empty h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.2rem;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+    .incident-empty p {
+      font-size: 0.95rem;
+      color: var(--text-dim);
+      max-width: 500px;
+      margin: 0 auto;
+      line-height: 1.7;
     }
 
-    .ck-socials a:hover {
-      color: white;
-      background: linear-gradient(135deg, #6964ff, #08b8e0);
+    /* ============ FOOTER ============ */
+    footer {
+      background: var(--panel-solid);
+      border-top: 1px solid var(--border);
+      padding: 60px 40px 30px;
+      position: relative;
+      z-index: 2;
+    }
+    .footer-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 60px;
+      margin-bottom: 40px;
+    }
+    .footer-brand-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      font-size: 1.3rem;
+      color: var(--text);
+      text-decoration: none;
+      margin-bottom: 20px;
+    }
+    .footer-brand p {
+      color: var(--text-dim);
+      line-height: 1.7;
+      max-width: 350px;
+      margin-bottom: 20px;
+    }
+    .social-links { display: flex; gap: 12px; }
+    .social-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    .social-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
       transform: translateY(-3px);
     }
-
-    .ck-footer-column h3 {
-      margin: 5px 0 32px;
-      color: #111a2d;
-      font-size: 21px;
-      font-weight: 600;
+    .footer-col h4 {
+      font-family: 'Space Grotesk', sans-serif;
+      margin-bottom: 20px;
+      color: var(--text);
     }
-
-    .ck-footer-column a {
-      display: block;
-      width: fit-content;
-      margin-bottom: 26px;
-      color: #45536c;
-      font-size: 18px;
-      line-height: 1.5;
+    .footer-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
     }
-
-    .ck-footer-column a:hover { color: #685eff; }
-
-    .ck-footer-bottom {
-      min-height: 94px;
+    .footer-col a {
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.3s ease;
+    }
+    .footer-col a:hover { color: var(--primary); }
+    .footer-bottom {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding-top: 30px;
+      border-top: 1px solid var(--border);
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
       gap: 20px;
-      border-top: 1px solid #e1e3ff;
-      color: #71809e;
-      font-size: 16px;
+      color: var(--text-dim);
+      font-size: 0.9rem;
     }
 
-    .ck-footer-bottom-links { display: flex; gap: 24px; }
-    .ck-footer-bottom a:hover { color: #685eff; }
-
-    .ck-top {
+    /* ============ SCROLL TOP ============ */
+    .scroll-top {
       position: fixed;
-      right: 22px;
-      bottom: 22px;
-      z-index: 900;
-      width: 66px;
-      height: 66px;
-      display: grid;
-      place-items: center;
-      border: 0;
-      border-radius: 20px;
-      background: #8057ff;
-      color: white;
-      box-shadow: 0 8px 24px #8057ff35;
-      font-size: 27px;
+      bottom: 30px;
+      right: 30px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border: none;
+      color: #fff;
+      font-size: 1.2rem;
       cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      z-index: 999;
+    }
+    .scroll-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+    .scroll-top:hover { transform: translateY(-3px); }
+    [data-theme="hacker"] .scroll-top {
+      background: var(--green-bright);
+      color: var(--hacker-bg);
+      box-shadow: 0 0 15px rgba(0,255,65,0.5);
     }
 
-    .ck-top:hover { background: #6546e7; }
-
-    /* HACKER THEME */
-    body.hacker-theme {
-      --ck-page: #07110e;
-      --ck-card: #0d1b16;
-      --ck-text: #b8d8ca;
-      --ck-heading: #e0fff0;
-      --ck-border: #214536;
+    /* ============ HACKER OVERRIDES ============ */
+    [data-theme="hacker"] body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,255,65,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,255,65,0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+      pointer-events: none;
+      z-index: 0;
+      animation: hk-grid-move 20s linear infinite;
+    }
+    @keyframes hk-grid-move {
+      0% { background-position: 0 0; }
+      100% { background-position: 50px 50px; }
+    }
+    [data-theme="hacker"] .section-badge {
+      background: rgba(0,255,65,0.05);
+      border-color: var(--green-bright);
+      color: var(--green-bright);
+    }
+    [data-theme="hacker"] .mode-btn {
+      border-color: var(--green-bright);
+      color: var(--green-bright);
+    }
+    [data-theme="hacker"] footer {
+      background: var(--hacker-panel);
     }
 
-    body.hacker-theme .ck-header,
-    body.hacker-theme .ck-footer {
-      background: #09140f;
-      border-color: #203c30;
+    /* ============ REDUCED MOTION ============ */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
     }
 
-    body.hacker-theme .ck-nav a,
-    body.hacker-theme .ck-theme-button,
-    body.hacker-theme .ck-footer-column a,
-    body.hacker-theme .ck-footer-bottom { color: #b8d8ca; }
-
-    body.hacker-theme .status-hero {
-      background: radial-gradient(ellipse at 50% 0%, #123c2b, #07110e 75%);
+    /* ============ RESPONSIVE ============ */
+    @media (max-width: 768px) {
+      .nav-container { padding: 0 20px; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .page-hero { padding: 120px 20px 40px; }
+      .content-wrapper { padding: 20px 20px 60px; }
+      .policy-card { padding: 24px; }
+      .policy-card h2 { font-size: 1.3rem; }
+      .footer-content { grid-template-columns: 1fr; gap: 40px; }
+      .overall-card { flex-direction: column; align-items: flex-start; }
+      .component-row { flex-direction: column; align-items: flex-start; gap: 12px; }
+      .uptime-bars { grid-template-columns: repeat(30, minmax(2px, 1fr)); gap: 3px; }
+      .uptime-bar { height: 26px; }
     }
 
-    body.hacker-theme .component-list,
-    body.hacker-theme .uptime-card,
-    body.hacker-theme .incident-card { border-color: #214536; }
-
-    body.hacker-theme .component-row { border-color: #214536; }
-    body.hacker-theme .component-icon { background: #17382a; color: #65e6a2; }
-    body.hacker-theme .status-demo-note { background: #10251b; border-color: #214536; color: #b8d8ca; }
-    body.hacker-theme .ck-footer-column h3 { color: #e0fff0; }
-    body.hacker-theme .ck-theme-menu { background: #0d1b16; border-color: #214536; }
-    body.hacker-theme .ck-theme-menu button { color: #b8d8ca; }
-
-    @media (max-width: 900px) {
-      .ck-header { flex-wrap: wrap; padding: 15px 4%; }
-      .ck-nav { order: 3; width: 100%; gap: 25px; overflow-x: auto; }
-      .ck-footer-grid { grid-template-columns: 1fr 1fr; gap: 45px; }
-      .ck-footer-description { margin: 20px 0; }
-    }
-
-    @media (max-width: 560px) {
-      .ck-brand-name { font-size: 21px; }
-      .ck-logo { width: 40px; height: 40px; }
-      .ck-header { gap: 12px; }
-      .ck-nav { gap: 22px; justify-content: flex-start; }
-      .ck-nav a { font-size: 14px; }
-      .ck-theme-button { padding: 10px; }
-      .status-hero { padding: 55px 18px 48px; }
-      .status-hero p { font-size: 16px; }
-      .status-main { width: calc(100% - 26px); margin-bottom: 60px; }
-      .overall-card { padding: 21px; align-items: flex-start; flex-direction: column; }
-      .overall-card h2 { font-size: 19px; }
-      .section-heading { align-items: flex-start; flex-direction: column; }
-      .component-row { padding: 17px 14px; gap: 12px; }
-      .component-info { gap: 10px; }
-      .component-icon { width: 38px; height: 38px; }
-      .component-info h3 { font-size: 13px; }
-      .component-info p { font-size: 11px; }
-      .component-state { font-size: 11px; }
-      .uptime-card { padding: 19px; }
-      .uptime-bars { gap: 2px; }
-      .uptime-bar { height: 25px; }
-      .uptime-number { font-size: 22px; }
-      .ck-footer { padding: 55px 6% 0; }
-      .ck-footer-grid { grid-template-columns: 1fr 1fr; gap: 35px 20px; padding-bottom: 35px; }
-      .ck-footer-brand { grid-column: 1 / -1; }
-      .ck-footer-column h3 { font-size: 17px; margin-bottom: 20px; }
-      .ck-footer-column a { font-size: 14px; margin-bottom: 17px; }
-      .ck-footer-description { font-size: 16px; }
-      .ck-socials a { width: 44px; height: 44px; }
-      .ck-footer-bottom { padding: 22px 0; align-items: flex-start; flex-direction: column; font-size: 13px; }
-      .ck-top { width: 50px; height: 50px; border-radius: 15px; right: 14px; bottom: 14px; }
+    @media (max-width: 480px) {
+      .nav-container { padding: 0 15px; }
+      .page-title { font-size: 2rem; }
+      .page-subtitle { font-size: 1rem; }
+      .policy-card { padding: 18px; }
+      .policy-card h2 { font-size: 1.15rem; }
+      .section-number { width: 36px; height: 36px; font-size: 0.9rem; }
+      .component-row { padding: 14px; }
+      .uptime-bars { grid-template-columns: repeat(20, minmax(2px, 1fr)); }
+      .uptime-bar { height: 22px; }
+      .footer-bottom { flex-direction: column; text-align: center; }
     }
   </style>
 </head>
+<body data-theme="normal">
 
-<body>
+  <!-- MATRIX / SCANLINES / BG -->
+  <canvas id="matrix-canvas" aria-hidden="true"></canvas>
+  <div class="scanlines" aria-hidden="true"></div>
+  <div class="bg-shapes" aria-hidden="true">
+    <div class="bg-shape-1"></div>
+    <div class="bg-shape-2"></div>
+    <div class="bg-shape-3"></div>
+  </div>
 
-  <!-- HEADER -->
-  <header class="ck-header">
-    <a class="ck-brand" href="index.html" aria-label="CryptoKit Home">
-      <span class="ck-logo"><i class="fa-solid fa-shield-halved"></i></span>
-      <span class="ck-brand-name">CryptoKit</span>
-    </a>
+  <!-- THEME TRANSITION -->
+  <div class="theme-transition-overlay" id="themeOverlay" aria-hidden="true">
+    <div class="transition-text">
+      &gt; INITIATING HACKER PROTOCOL...<br>
+      &gt; ACCESS GRANTED_
+    </div>
+  </div>
 
-    <nav class="ck-nav" aria-label="Main navigation">
-      <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
-      <a href="Privacy Policy.html">Privacy</a>
-      <a href="Terms.html">Terms</a>
-      <a href="Support.html">Support</a>
-    </nav>
+  <!-- NAVBAR -->
+  <nav class="navbar" aria-label="Main navigation">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo" aria-label="CryptoKit Home">
+        <span class="nav-logo-icon" aria-hidden="true">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="6" y="10" width="28" height="22" rx="4" stroke="currentColor" stroke-width="2.5"/>
+            <line x1="20" y1="4" x2="20" y2="10" stroke="currentColor" stroke-width="2.5"/>
+            <rect x="12" y="16" width="16" height="10" rx="2" stroke="currentColor" stroke-width="2.5"/>
+            <circle cx="20" cy="21" r="2" stroke="currentColor" stroke-width="2.5"/>
+            <line x1="18" y1="34" x2="22" y2="34" stroke="currentColor" stroke-width="2.5"/>
+          </svg>
+        </span>
+        <span class="nav-logo-text">CryptoKit</span>
+      </a>
 
-    <div class="ck-theme-wrap">
-      <button class="ck-theme-button" id="themeButton" aria-expanded="false">
-        <i class="fa-solid fa-wand-magic-sparkles"></i>
-        <span id="themeLabel">Normal</span>
-        <i class="fa-solid fa-caret-down" style="margin:0 0 0 7px;color:inherit"></i>
-      </button>
-      <div class="ck-theme-menu" id="themeMenu">
-        <button type="button" data-theme="normal">✨ Normal</button>
-        <button type="button" data-theme="hacker">⌘ Hacker</button>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="privacy-policy.html">Privacy</a></li>
+        <li><a href="terms.html">Terms</a></li>
+        <li><a href="support.html">Support</a></li>
+        <li><a href="cookie-policy.html">Cookies</a></li>
+      </ul>
+
+      <div class="nav-right">
+        <div class="mode-selector">
+          <button class="mode-btn" id="modeBtn" aria-label="Change theme" aria-expanded="false" aria-haspopup="menu">
+            <i class="fas fa-palette" aria-hidden="true"></i>
+            <span id="currentMode">Normal</span>
+            <i class="fas fa-chevron-down" aria-hidden="true"></i>
+          </button>
+          <div class="mode-dropdown" id="modeDropdown" role="menu">
+            <div class="mode-option" data-mode="normal" role="menuitem" tabindex="0">
+              <i class="fas fa-sun" aria-hidden="true"></i>
+              <span>Normal</span>
+            </div>
+            <div class="mode-option" data-mode="hacker" role="menuitem" tabindex="0">
+              <i class="fas fa-terminal" aria-hidden="true"></i>
+              <span>Hacker</span>
+            </div>
+          </div>
+        </div>
+
+        <button class="hamburger" id="hamburgerBtn" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobileMenu">
+          <span></span><span></span><span></span>
+        </button>
       </div>
     </div>
-  </header>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html" onclick="closeMobileMenu()">Home</a>
+    <a href="privacy-policy.html" onclick="closeMobileMenu()">Privacy</a>
+    <a href="terms.html" onclick="closeMobileMenu()">Terms</a>
+    <a href="support.html" onclick="closeMobileMenu()">Support</a>
+    <a href="cookie-policy.html" onclick="closeMobileMenu()">Cookies</a>
+  </div>
 
   <!-- HERO -->
-  <section class="status-hero">
-    <div class="status-eyebrow"><i class="fa-solid fa-satellite-dish"></i> SYSTEM MONITORING</div>
-    <h1>System Status</h1>
-    <p>Check the status of CryptoKit services and explore service updates in one place.</p>
-    <div class="status-last-updated">
-      <i class="fa-regular fa-clock"></i>
-      Last page refresh: <span id="lastUpdated">Loading...</span>
+  <section class="page-hero">
+    <div class="section-badge">
+      <i class="fas fa-satellite-dish" aria-hidden="true"></i>
+      <span>SYSTEM MONITORING</span>
+    </div>
+    <h1 class="page-title">
+      <span class="gradient-text glitch" data-text="System Status">System Status</span>
+    </h1>
+    <p class="page-subtitle">
+      Check the status of CryptoKit services and explore service updates in one place.
+    </p>
+    <div class="last-updated">
+      <i class="fas fa-clock" aria-hidden="true"></i>
+      <span>Last refresh:</span>
+      <span id="lastUpdated">Loading...</span>
     </div>
   </section>
 
-  <main class="status-main">
+  <!-- CONTENT -->
+  <div class="content-wrapper">
 
-    <!-- OVERALL STATUS -->
-    <section class="overall-card" aria-live="polite">
-      <div class="overall-left">
-        <div class="overall-icon"><i class="fa-solid fa-check"></i></div>
-        <div>
-          <h2>Service status overview</h2>
-          <p id="overallDescription">Demo status indicators are displayed below. Live monitoring is not connected.</p>
+    <!-- OVERALL -->
+    <div class="policy-card" aria-live="polite">
+      <div class="overall-card">
+        <div class="overall-left">
+          <div class="overall-icon" aria-hidden="true"><i class="fas fa-check"></i></div>
+          <div>
+            <h2>Service Status Overview</h2>
+            <p class="overall-desc" id="overallDescription">
+              Demo status indicators are displayed below. Live monitoring is not currently connected.
+            </p>
+          </div>
         </div>
+        <span class="status-badge">
+          <span class="status-dot" aria-hidden="true"></span>
+          DEMO STATUS
+        </span>
       </div>
-      <span class="status-badge">
-        <span class="status-dot"></span>
-        DEMO STATUS
-      </span>
-    </section>
+    </div>
 
     <!-- COMPONENTS -->
-    <section class="status-section">
-      <div class="section-heading">
-        <div>
-          <h2><i class="fa-solid fa-server" style="color:#6c5dff"></i> Service Components</h2>
-          <p>Overview of the main areas of the CryptoKit platform.</p>
-        </div>
-        <button class="refresh-button" id="refreshStatus" type="button">
-          <i class="fa-solid fa-rotate"></i> Refresh page data
+    <div class="policy-card">
+      <div class="section-heading-row">
+        <h2>
+          <span class="section-number" aria-hidden="true">1</span>
+          Service Components
+        </h2>
+        <button class="refresh-button" id="refreshStatus" type="button" aria-label="Refresh page data">
+          <i class="fas fa-rotate" aria-hidden="true"></i>
+          <span>Refresh</span>
         </button>
       </div>
+      <p>Overview of the main areas of the CryptoKit platform.</p>
 
       <div class="component-list">
         <div class="component-row">
           <div class="component-info">
-            <div class="component-icon"><i class="fa-solid fa-globe"></i></div>
+            <div class="component-icon" aria-hidden="true"><i class="fas fa-globe"></i></div>
             <div>
               <h3>Website &amp; Frontend</h3>
               <p>Pages and user interface</p>
             </div>
           </div>
-          <span class="component-state"><span class="state-dot"></span> Demo</span>
+          <span class="component-state"><span class="state-dot" aria-hidden="true"></span> Demo</span>
         </div>
 
         <div class="component-row">
           <div class="component-info">
-            <div class="component-icon"><i class="fa-solid fa-lock"></i></div>
+            <div class="component-icon" aria-hidden="true"><i class="fas fa-lock"></i></div>
             <div>
               <h3>Cryptography Tools</h3>
               <p>Encryption and utility interfaces</p>
             </div>
           </div>
-          <span class="component-state"><span class="state-dot"></span> Demo</span>
+          <span class="component-state"><span class="state-dot" aria-hidden="true"></span> Demo</span>
         </div>
 
         <div class="component-row">
           <div class="component-info">
-            <div class="component-icon"><i class="fa-solid fa-key"></i></div>
+            <div class="component-icon" aria-hidden="true"><i class="fas fa-key"></i></div>
             <div>
               <h3>Authentication</h3>
               <p>Login and account access</p>
             </div>
           </div>
-          <span class="component-state"><span class="state-dot"></span> Demo</span>
+          <span class="component-state"><span class="state-dot" aria-hidden="true"></span> Demo</span>
         </div>
 
         <div class="component-row">
           <div class="component-info">
-            <div class="component-icon"><i class="fa-solid fa-database"></i></div>
+            <div class="component-icon" aria-hidden="true"><i class="fas fa-database"></i></div>
             <div>
               <h3>Backend &amp; Database</h3>
               <p>Application APIs and data services</p>
             </div>
           </div>
-          <span class="component-state"><span class="state-dot"></span> Not verified</span>
+          <span class="component-state"><span class="state-dot" aria-hidden="true"></span> Not Verified</span>
         </div>
 
         <div class="component-row">
           <div class="component-info">
-            <div class="component-icon"><i class="fa-solid fa-code"></i></div>
+            <div class="component-icon" aria-hidden="true"><i class="fas fa-code"></i></div>
             <div>
               <h3>Public API</h3>
               <p>API endpoints and integrations</p>
             </div>
           </div>
-          <span class="component-state"><span class="state-dot"></span> Not verified</span>
+          <span class="component-state"><span class="state-dot" aria-hidden="true"></span> Not Verified</span>
         </div>
       </div>
 
-      <div class="status-demo-note">
-        <i class="fa-solid fa-circle-info"></i>
-        <strong>Demo mode:</strong> these labels are interface placeholders, not confirmed health checks. A component showing “Demo” does not mean that its live service has been tested.
+      <div class="info-box">
+        <i class="fas fa-circle-info" aria-hidden="true"></i>
+        <div>
+          <strong>Demo mode:</strong> these labels are interface placeholders, not confirmed health checks. A component showing <span class="code-text">Demo</span> does not mean its live service has been tested.
+        </div>
       </div>
-    </section>
+    </div>
 
     <!-- UPTIME -->
-    <section class="status-section">
-      <div class="section-heading">
+    <div class="policy-card">
+      <h2>
+        <span class="section-number" aria-hidden="true">2</span>
+        Availability History
+      </h2>
+      <p>Example availability timeline for the status page design.</p>
+
+      <div class="uptime-top">
         <div>
-          <h2><i class="fa-solid fa-chart-line" style="color:#6c5dff"></i> Availability History</h2>
-          <p>Example availability timeline for the status page design.</p>
+          <h3>Website Availability</h3>
+          <p class="uptime-desc">Illustrative timeline — not measured uptime</p>
         </div>
+        <div class="uptime-number" aria-label="Uptime percentage not available">—</div>
       </div>
 
-      <div class="uptime-card">
-        <div class="uptime-top">
-          <div>
-            <h3>Website availability</h3>
-            <p>Illustrative timeline — not measured uptime</p>
-          </div>
-          <div class="uptime-number">—</div>
-        </div>
+      <div class="uptime-bars" id="uptimeBars" aria-label="Illustrative availability timeline"></div>
 
-        <div class="uptime-bars" id="uptimeBars" aria-label="Illustrative availability timeline"></div>
-
-        <div class="uptime-legend">
-          <span>60 sample intervals</span>
-          <span>Live metrics unavailable</span>
-        </div>
+      <div class="uptime-legend">
+        <span>60 sample intervals</span>
+        <span>Live metrics unavailable</span>
       </div>
-    </section>
+    </div>
 
-    <!-- INCIDENT HISTORY -->
-    <section class="status-section">
-      <div class="section-heading">
-        <div>
-          <h2><i class="fa-solid fa-clock-rotate-left" style="color:#6c5dff"></i> Incident History</h2>
-          <p>Service announcements and maintenance updates.</p>
-        </div>
-      </div>
+    <!-- INCIDENTS -->
+    <div class="policy-card">
+      <h2>
+        <span class="section-number" aria-hidden="true">3</span>
+        Incident History
+      </h2>
+      <p>Service announcements and maintenance updates.</p>
 
-      <div class="incident-card">
-        <div class="incident-icon"><i class="fa-solid fa-clipboard-check"></i></div>
+      <div class="incident-empty">
+        <div class="incident-icon-big" aria-hidden="true"><i class="fas fa-clipboard-check"></i></div>
         <h3>No incident records configured</h3>
         <p>Incident history will appear here when a monitoring or incident-management system is connected.</p>
       </div>
-    </section>
-
-    <!-- MAINTENANCE -->
-    <section class="status-section">
-      <div class="section-heading">
-        <div>
-          <h2><i class="fa-solid fa-calendar-check" style="color:#6c5dff"></i> Scheduled Maintenance</h2>
-          <p>Planned maintenance announcements.</p>
-        </div>
-      </div>
-
-      <div class="incident-card">
-        <div class="incident-icon"><i class="fa-regular fa-calendar"></i></div>
-        <h3>No maintenance schedule configured</h3>
-        <p>Scheduled maintenance information will be published here when available.</p>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- FOOTER -->
-  <footer class="ck-footer">
-    <div class="ck-footer-grid">
-
-      <div class="ck-footer-brand">
-        <a href="index.html" aria-label="CryptoKit Home">
-          <span class="ck-logo"><i class="fa-solid fa-shield-halved"></i></span>
-          <span class="ck-brand-name">CryptoKit</span>
-        </a>
-        <p class="ck-footer-description">
-          Advanced cryptography tools for developers and security professionals.
-        </p>
-        <div class="ck-socials">
-          <a href="https://github.com/CryptoKit-Team/OurCryptoKit" aria-label="GitHub" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-github"></i></a>
-        </div>
-      </div>
-
-      <div class="ck-footer-column">
-        <h3>Legal</h3>
-        <a href="Privacy Policy.html">Privacy Policy</a>
-        <a href="Terms.html">Terms of Service</a>
-        <a href="cookie-policy.html">Cookie Policy</a>
-        <a href="dmca.html">DMCA</a>
-      </div>
-
-      <div class="ck-footer-column">
-        <h3>Support</h3>
-        <a href="Support.html">Help Center</a>
-        <a href="Support.html">Contact Us</a>
-        <a href="api-reference.html">API Reference</a>
-        <a href="system-status.html" aria-current="page">System Status</a>
-      </div>
-
-      <div class="ck-footer-column">
-        <h3>Connect</h3>
-        <a href="https://github.com/CryptoKit-Team/OurCryptoKit" target="_blank" rel="noopener noreferrer">GitHub</a>
-      </div>
-
     </div>
 
-    <div class="ck-footer-bottom">
-      <span>© <span id="currentYear">2026</span> CryptoKit. All rights reserved.</span>
-      <div class="ck-footer-bottom-links">
-        <a href="privacy-policy.html">Privacy</a>
-        <a href="Terms.html">Terms</a>
-        <a href="cookie-policy.html">Cookies</a>
+    <!-- MAINTENANCE -->
+    <div class="policy-card">
+      <h2>
+        <span class="section-number" aria-hidden="true">4</span>
+        Scheduled Maintenance
+      </h2>
+      <p>Planned maintenance announcements for upcoming service work.</p>
+
+      <div class="incident-empty">
+        <div class="incident-icon-big" aria-hidden="true"><i class="far fa-calendar"></i></div>
+        <h3>No maintenance scheduled</h3>
+        <p>Scheduled maintenance information will be published here when available.</p>
+      </div>
+    </div>
+
+    <!-- CONTACT -->
+    <div class="policy-card">
+      <h2>
+        <span class="section-number" aria-hidden="true">5</span>
+        Report an Issue
+      </h2>
+      <p>
+        If you're experiencing a service issue not reflected on this page, please contact our support team so we can investigate.
+      </p>
+      <div class="highlight-box">
+        <i class="fas fa-envelope" aria-hidden="true"></i>
+        <div>
+          Email: <span class="code-text">support@cryptokit.com</span><br>
+          Visit the <a href="support.html" style="color: var(--primary); text-decoration: underline;">Support Center</a> for help articles and contact options.
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-brand">
+        <a href="index.html" class="footer-brand-logo" aria-label="CryptoKit Home">
+          <span class="nav-logo-icon" aria-hidden="true">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="6" y="10" width="28" height="22" rx="4" stroke="currentColor" stroke-width="2.5"/>
+              <line x1="20" y1="4" x2="20" y2="10" stroke="currentColor" stroke-width="2.5"/>
+              <rect x="12" y="16" width="16" height="10" rx="2" stroke="currentColor" stroke-width="2.5"/>
+              <circle cx="20" cy="21" r="2" stroke="currentColor" stroke-width="2.5"/>
+              <line x1="18" y1="34" x2="22" y2="34" stroke="currentColor" stroke-width="2.5"/>
+            </svg>
+          </span>
+          <span class="nav-logo-text">CryptoKit</span>
+        </a>
+        <p>Advanced cryptography tools for developers and security professionals.</p>
+        <div class="social-links">
+          <a href="github.html" class="social-btn" aria-label="GitHub"><i class="fab fa-github" aria-hidden="true"></i></a>
+          <a href="twitter.html" class="social-btn" aria-label="Twitter"><i class="fab fa-twitter" aria-hidden="true"></i></a>
+          <a href="discord.html" class="social-btn" aria-label="Discord"><i class="fab fa-discord" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="privacy-policy.html">Privacy Policy</a></li>
+          <li><a href="terms.html">Terms of Service</a></li>
+          <li><a href="cookie-policy.html">Cookie Policy</a></li>
+          <li><a href="dmca.html">DMCA</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="support.html">Help Center</a></li>
+          <li><a href="support.html">Contact Us</a></li>
+          <li><a href="documentation.html">Documentation</a></li>
+          <li><a href="system-status.html" aria-current="page">System Status</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="github.html">GitHub</a></li>
+          <li><a href="twitter.html">Twitter / X</a></li>
+          <li><a href="discord.html">Discord</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; <span id="currentYear">2025</span> CryptoKit Inc., Jaipur, Rajasthan, India. All rights reserved.</p>
+      <div style="display:flex; gap:20px;">
+        <a href="privacy-policy.html" style="color: var(--text-dim); text-decoration: none;">Privacy</a>
+        <a href="terms.html" style="color: var(--text-dim); text-decoration: none;">Terms</a>
+        <a href="cookie-policy.html" style="color: var(--text-dim); text-decoration: none;">Cookies</a>
       </div>
     </div>
   </footer>
 
-  <button class="ck-top" id="backToTop" type="button" aria-label="Back to top" title="Back to top">
-    <i class="fa-solid fa-arrow-up"></i>
+  <!-- SCROLL TOP -->
+  <button class="scroll-top" id="scrollTop" aria-label="Scroll to top">
+    <i class="fas fa-arrow-up" aria-hidden="true"></i>
   </button>
 
   <script>
-    // Theme dropdown
-    const themeButton = document.getElementById('themeButton');
-    const themeMenu = document.getElementById('themeMenu');
-    const themeLabel = document.getElementById('themeLabel');
+    // ===== MATRIX CANVAS =====
+    const canvas = document.getElementById('matrix-canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
-    themeButton.addEventListener('click', () => {
-      const open = themeMenu.classList.toggle('open');
-      themeButton.setAttribute('aria-expanded', String(open));
+    const matrixChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$+-*/=%"\'#&_(),.;:?!\\|{}<>[]^~';
+    const fontSize = 14;
+    let columns = Math.floor(canvas.width / fontSize);
+    let drops = Array(columns).fill(1);
+
+    function drawMatrix() {
+      ctx.fillStyle = 'rgba(3, 5, 3, 0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#00ff41';
+      ctx.font = fontSize + 'px monospace';
+      for (let i = 0; i < drops.length; i++) {
+        const text = matrixChars.charAt(Math.floor(Math.random() * matrixChars.length));
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+        drops[i]++;
+      }
+    }
+
+    let matrixInterval = null;
+    function startMatrix() { if (!matrixInterval) matrixInterval = setInterval(drawMatrix, 50); }
+    function stopMatrix() {
+      if (matrixInterval) {
+        clearInterval(matrixInterval);
+        matrixInterval = null;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+    }
+
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      columns = Math.floor(canvas.width / fontSize);
+      drops = Array(columns).fill(1);
     });
 
-    themeMenu.querySelectorAll('[data-theme]').forEach(button => {
-      button.addEventListener('click', () => {
-        const selectedTheme = button.dataset.theme;
-        document.body.classList.toggle('hacker-theme', selectedTheme === 'hacker');
-        themeLabel.textContent = selectedTheme === 'hacker' ? 'Hacker' : 'Normal';
-        themeMenu.classList.remove('open');
-        themeButton.setAttribute('aria-expanded', 'false');
+    // ===== THEME =====
+    const modeBtn = document.getElementById('modeBtn');
+    const modeDropdown = document.getElementById('modeDropdown');
+    const currentMode = document.getElementById('currentMode');
+    const themeOverlay = document.getElementById('themeOverlay');
 
-        try {
-          localStorage.setItem('cryptokit-page-theme', selectedTheme);
-        } catch (error) {}
+    modeBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const open = modeDropdown.classList.toggle('active');
+      modeBtn.setAttribute('aria-expanded', String(open));
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.mode-selector')) {
+        modeDropdown.classList.remove('active');
+        modeBtn.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    document.querySelectorAll('.mode-option').forEach(option => {
+      option.addEventListener('click', () => setTheme(option.dataset.mode));
+      option.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          setTheme(option.dataset.mode);
+        }
       });
     });
 
-    document.addEventListener('click', event => {
-      if (!event.target.closest('.ck-theme-wrap')) {
-        themeMenu.classList.remove('open');
-        themeButton.setAttribute('aria-expanded', 'false');
+    function setTheme(mode) {
+      if (mode === 'hacker') {
+        themeOverlay.classList.add('active');
+        setTimeout(() => {
+          document.body.setAttribute('data-theme', 'hacker');
+          currentMode.textContent = 'Hacker';
+          startMatrix();
+          setTimeout(() => themeOverlay.classList.remove('active'), 400);
+        }, 400);
+      } else {
+        document.body.setAttribute('data-theme', 'normal');
+        currentMode.textContent = 'Normal';
+        stopMatrix();
       }
+      try { localStorage.setItem('theme', mode); } catch (e) {}
+      modeDropdown.classList.remove('active');
+      modeBtn.setAttribute('aria-expanded', 'false');
+    }
+
+    (function restoreTheme() {
+      try {
+        const saved = localStorage.getItem('theme');
+        if (saved === 'hacker') {
+          document.body.setAttribute('data-theme', 'hacker');
+          currentMode.textContent = 'Hacker';
+          startMatrix();
+        }
+      } catch (e) {}
+    })();
+
+    // ===== MOBILE MENU =====
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    function toggleMobileMenu() {
+      const open = mobileMenu.classList.toggle('active');
+      hamburgerBtn.setAttribute('aria-expanded', String(open));
+    }
+    function closeMobileMenu() {
+      mobileMenu.classList.remove('active');
+      hamburgerBtn.setAttribute('aria-expanded', 'false');
+    }
+    hamburgerBtn.addEventListener('click', toggleMobileMenu);
+
+    // ===== SCROLL TOP =====
+    const scrollTopBtn = document.getElementById('scrollTop');
+    window.addEventListener('scroll', () => {
+      scrollTopBtn.classList.toggle('visible', window.scrollY > 500);
     });
+    scrollTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-    try {
-      if (localStorage.getItem('cryptokit-page-theme') === 'hacker') {
-        document.body.classList.add('hacker-theme');
-        themeLabel.textContent = 'Hacker';
-      }
-    } catch (error) {}
-
-    // Render neutral sample bars; they do not represent real uptime.
+    // ===== UPTIME BARS =====
     const uptimeBars = document.getElementById('uptimeBars');
     for (let i = 0; i < 60; i++) {
       const bar = document.createElement('span');
@@ -964,27 +1542,21 @@
       uptimeBars.appendChild(bar);
     }
 
-    // Update the page refresh timestamp only.
+    // ===== TIMESTAMP =====
     function updatePageTimestamp() {
       document.getElementById('lastUpdated').textContent =
         new Date().toLocaleString(undefined, {
-          year: 'numeric',
-          month: 'short',
-          day: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit',
-          second: '2-digit'
+          year: 'numeric', month: 'short', day: 'numeric',
+          hour: '2-digit', minute: '2-digit', second: '2-digit'
         });
     }
 
-    document.getElementById('refreshStatus').addEventListener('click', event => {
-      const button = event.currentTarget;
+    document.getElementById('refreshStatus').addEventListener('click', (e) => {
+      const button = e.currentTarget;
       const original = button.innerHTML;
       button.disabled = true;
-      button.innerHTML = '<i class="fa-solid fa-rotate fa-spin"></i> Refreshing...';
-
+      button.innerHTML = '<i class="fas fa-rotate fa-spin" aria-hidden="true"></i><span>Refreshing...</span>';
       updatePageTimestamp();
-
       setTimeout(() => {
         button.disabled = false;
         button.innerHTML = original;
@@ -993,10 +1565,6 @@
 
     updatePageTimestamp();
     document.getElementById('currentYear').textContent = new Date().getFullYear();
-
-    document.getElementById('backToTop').addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
   </script>
 </body>
 </html>
