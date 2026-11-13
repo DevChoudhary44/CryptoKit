@@ -1092,13 +1092,44 @@
   <nav class="navbar" aria-label="Main navigation">
     <div class="nav-container">
       <a href="index.html" class="nav-logo" aria-label="CryptoKit Home">
-        <span class="nav-logo-icon" aria-hidden="true">
-          <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="6" y="10" width="28" height="22" rx="4" stroke="currentColor" stroke-width="2.5"/>
-            <line x1="20" y1="4" x2="20" y2="10" stroke="currentColor" stroke-width="2.5"/>
-            <rect x="12" y="16" width="16" height="10" rx="2" stroke="currentColor" stroke-width="2.5"/>
-            <circle cx="20" cy="21" r="2" stroke="currentColor" stroke-width="2.5"/>
-            <line x1="18" y1="34" x2="22" y2="34" stroke="currentColor" stroke-width="2.5"/>
+        <span class="nav-logo-icon" aria-hidden="true" style="background: transparent; background-color: transparent; border: none; box-shadow: none;">
+          <svg width="40" height="40" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="cryptoBlueMainNav"
+                x1="10" y1="10" x2="90" y2="90"
+                gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#2563EB"/>
+                <stop offset="50%" stop-color="#0EA5E9"/>
+                <stop offset="100%" stop-color="#38BDF8"/>
+              </linearGradient>
+            </defs>
+
+            <path d="M66 16 H38 L15 32 V68 L38 84 H66"
+              stroke="url(#cryptoBlueMainNav)"
+              stroke-width="9"
+              stroke-linecap="round"
+              stroke-linejoin="round"/>
+
+            <circle cx="43" cy="39" r="7"
+              fill="url(#cryptoBlueMainNav)"/>
+
+            <path d="M39 48 L35 70 Q35 73 39 73 H48 Q52 73 51 70 L47 48 Z"
+              fill="url(#cryptoBlueMainNav)"/>
+
+            <g stroke="url(#cryptoBlueMainNav)"
+              stroke-width="4"
+              stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M57 37 H69 L78 29 H86"/>
+              <path d="M57 50 H86"/>
+              <path d="M57 63 H69 L78 71 H86"/>
+            </g>
+
+            <g fill="none" stroke="#38BDF8" stroke-width="3.5">
+              <circle cx="88" cy="29" r="5"/>
+              <circle cx="88" cy="50" r="5"/>
+              <circle cx="88" cy="71" r="5"/>
+            </g>
           </svg>
         </span>
         <span class="nav-logo-text">CryptoKit</span>
@@ -1136,7 +1167,7 @@
         </button>
       </div>
     </div>
-  </nav>
+</nav>
 
   <!-- MOBILE MENU -->
   <div class="mobile-menu" id="mobileMenu">

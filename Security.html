@@ -752,19 +752,53 @@ html[data-theme="hacker"] .scroll-top { background: #00FF41 !important; color: #
 <!-- Navbar -->
 <nav class="navbar" id="navbar">
     <a href="index.html" class="nav-logo">
-<div class="nav-logo-icon">
-                <svg viewBox="0 0 40 40" width="28" height="28" fill="none">
-                    <rect x="2" y="2" width="36" height="36" rx="8" stroke="currentColor" stroke-width="2.5"/>
-                    <path d="M20 8L20 14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-                    <rect x="12" y="14" width="16" height="18" rx="3" stroke="currentColor" stroke-width="2.5"/>
-                    <circle cx="20" cy="23" r="3" stroke="currentColor" stroke-width="2"/>
-                    <path d="M20 26L20 28" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-            </div>  
-        
+        <div class="nav-logo-icon" style="background: transparent; background-color: transparent; border: none; box-shadow: none;">
+            <svg viewBox="0 0 100 100"
+                 width="28" height="28"
+                 fill="none"
+                 xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="cryptoBlueNavbar"
+                        x1="10" y1="10" x2="90" y2="90"
+                        gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#2563EB"/>
+                        <stop offset="50%" stop-color="#0EA5E9"/>
+                        <stop offset="100%" stop-color="#38BDF8"/>
+                    </linearGradient>
+                </defs>
+
+                <path d="M66 16 H38 L15 32 V68 L38 84 H66"
+                      stroke="url(#cryptoBlueNavbar)"
+                      stroke-width="9"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"/>
+
+                <circle cx="43" cy="39" r="7"
+                        fill="url(#cryptoBlueNavbar)"/>
+
+                <path d="M39 48 L35 70 Q35 73 39 73 H48 Q52 73 51 70 L47 48 Z"
+                      fill="url(#cryptoBlueNavbar)"/>
+
+                <g stroke="url(#cryptoBlueNavbar)"
+                   stroke-width="4"
+                   stroke-linecap="round"
+                   stroke-linejoin="round">
+                    <path d="M57 37 H69 L78 29 H86"/>
+                    <path d="M57 50 H86"/>
+                    <path d="M57 63 H69 L78 71 H86"/>
+                </g>
+
+                <g fill="none" stroke="#38BDF8" stroke-width="3.5">
+                    <circle cx="88" cy="29" r="5"/>
+                    <circle cx="88" cy="50" r="5"/>
+                    <circle cx="88" cy="71" r="5"/>
+                </g>
+            </svg>
+        </div>
 
         <span class="nav-logo-text">CryptoKit</span>
     </a>
+
     <ul class="nav-links">
         <li><a href="index.html"><i class="fas fa-house"></i> Home</a></li>
         <li><a href="Privacy Policy.html"><i class="fas fa-user-shield"></i> Privacy</a></li>
@@ -772,6 +806,7 @@ html[data-theme="hacker"] .scroll-top { background: #00FF41 !important; color: #
         <li><a href="Support.html"><i class="fas fa-headset"></i> Support</a></li>
         <li><a href="Security.html" class="active"><i class="fas fa-bug-slash"></i> Security</a></li>
     </ul>
+
     <div class="nav-actions">
         <div class="mode-selector">
             <button class="mode-btn" onclick="toggleModeDropdown(event)">
@@ -779,20 +814,33 @@ html[data-theme="hacker"] .scroll-top { background: #00FF41 !important; color: #
                 <span class="mode-label" id="modeLabel">Normal</span>
                 <span class="mode-arrow" id="modeArrow">▼</span>
             </button>
+
             <div class="mode-dropdown" id="modeDropdown">
                 <div class="mode-option active" id="optNormal" onclick="setTheme('normal')">
                     <div class="mode-option-icon">✨</div>
-                    <div><div class="mode-option-title">Normal Mode</div><div class="mode-option-desc">Clean &amp; professional</div></div>
+                    <div>
+                        <div class="mode-option-title">Normal Mode</div>
+                        <div class="mode-option-desc">Clean &amp; professional</div>
+                    </div>
                     <span class="mode-check"><i class="fas fa-check"></i></span>
                 </div>
+
                 <div class="mode-option" id="optHacker" onclick="setTheme('hacker')">
                     <div class="mode-option-icon">💀</div>
-                    <div><div class="mode-option-title">Hacker Mode</div><div class="mode-option-desc">Matrix cyberpunk</div></div>
+                    <div>
+                        <div class="mode-option-title">Hacker Mode</div>
+                        <div class="mode-option-desc">Matrix cyberpunk</div>
+                    </div>
                     <span class="mode-check"><i class="fas fa-check"></i></span>
                 </div>
             </div>
         </div>
-        <button class="hamburger" onclick="toggleMobileMenu()"><span></span><span></span><span></span></button>
+
+        <button class="hamburger" onclick="toggleMobileMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
     </div>
 </nav>
 
@@ -971,26 +1019,91 @@ html[data-theme="hacker"] .scroll-top { background: #00FF41 !important; color: #
         <div class="footer-top">
             <div class="footer-brand">
                 <a href="index.html" class="nav-logo">
-<div class="nav-logo-icon">
-                <svg viewBox="0 0 40 40" width="28" height="28" fill="none">
-                    <rect x="2" y="2" width="36" height="36" rx="8" stroke="currentColor" stroke-width="2.5"/>
-                    <path d="M20 8L20 14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-                    <rect x="12" y="14" width="16" height="18" rx="3" stroke="currentColor" stroke-width="2.5"/>
-                    <circle cx="20" cy="23" r="3" stroke="currentColor" stroke-width="2"/>
-                    <path d="M20 26L20 28" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-            </div>                    <span class="nav-logo-text">CryptoKit</span>
+                    <div class="nav-logo-icon" style="background: transparent; background-color: transparent; border: none; box-shadow: none;">
+                        <svg viewBox="0 0 100 100"
+                             width="28" height="28"
+                             fill="none"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="cryptoBlueFooter"
+                                    x1="10" y1="10" x2="90" y2="90"
+                                    gradientUnits="userSpaceOnUse">
+                                    <stop offset="0%" stop-color="#2563EB"/>
+                                    <stop offset="50%" stop-color="#0EA5E9"/>
+                                    <stop offset="100%" stop-color="#38BDF8"/>
+                                </linearGradient>
+                            </defs>
+
+                            <path d="M66 16 H38 L15 32 V68 L38 84 H66"
+                                  stroke="url(#cryptoBlueFooter)"
+                                  stroke-width="9"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"/>
+
+                            <circle cx="43" cy="39" r="7"
+                                    fill="url(#cryptoBlueFooter)"/>
+
+                            <path d="M39 48 L35 70 Q35 73 39 73 H48 Q52 73 51 70 L47 48 Z"
+                                  fill="url(#cryptoBlueFooter)"/>
+
+                            <g stroke="url(#cryptoBlueFooter)"
+                               stroke-width="4"
+                               stroke-linecap="round"
+                               stroke-linejoin="round">
+                                <path d="M57 37 H69 L78 29 H86"/>
+                                <path d="M57 50 H86"/>
+                                <path d="M57 63 H69 L78 71 H86"/>
+                            </g>
+
+                            <g fill="none" stroke="#38BDF8" stroke-width="3.5">
+                                <circle cx="88" cy="29" r="5"/>
+                                <circle cx="88" cy="50" r="5"/>
+                                <circle cx="88" cy="71" r="5"/>
+                            </g>
+                        </svg>
+                    </div>
+                    <span class="nav-logo-text">CryptoKit</span>
                 </a>
+
                 <p>Advanced cryptography tools and resources for developers, researchers, and security professionals worldwide.</p>
+
                 <div class="footer-social">
                     <button class="social-btn"><i class="fab fa-github"></i></button>
                     <button class="social-btn"><i class="fab fa-linkedin"></i></button>
                 </div>
             </div>
-            <div class="footer-col"><h4>Product</h4><ul><li><a href="index.html">Home</a></li><li><a href="#">All Tools</a></li><li><a href="api-reference.html">API Docs</a></li><li><a href="pricing.html">Pricing</a></li></ul></div>
-            <div class="footer-col"><h4>Legal</h4><ul><li><a href="Privacy Policy.html">Privacy Policy</a></li><li><a href="terms.html">Terms of Service</a></li><li><a href="cookie-policy.html">Cookie Policy</a></li><li><a href="security.html">Security</a></li></ul></div>
-            <div class="footer-col"><h4>Support</h4><ul><li><a href="Support.html">Help Center</a></li><li><a href="Support.html">Contact Us</a></li><li><a href="system-status.html">Status Page</a></li><li><a href="documentation.html">Documentation</a></li></ul></div>
+
+            <div class="footer-col">
+                <h4>Product</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#">All Tools</a></li>
+                    <li><a href="api-reference.html">API Docs</a></li>
+                    <li><a href="pricing.html">Pricing</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="Privacy Policy.html">Privacy Policy</a></li>
+                    <li><a href="terms.html">Terms of Service</a></li>
+                    <li><a href="cookie-policy.html">Cookie Policy</a></li>
+                    <li><a href="security.html">Security</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="Support.html">Help Center</a></li>
+                    <li><a href="Support.html">Contact Us</a></li>
+                    <li><a href="system-status.html">Status Page</a></li>
+                    <li><a href="documentation.html">Documentation</a></li>
+                </ul>
+            </div>
         </div>
+
         <div class="footer-bottom">
             <p>&copy; 2026 CryptoKit Inc. All rights reserved.</p>
             <div class="footer-bottom-links">

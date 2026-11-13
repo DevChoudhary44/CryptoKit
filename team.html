@@ -728,21 +728,80 @@
     <!-- ═══════════════════════════════════
          NAVBAR
     ═══════════════════════════════════ -->
-    <nav class="team-page-nav">
-        <a href="index.html" class="nav-logo">
-            <div class="nav-logo-icon">
-                <svg viewBox="0 0 40 40" width="28" height="28" fill="none">
-                    <rect x="2" y="2" width="36" height="36" rx="8" stroke="currentColor" stroke-width="2.5"/>
-                    <path d="M20 8L20 14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-                    <rect x="12" y="14" width="16" height="18" rx="3" stroke="currentColor" stroke-width="2.5"/>
-                    <circle cx="20" cy="23" r="3" stroke="currentColor" stroke-width="2"/>
-                    <path d="M20 26L20 28" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-            </div>
-            <span class="nav-logo-text">CryptoKit</span>
-        </a>
-        <a href="index.html" class="btn-back"><i class="fas fa-arrow-left"></i><span>Back to Home</span></a>
-    </nav>
+   
+<nav class="team-page-nav">
+
+    <a href="index.html" class="nav-logo">
+        <div class="nav-logo-icon"
+             style="background: transparent !important; border: none !important; box-shadow: none !important;">
+
+            <svg viewBox="0 0 100 100"
+                 width="28"
+                 height="28"
+                 fill="none"
+                 xmlns="http://www.w3.org/2000/svg"
+                 style="background: transparent !important;">
+
+                <defs>
+                    <linearGradient id="cryptoBlueTeam"
+                        x1="10" y1="10" x2="90" y2="90"
+                        gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#2563EB"/>
+                        <stop offset="50%" stop-color="#0EA5E9"/>
+                        <stop offset="100%" stop-color="#38BDF8"/>
+                    </linearGradient>
+                </defs>
+
+                <!-- Main Crypto C -->
+                <path d="M66 16 H38 L15 32 V68 L38 84 H66"
+                      stroke="url(#cryptoBlueTeam)"
+                      stroke-width="9"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"/>
+
+                <!-- Security Symbol -->
+                <circle cx="43" cy="39" r="7"
+                        fill="url(#cryptoBlueTeam)"/>
+
+                <path d="M39 48 L35 70 Q35 73 39 73 H48 Q52 73 51 70 L47 48 Z"
+                      fill="url(#cryptoBlueTeam)"/>
+
+                <!-- Circuit Lines -->
+                <g stroke="url(#cryptoBlueTeam)"
+                   stroke-width="4"
+                   stroke-linecap="round"
+                   stroke-linejoin="round">
+
+                    <path d="M57 37 H69 L78 29 H86"/>
+                    <path d="M57 50 H86"/>
+                    <path d="M57 63 H69 L78 71 H86"/>
+
+                </g>
+
+                <!-- Circuit Endpoints -->
+                <g fill="none"
+                   stroke="#38BDF8"
+                   stroke-width="3.5">
+
+                    <circle cx="88" cy="29" r="5"/>
+                    <circle cx="88" cy="50" r="5"/>
+                    <circle cx="88" cy="71" r="5"/>
+
+                </g>
+
+            </svg>
+        </div>
+
+        <span class="nav-logo-text">CryptoKit</span>
+    </a>
+
+    <a href="index.html" class="btn-back">
+        <i class="fas fa-arrow-left"></i>
+        <span>Back to Home</span>
+    </a>
+
+</nav>
+
 
 
     <!-- ═══════════════════════════════════
