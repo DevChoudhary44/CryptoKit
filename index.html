@@ -458,9 +458,14 @@
         html.theme-dark #matrix-canvas, html.theme-dark .scanlines { display: none !important; }
 
         /* ── 2. Theme switcher: Hacker option → Elite Dark for Quantum Elite ── */
+        /* Free tier: Normal + Hacker only. Elite Dark is reserved for Quantum Elite. */
         #optDarkOption, #mobileDarkOption { display: none !important; }
+        #optHackerOption, #mobileHackerOption { display: flex !important; }
         html.enterprise-active #optDarkOption, html.enterprise-active #mobileDarkOption { display: flex !important; }
         html.enterprise-active #optHackerOption, html.enterprise-active #mobileHackerOption { display: none !important; }
+        html.tier-pro #optHackerOption, html.tier-pro #mobileHackerOption { display: none !important; }
+        #optHackerOption { display: flex; }
+        html[data-theme="hacker"] #checkHacker { display: inline-block !important; }
         .mode-btn .qd-on { display: none !important; }
         html.theme-dark .mode-btn .qd-on { display: inline !important; }
         html.theme-dark .mode-btn #modeIcon, html.theme-dark .mode-btn #modeLabel { display: none !important; }
@@ -1105,6 +1110,294 @@
             transition-duration: .01ms !important;
         }
     }
+
+
+
+/* ==========================================
+   CRYPTOKIT - COMPLETE HACKER MODE
+   Theme: Black + Neon Green
+   ========================================== */
+
+html[data-theme="hacker"] {
+    color-scheme: dark;
+
+    --bg-primary: #030604;
+    --bg-secondary: #07110a;
+    --bg-card: #08140b;
+    --bg-card-hover: #0c1e10;
+
+    --primary: #00ff41;
+    --primary-glow: rgba(0, 255, 65, 0.25);
+    --secondary: #00cc33;
+    --accent: #00ff41;
+
+    --text-primary: #eaffed;
+    --text-secondary: #a0c9a7;
+    --border-color: rgba(0, 255, 65, 0.25);
+
+    background: #020403 !important;
+    color: #eaffed !important;
+}
+
+/* Global page */
+
+html[data-theme="hacker"] body {
+    background: #020403 !important;
+    color: #eaffed !important;
+    font-family: "Courier New", monospace;
+}
+
+/* Matrix canvas */
+
+html[data-theme="hacker"] #matrix-canvas {
+    display: block !important;
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 0 !important;
+    pointer-events: none !important;
+    opacity: 0.30;
+}
+
+html[data-theme="hacker"] #particle-canvas {
+    display: none !important;
+}
+
+/* Main content above Matrix */
+
+html[data-theme="hacker"] .auth-screen,
+html[data-theme="hacker"] #mainApp {
+    position: relative;
+    z-index: 1;
+}
+
+/* Authentication page */
+
+html[data-theme="hacker"] .auth-screen {
+    min-height: 100vh;
+    background: transparent !important;
+    color: #eaffed !important;
+}
+
+html[data-theme="hacker"] .auth-container {
+    width: 100%;
+    max-width: 480px;
+    margin: auto;
+    padding: 30px 18px;
+    box-sizing: border-box;
+}
+
+html[data-theme="hacker"] .auth-card {
+    background: rgba(3, 12, 6, 0.94) !important;
+    border: 1px solid rgba(0, 255, 65, 0.4) !important;
+    border-radius: 18px;
+    box-shadow:
+        0 0 15px rgba(0, 255, 65, 0.08),
+        0 0 35px rgba(0, 255, 65, 0.06) !important;
+    backdrop-filter: blur(12px);
+    padding: 28px;
+}
+
+html[data-theme="hacker"] .auth-title {
+    color: #00ff41 !important;
+    text-shadow: 0 0 12px rgba(0, 255, 65, 0.35);
+}
+
+html[data-theme="hacker"] .gradient-text {
+    background: linear-gradient(90deg, #00ff41, #aaffbb);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent !important;
+}
+
+html[data-theme="hacker"] .auth-subtitle,
+html[data-theme="hacker"] .auth-label,
+html[data-theme="hacker"] .auth-switch-text,
+html[data-theme="hacker"] .auth-footnote {
+    color: #b5d9bc !important;
+}
+
+html[data-theme="hacker"] .section-badge {
+    color: #00ff41 !important;
+    border-color: rgba(0, 255, 65, 0.35) !important;
+    background: rgba(0, 255, 65, 0.07) !important;
+}
+
+/* Input fields */
+
+html[data-theme="hacker"] .auth-input {
+    width: 100%;
+    box-sizing: border-box;
+    color: #00ff41 !important;
+    background: #050b07 !important;
+    border: 1px solid rgba(0, 255, 65, 0.35) !important;
+    border-radius: 8px;
+    padding: 13px 14px;
+    outline: none;
+    transition: 0.25s ease;
+}
+
+html[data-theme="hacker"] .auth-input::placeholder {
+    color: #66816b !important;
+}
+
+html[data-theme="hacker"] .auth-input:focus {
+    border-color: #00ff41 !important;
+    box-shadow: 0 0 12px rgba(0, 255, 65, 0.2) !important;
+}
+
+html[data-theme="hacker"] .auth-input-icon {
+    color: #00ff41 !important;
+}
+
+html[data-theme="hacker"] .auth-toggle-eye {
+    color: #00ff41 !important;
+    background: #0b1a0e !important;
+    border: 1px solid rgba(0, 255, 65, 0.3) !important;
+}
+
+/* Buttons */
+
+html[data-theme="hacker"] .btn-primary,
+html[data-theme="hacker"] .auth-submit-btn {
+    color: #001b07 !important;
+    background: #00ff41 !important;
+    border: 1px solid #00ff41 !important;
+    border-radius: 8px;
+    font-weight: 800;
+    transition: 0.25s ease;
+    box-shadow: 0 0 12px rgba(0, 255, 65, 0.18);
+}
+
+html[data-theme="hacker"] .btn-primary:hover,
+html[data-theme="hacker"] .auth-submit-btn:hover {
+    color: #00ff41 !important;
+    background: transparent !important;
+    box-shadow: 0 0 20px rgba(0, 255, 65, 0.35);
+}
+
+/* Links */
+
+html[data-theme="hacker"] .auth-link-muted,
+html[data-theme="hacker"] .auth-switch-text a {
+    color: #00ff41 !important;
+    text-decoration: none;
+}
+
+html[data-theme="hacker"] .auth-link-muted:hover,
+html[data-theme="hacker"] .auth-switch-text a:hover {
+    text-shadow: 0 0 8px #00ff41;
+    text-decoration: underline;
+}
+
+/* Checkbox */
+
+html[data-theme="hacker"] .auth-checkbox-box {
+    border-color: #00ff41 !important;
+}
+
+html[data-theme="hacker"] .auth-checkbox input:checked + .auth-checkbox-box {
+    background: #00ff41 !important;
+}
+
+/* Navigation */
+
+html[data-theme="hacker"] .navbar {
+    background: rgba(2, 8, 4, 0.95) !important;
+    border-bottom: 1px solid rgba(0, 255, 65, 0.25) !important;
+}
+
+html[data-theme="hacker"] .nav-links a,
+html[data-theme="hacker"] .nav-logo-text,
+html[data-theme="hacker"] .mode-btn {
+    color: #00ff41 !important;
+}
+
+html[data-theme="hacker"] .nav-links a:hover {
+    text-shadow: 0 0 10px #00ff41;
+}
+
+html[data-theme="hacker"] .mode-dropdown {
+    background: #061009 !important;
+    border: 1px solid rgba(0, 255, 65, 0.4) !important;
+}
+
+html[data-theme="hacker"] .mode-option {
+    color: #caffd2 !important;
+}
+
+/* Cards and panels */
+
+html[data-theme="hacker"] .card,
+html[data-theme="hacker"] .tool-card,
+html[data-theme="hacker"] .dashboard-card,
+html[data-theme="hacker"] .feature-card {
+    background: rgba(5, 17, 8, 0.94) !important;
+    border: 1px solid rgba(0, 255, 65, 0.22) !important;
+    color: #d8ffe0 !important;
+}
+
+html[data-theme="hacker"] .card:hover,
+html[data-theme="hacker"] .tool-card:hover,
+html[data-theme="hacker"] .feature-card:hover {
+    border-color: #00ff41 !important;
+    box-shadow: 0 0 18px rgba(0, 255, 65, 0.13);
+}
+
+/* Footer */
+
+html[data-theme="hacker"] footer,
+html[data-theme="hacker"] .footer {
+    background: #020704 !important;
+    border-top: 1px solid rgba(0, 255, 65, 0.25) !important;
+    color: #a9d9b2 !important;
+}
+
+html[data-theme="hacker"] .footer a {
+    color: #00ff41 !important;
+}
+
+/* Scrollbar */
+
+html[data-theme="hacker"] ::-webkit-scrollbar {
+    width: 8px;
+}
+
+html[data-theme="hacker"] ::-webkit-scrollbar-track {
+    background: #020704;
+}
+
+html[data-theme="hacker"] ::-webkit-scrollbar-thumb {
+    background: #087c27;
+    border-radius: 10px;
+}
+
+html[data-theme="hacker"] ::-webkit-scrollbar-thumb:hover {
+    background: #00ff41;
+}
+
+/* Mobile responsive */
+
+@media (max-width: 600px) {
+    html[data-theme="hacker"] .auth-container {
+        padding: 20px 14px;
+    }
+
+    html[data-theme="hacker"] .auth-card {
+        padding: 22px 17px;
+        border-radius: 14px;
+    }
+
+    html[data-theme="hacker"] .auth-title {
+        font-size: clamp(25px, 7vw, 34px);
+    }
+
+    html[data-theme="hacker"] .auth-submit-btn {
+        width: 100%;
+    }
+}
+
     </style>
 
     
@@ -1397,7 +1690,7 @@
 
             <p class="auth-footnote">
                 <i class="fas fa-circle-info"></i>
-                Frontend preview only — no data is stored or sent anywhere yet.
+                Enjoy your free account with CryptoKit. We respect your privacy and do not share your data with third parties.
             </p>
 
         </div>
@@ -1497,6 +1790,16 @@
                             <div class="mode-option-desc" id="optNormalDesc">Clean &amp; professional</div>
                         </div>
                         <i class="fas fa-check mode-check" id="checkNormal"></i>
+                    </div>
+
+                    <div class="mode-option" id="optHackerOption"
+                         onclick="if(window.CKEliteDark && CKEliteDark.isElite()){CKEliteDark.set(true);}else{if(window.CKProDark)CKProDark.set(false);if(typeof selectMode==='function')selectMode('hacker');else document.documentElement.setAttribute('data-theme','hacker');if(typeof applyTierLabels==='function')setTimeout(applyTierLabels,50);}">
+                        <span class="mode-option-icon">💀</span>
+                        <div>
+                            <div class="mode-option-title">Hacker Mode</div>
+                            <div class="mode-option-desc">Matrix rain &amp; neon green theme</div>
+                        </div>
+                        <i class="fas fa-check mode-check" id="checkHacker" style="display:none;"></i>
                     </div>
 
                     <div class="mode-option" id="optDarkOption"
@@ -2911,7 +3214,11 @@ Please visit on a <strong>desktop or laptop</strong>.</p>
             });
             enforce();
         })();
-    </script>
+
+</script>
+
+
+    
 
 <script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a4af795878cc867b',t:'MTc5MjA3NDEyNg=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 
