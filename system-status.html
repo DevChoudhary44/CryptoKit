@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#0a0e27">
+  <meta name="theme-color" content="#030503">
   <title>System Status | CryptoKit</title>
   <meta name="description" content="View CryptoKit service status, component availability, and incident updates.">
 
@@ -13,27 +13,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
-    /* ============ THEME TOKENS ============ */
-    [data-theme="normal"] {
-      --primary: #6366f1;
-      --secondary: #8b5cf6;
-      --accent: #06b6d4;
-      --success: #10b981;
-      --warning: #f59e0b;
-      --danger: #ef4444;
-      --bg: #0a0e27;
-      --bg-alt: #0f1538;
-      --panel: rgba(255,255,255,0.03);
-      --panel-solid: #11173a;
-      --text: #e2e8f0;
-      --text-dim: #94a3b8;
-      --border: rgba(255,255,255,0.08);
-      --glass: rgba(255,255,255,0.04);
-      --shadow: 0 20px 60px rgba(0,0,0,0.4);
-      --scrollbar-track: #0a0e27;
-      --scrollbar-thumb: #6366f1;
-    }
-
+    /* ============ HACKER THEME TOKENS ============ */
     [data-theme="hacker"] {
       --primary: #00ff41;
       --secondary: #39ff14;
@@ -76,7 +56,7 @@
     }
 
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: 'Share Tech Mono', 'JetBrains Mono', monospace;
       background: var(--bg);
       color: var(--text);
       line-height: 1.6;
@@ -100,18 +80,13 @@
       font-family: 'Share Tech Mono', 'JetBrains Mono', monospace;
     }
 
-    a, button, input, .mode-option {
+    a, button, input {
       outline: none;
     }
 
     a:focus-visible,
     button:focus-visible,
     input:focus-visible,
-    .mode-option:focus-visible {
-      outline: 2px solid var(--primary);
-      outline-offset: 3px;
-      border-radius: 6px;
-    }
 
     ::-webkit-scrollbar { width: 5px; height: 5px; }
     ::-webkit-scrollbar-track { background: var(--scrollbar-track); }
@@ -222,95 +197,6 @@
     @keyframes borderPulse {
       0%,100% { border-color: var(--border); }
       50% { border-color: var(--primary); box-shadow: 0 0 20px rgba(0,255,65,0.2); }
-    }
-
-    /* ============ THEME TRANSITION OVERLAY ============ */
-    .theme-transition-overlay {
-      position: fixed;
-      inset: 0;
-      background: #000;
-      z-index: 9999;
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity 0.4s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .theme-transition-overlay.active {
-      opacity: 1;
-      pointer-events: all;
-    }
-    .transition-text {
-      font-family: 'Share Tech Mono', monospace;
-      color: var(--green-bright);
-      font-size: 1.2rem;
-      text-shadow: 0 0 10px var(--green-bright);
-    }
-
-    /* ============ MODE SELECTOR ============ */
-    .mode-selector {
-      position: relative;
-    }
-    .mode-btn {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 18px;
-      background: var(--glass);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      color: var(--text);
-      cursor: pointer;
-      font-size: 0.9rem;
-      font-weight: 500;
-      transition: all 0.3s ease;
-      backdrop-filter: blur(10px);
-    }
-    .mode-btn:hover {
-      border-color: var(--primary);
-      transform: translateY(-2px);
-    }
-    .mode-dropdown {
-      position: absolute;
-      top: calc(100% + 10px);
-      right: 0;
-      background: var(--panel-solid);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 8px;
-      min-width: 180px;
-      box-shadow: var(--shadow);
-      opacity: 0;
-      visibility: hidden;
-      transform: translateY(-10px);
-      transition: all 0.3s ease;
-      z-index: 1001;
-    }
-    .mode-dropdown.active {
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(0);
-      animation: dropIn 0.3s ease;
-    }
-    @keyframes dropIn {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .mode-option {
-      padding: 10px 14px;
-      border-radius: 8px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: var(--text);
-      transition: background 0.2s ease;
-      font-size: 0.9rem;
-    }
-    .mode-option:hover,
-    .mode-option:focus-visible {
-      background: var(--glass);
     }
 
     /* ============ NAVBAR ============ */
@@ -1069,7 +955,7 @@
     }
   </style>
 </head>
-<body data-theme="normal">
+<body data-theme="hacker">
 
   <!-- MATRIX / SCANLINES / BG -->
   <canvas id="matrix-canvas" aria-hidden="true"></canvas>
@@ -1078,14 +964,6 @@
     <div class="bg-shape-1"></div>
     <div class="bg-shape-2"></div>
     <div class="bg-shape-3"></div>
-  </div>
-
-  <!-- THEME TRANSITION -->
-  <div class="theme-transition-overlay" id="themeOverlay" aria-hidden="true">
-    <div class="transition-text">
-      &gt; INITIATING HACKER PROTOCOL...<br>
-      &gt; ACCESS GRANTED_
-    </div>
   </div>
 
   <!-- NAVBAR -->
@@ -1098,9 +976,9 @@
               <linearGradient id="cryptoBlueMainNav"
                 x1="10" y1="10" x2="90" y2="90"
                 gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stop-color="#2563EB"/>
-                <stop offset="50%" stop-color="#0EA5E9"/>
-                <stop offset="100%" stop-color="#38BDF8"/>
+                <stop offset="0%" stop-color="#00ff41"/>
+                <stop offset="50%" stop-color="#00cc66"/>
+                <stop offset="100%" stop-color="#00ffff"/>
               </linearGradient>
             </defs>
 
@@ -1125,7 +1003,7 @@
               <path d="M57 63 H69 L78 71 H86"/>
             </g>
 
-            <g fill="none" stroke="#38BDF8" stroke-width="3.5">
+            <g fill="none" stroke="#00ffff" stroke-width="3.5">
               <circle cx="88" cy="29" r="5"/>
               <circle cx="88" cy="50" r="5"/>
               <circle cx="88" cy="71" r="5"/>
@@ -1137,31 +1015,13 @@
 
       <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
-        <li><a href="privacy-policy.html">Privacy</a></li>
+        <li><a href="Privacy Policy.html">Privacy</a></li>
         <li><a href="terms.html">Terms</a></li>
-        <li><a href="support.html">Support</a></li>
+        <li><a href="Support.html">Support</a></li>
         <li><a href="cookie-policy.html">Cookies</a></li>
       </ul>
 
       <div class="nav-right">
-        <div class="mode-selector">
-          <button class="mode-btn" id="modeBtn" aria-label="Change theme" aria-expanded="false" aria-haspopup="menu">
-            <i class="fas fa-palette" aria-hidden="true"></i>
-            <span id="currentMode">Normal</span>
-            <i class="fas fa-chevron-down" aria-hidden="true"></i>
-          </button>
-          <div class="mode-dropdown" id="modeDropdown" role="menu">
-            <div class="mode-option" data-mode="normal" role="menuitem" tabindex="0">
-              <i class="fas fa-sun" aria-hidden="true"></i>
-              <span>Normal</span>
-            </div>
-            <div class="mode-option" data-mode="hacker" role="menuitem" tabindex="0">
-              <i class="fas fa-terminal" aria-hidden="true"></i>
-              <span>Hacker</span>
-            </div>
-          </div>
-        </div>
-
         <button class="hamburger" id="hamburgerBtn" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobileMenu">
           <span></span><span></span><span></span>
         </button>
@@ -1172,9 +1032,9 @@
   <!-- MOBILE MENU -->
   <div class="mobile-menu" id="mobileMenu">
     <a href="index.html" onclick="closeMobileMenu()">Home</a>
-    <a href="privacy-policy.html" onclick="closeMobileMenu()">Privacy</a>
+    <a href="Privacy Policy.html" onclick="closeMobileMenu()">Privacy</a>
     <a href="terms.html" onclick="closeMobileMenu()">Terms</a>
-    <a href="support.html" onclick="closeMobileMenu()">Support</a>
+    <a href="Support.html" onclick="closeMobileMenu()">Support</a>
     <a href="cookie-policy.html" onclick="closeMobileMenu()">Cookies</a>
   </div>
 
@@ -1365,76 +1225,136 @@
         <i class="fas fa-envelope" aria-hidden="true"></i>
         <div>
           Email: <span class="code-text">support@cryptokit.com</span><br>
-          Visit the <a href="support.html" style="color: var(--primary); text-decoration: underline;">Support Center</a> for help articles and contact options.
+          Visit the <a href="Support.html" style="color: var(--primary); text-decoration: underline;">Support Center</a> for help articles and contact options.
         </div>
       </div>
     </div>
 
   </div>
 
-  <!-- FOOTER -->
-  <footer>
+ 
+<!-- FOOTER -->
+<footer>
     <div class="footer-content">
-      <div class="footer-brand">
-        <a href="index.html" class="footer-brand-logo" aria-label="CryptoKit Home">
-          <span class="nav-logo-icon" aria-hidden="true">
-            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="6" y="10" width="28" height="22" rx="4" stroke="currentColor" stroke-width="2.5"/>
-              <line x1="20" y1="4" x2="20" y2="10" stroke="currentColor" stroke-width="2.5"/>
-              <rect x="12" y="16" width="16" height="10" rx="2" stroke="currentColor" stroke-width="2.5"/>
-              <circle cx="20" cy="21" r="2" stroke="currentColor" stroke-width="2.5"/>
-              <line x1="18" y1="34" x2="22" y2="34" stroke="currentColor" stroke-width="2.5"/>
-            </svg>
-          </span>
-          <span class="nav-logo-text">CryptoKit</span>
-        </a>
-        <p>Advanced cryptography tools for developers and security professionals.</p>
-        <div class="social-links">
-          <a href="github.html" class="social-btn" aria-label="GitHub"><i class="fab fa-github" aria-hidden="true"></i></a>
-          <a href="twitter.html" class="social-btn" aria-label="Twitter"><i class="fab fa-twitter" aria-hidden="true"></i></a>
-          <a href="discord.html" class="social-btn" aria-label="Discord"><i class="fab fa-discord" aria-hidden="true"></i></a>
+
+        <!-- Footer Brand -->
+        <div class="footer-brand">
+                <a href="index.html" class="nav-logo">
+                    <div class="nav-logo-icon" style="background: transparent; background-color: transparent; border: none; box-shadow: none;">
+                        <svg viewBox="0 0 100 100"
+                             width="28" height="28"
+                             fill="none"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="cryptoBlueFooter"
+                                    x1="10" y1="10" x2="90" y2="90"
+                                    gradientUnits="userSpaceOnUse">
+                                    <stop offset="0%" stop-color="#00ff41"/>
+                                    <stop offset="50%" stop-color="#00cc66"/>
+                                    <stop offset="100%" stop-color="#00ffff"/>
+                                </linearGradient>
+                            </defs>
+
+                            <path d="M66 16 H38 L15 32 V68 L38 84 H66"
+                                  stroke="url(#cryptoBlueFooter)"
+                                  stroke-width="9"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"/>
+
+                            <circle cx="43" cy="39" r="7"
+                                    fill="url(#cryptoBlueFooter)"/>
+
+                            <path d="M39 48 L35 70 Q35 73 39 73 H48 Q52 73 51 70 L47 48 Z"
+                                  fill="url(#cryptoBlueFooter)"/>
+
+                            <g stroke="url(#cryptoBlueFooter)"
+                               stroke-width="4"
+                               stroke-linecap="round"
+                               stroke-linejoin="round">
+                                <path d="M57 37 H69 L78 29 H86"/>
+                                <path d="M57 50 H86"/>
+                                <path d="M57 63 H69 L78 71 H86"/>
+                            </g>
+
+                            <g fill="none" stroke="#00ffff" stroke-width="3.5">
+                                <circle cx="88" cy="29" r="5"/>
+                                <circle cx="88" cy="50" r="5"/>
+                                <circle cx="88" cy="71" r="5"/>
+                            </g>
+                        </svg>
+                    </div>
+                    <span class="nav-logo-text">CryptoKit</span>
+                </a>
+
+            <p>
+                Advanced cryptography tools for developers and security professionals.
+            </p>
+
+            
         </div>
-      </div>
 
-      <div class="footer-col">
-        <h4>Legal</h4>
-        <ul>
-          <li><a href="privacy-policy.html">Privacy Policy</a></li>
-          <li><a href="terms.html">Terms of Service</a></li>
-          <li><a href="cookie-policy.html">Cookie Policy</a></li>
-          <li><a href="dmca.html">DMCA</a></li>
-        </ul>
-      </div>
+        <!-- Legal Links -->
+        <div class="footer-col">
+            <h4>Legal</h4>
+            <ul>
+                <li><a href="Privacy Policy.html">Privacy Policy</a></li>
+                <li><a href="terms.html">Terms of Service</a></li>
+                <li><a href="cookie-policy.html">Cookie Policy</a></li>
+                <li><a href="dmca.html">DMCA</a></li>
+            </ul>
+        </div>
 
-      <div class="footer-col">
-        <h4>Support</h4>
-        <ul>
-          <li><a href="support.html">Help Center</a></li>
-          <li><a href="support.html">Contact Us</a></li>
-          <li><a href="documentation.html">Documentation</a></li>
-          <li><a href="system-status.html" aria-current="page">System Status</a></li>
-        </ul>
-      </div>
+        <!-- Support Links -->
+        <div class="footer-col">
+            <h4>Support</h4>
+            <ul>
+                <li><a href="Support.html">Help Center</a></li>
+                <li><a href="Support.html">Contact Us</a></li>
+                <li><a href="documentation.html">Documentation</a></li>
+            </ul>
+        </div>
 
-      <div class="footer-col">
-        <h4>Connect</h4>
-        <ul>
-          <li><a href="github.html">GitHub</a></li>
-          <li><a href="twitter.html">Twitter / X</a></li>
-          <li><a href="discord.html">Discord</a></li>
-        </ul>
-      </div>
+        <!-- Connect Links -->
+        <div class="footer-col">
+            <h4>Connect</h4>
+            <ul>
+                <li><a href="https://github.com/CryptoKit-Team/OurCryptoKit"
+                       target="_blank" rel="noopener noreferrer">GitHub</a></li>
+                <li><a href="https://www.linkedin.com/company/cryptokit-official123/"
+                       target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+            </ul>
+        </div>
+
     </div>
 
+    <!-- Footer Bottom -->
     <div class="footer-bottom">
-      <p>&copy; <span id="currentYear">2025</span> CryptoKit Inc., Jaipur, Rajasthan, India. All rights reserved.</p>
-      <div style="display:flex; gap:20px;">
-        <a href="privacy-policy.html" style="color: var(--text-dim); text-decoration: none;">Privacy</a>
-        <a href="terms.html" style="color: var(--text-dim); text-decoration: none;">Terms</a>
-        <a href="cookie-policy.html" style="color: var(--text-dim); text-decoration: none;">Cookies</a>
-      </div>
+
+        <p>
+            &copy; <span id="currentYear">2025</span>
+            CryptoKit Inc., Jaipur, Rajasthan, India. All rights reserved.
+        </p>
+
+        <div style="display: flex; gap: 20px;">
+            <a href="Privacy Policy.html"
+               style="color: var(--text-dim); text-decoration: none;">
+                Privacy
+            </a>
+
+            <a href="terms.html"
+               style="color: var(--text-dim); text-decoration: none;">
+                Terms
+            </a>
+
+            <a href="cookie-policy.html"
+               style="color: var(--text-dim); text-decoration: none;">
+                Cookies
+            </a>
+        </div>
+
     </div>
-  </footer>
+</footer>
+
 
   <!-- SCROLL TOP -->
   <button class="scroll-top" id="scrollTop" aria-label="Scroll to top">
@@ -1482,65 +1402,9 @@
       columns = Math.floor(canvas.width / fontSize);
       drops = Array(columns).fill(1);
     });
+    // ===== PERMANENT HACKER MODE =====
+    startMatrix();
 
-    // ===== THEME =====
-    const modeBtn = document.getElementById('modeBtn');
-    const modeDropdown = document.getElementById('modeDropdown');
-    const currentMode = document.getElementById('currentMode');
-    const themeOverlay = document.getElementById('themeOverlay');
-
-    modeBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const open = modeDropdown.classList.toggle('active');
-      modeBtn.setAttribute('aria-expanded', String(open));
-    });
-
-    document.addEventListener('click', (e) => {
-      if (!e.target.closest('.mode-selector')) {
-        modeDropdown.classList.remove('active');
-        modeBtn.setAttribute('aria-expanded', 'false');
-      }
-    });
-
-    document.querySelectorAll('.mode-option').forEach(option => {
-      option.addEventListener('click', () => setTheme(option.dataset.mode));
-      option.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          setTheme(option.dataset.mode);
-        }
-      });
-    });
-
-    function setTheme(mode) {
-      if (mode === 'hacker') {
-        themeOverlay.classList.add('active');
-        setTimeout(() => {
-          document.body.setAttribute('data-theme', 'hacker');
-          currentMode.textContent = 'Hacker';
-          startMatrix();
-          setTimeout(() => themeOverlay.classList.remove('active'), 400);
-        }, 400);
-      } else {
-        document.body.setAttribute('data-theme', 'normal');
-        currentMode.textContent = 'Normal';
-        stopMatrix();
-      }
-      try { localStorage.setItem('theme', mode); } catch (e) {}
-      modeDropdown.classList.remove('active');
-      modeBtn.setAttribute('aria-expanded', 'false');
-    }
-
-    (function restoreTheme() {
-      try {
-        const saved = localStorage.getItem('theme');
-        if (saved === 'hacker') {
-          document.body.setAttribute('data-theme', 'hacker');
-          currentMode.textContent = 'Hacker';
-          startMatrix();
-        }
-      } catch (e) {}
-    })();
 
     // ===== MOBILE MENU =====
     const hamburgerBtn = document.getElementById('hamburgerBtn');
